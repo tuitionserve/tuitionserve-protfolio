@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { countUnreadNotifications } from "@/server/queries/my-notifications";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
+  const unreadCount = await countUnreadNotifications(session.uid);
 
   return (
     <div className="min-h-full flex flex-col">
@@ -25,6 +27,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
               </Link>
               <Link href="/admin/messages" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
                 Messages
+              </Link>
+              <Link href="/admin/notifications" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors flex items-center gap-1">
+                Notifications
+                {unreadCount > 0 && (
+                  <span className="font-label-md text-label-md bg-primary-container text-on-primary px-2 py-0.5 rounded-full">
+                    {unreadCount}
+                  </span>
+                )}
               </Link>
             </nav>
           </div>

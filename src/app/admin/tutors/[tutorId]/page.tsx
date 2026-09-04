@@ -3,6 +3,7 @@ import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { TutorReviewActions } from "@/components/admin/tutors/TutorReviewActions";
+import { TutorSuspensionActions } from "@/components/admin/tutors/TutorSuspensionActions";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -64,7 +65,15 @@ export default async function AdminTutorDetailPage({
         />
       </div>
 
-      <TutorReviewActions tutorId={tutorId} hasCv={Boolean(profile?.cvDocumentId)} />
+      {["SUBMITTED", "UNDER_REVIEW", "RESUBMITTED"].includes(tutor.verificationStatus) ? (
+        <TutorReviewActions tutorId={tutorId} hasCv={Boolean(profile?.cvDocumentId)} />
+      ) : (
+        <TutorSuspensionActions
+          tutorId={tutorId}
+          verificationStatus={tutor.verificationStatus}
+          suspensionReason={tutor.suspensionReason}
+        />
+      )}
     </div>
   );
 }

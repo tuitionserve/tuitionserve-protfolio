@@ -228,9 +228,13 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
     const value = profile?.[field];
     return value === null || value === undefined || value === "";
   });
-  if (!profile || profile.subjects.length === 0) missing.push("subjects");
-  if (!profile || profile.grades.length === 0) missing.push("grades");
-  if (!profile || profile.availability.length === 0) missing.push("availability");
+  // A profile whose earlier steps were never (successfully) saved has
+  // these fields entirely absent, not an empty array — `mergeProfile`
+  // only writes fields included in a *validated* patch, so a direct API
+  // call to submit before completing a step must not crash here.
+  if (!profile?.subjects || profile.subjects.length === 0) missing.push("subjects");
+  if (!profile?.grades || profile.grades.length === 0) missing.push("grades");
+  if (!profile?.availability || profile.availability.length === 0) missing.push("availability");
 
   if (missing.length > 0 || !profile) {
     return { ok: false, error: `Complete all sections before submitting: ${missing.join(", ")}.` };

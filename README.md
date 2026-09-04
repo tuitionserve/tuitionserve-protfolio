@@ -130,6 +130,28 @@ commit log for what has landed:
   prevention, a frozen profile+CV snapshot per application (verified:
   later profile edits do not retroactively change it), My Applications,
   and an admin applicant list with per-applicant CV access.
+- **M9 Messaging** — simple Admin↔Tutor conversations (one per
+  tutor/branch pair), poll-refreshed threads, unread counts, branch/
+  ownership-scoped access.
+- **M10 Assignment** — admin selects one applicant; transactional,
+  race-safe (re-verified inside one Firestore transaction); closes the
+  opportunity and rejects the other applicants atomically.
+- **M11 Withdrawal/Reopen** — post-assignment withdrawal request +
+  admin review, releasing an assignment without deleting it, and an
+  explicit "Reopen Tuition" action — full assignment history (original +
+  any later reassignment) is preserved and verified to coexist.
+- **M12 Notifications** — a real notification list/bell (unread badge,
+  mark read/mark all read, deep-links to the related entity) replacing
+  the earlier static placeholder, plus admin suspend/reactivate (a gap
+  from M4 surfaced while wiring this milestone's event coverage).
+- Every list page across the app (tutor review queue, tuition request
+  queues, opportunity browser, applications, conversations,
+  notifications) is paginated (TRD NFR-008) rather than fetching full
+  collections — 20 per page, cursor-based, "Showing X-Y of Z" + Previous/
+  Next.
 
-Later milestones (messaging, assignment, withdrawal/reopen, external
-notification delivery, bilingual English/Nepali UI) are not yet built.
+Remaining: **M13 (Security/QA)** — an audit/adversarial-testing pass over
+everything above, not new features — and **M14 (Production)**, which is
+mostly configuration and needs real credentials (Firebase service
+account, Storage Blaze upgrade, Vercel deploy) rather than more code.
+Bilingual English/Nepali UI is queued as its own follow-up pass.

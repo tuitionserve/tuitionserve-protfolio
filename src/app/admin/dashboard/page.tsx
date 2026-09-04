@@ -8,6 +8,7 @@ import {
   getTuitionRequestQueue,
 } from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
+import { getNotifications } from "@/server/queries/my-notifications";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
@@ -20,18 +21,20 @@ export default async function AdminDashboardPage() {
   // dashboard is a count-only tile, so it uses `.count()` aggregations
   // rather than fetching full queues just to read `.length`
   // (performance-engineering skill).
-  const [branchName, newRequestsPage, tutorReviewCount, openTuitionsCount, selectionsReadyCount] = await Promise.all([
-    session.branchId
-      ? branchesCollection()
-          .doc(session.branchId)
-          .get()
-          .then((snap) => snap.data()?.name ?? "Unknown branch")
-      : Promise.resolve("All Branches"),
-    getTuitionRequestQueue(session, null),
-    countTutorReviewQueue(session),
-    countOpenTuitionsQueue(session),
-    countSelectionsReady(session),
-  ]);
+  const [branchName, newRequestsPage, tutorReviewCount, openTuitionsCount, selectionsReadyCount, recentNotifications] =
+    await Promise.all([
+      session.branchId
+        ? branchesCollection()
+            .doc(session.branchId)
+            .get()
+            .then((snap) => snap.data()?.name ?? "Unknown branch")
+        : Promise.resolve("All Branches"),
+      getTuitionRequestQueue(session, null),
+      countTutorReviewQueue(session),
+      countOpenTuitionsQueue(session),
+      countSelectionsReady(session),
+      getNotifications(session.uid, null),
+    ]);
 
   const attentionItems = tutorReviewCount + newRequestsPage.totalCount;
 
@@ -94,6 +97,34 @@ export default async function AdminDashboardPage() {
                 className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors"
               >
                 {studentName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-headline-sm text-headline-sm text-on-surface">Notifications</h2>
+          {recentNotifications.totalCount > 0 && (
+            <Link href="/admin/notifications" className="font-label-md text-label-md text-primary-container">
+              View all
+            </Link>
+          )}
+        </div>
+        {recentNotifications.items.length === 0 ? (
+          <p className="font-body-sm text-body-sm text-on-surface-variant">No notifications yet.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {recentNotifications.items.slice(0, 5).map((n) => (
+              <Link
+                key={n.id}
+                href="/admin/notifications"
+                className={`font-body-sm text-body-sm hover:text-primary-container transition-colors ${
+                  n.read ? "text-on-surface-variant" : "text-on-surface font-medium"
+                }`}
+              >
+                {n.title}
               </Link>
             ))}
           </div>

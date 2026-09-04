@@ -4,6 +4,7 @@ import { requireActiveTutor } from "@/server/auth/guards";
 import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
 import { getOpenOpportunities } from "@/server/queries/opportunities";
 import { getMyApplicationStatusCounts } from "@/server/queries/my-applications";
+import { getNotifications } from "@/server/queries/my-notifications";
 import type { TutorVerificationStatus } from "@/server/domain/types";
 
 const STATUS_LABEL: Record<TutorVerificationStatus, string> = {
@@ -39,9 +40,10 @@ export default async function TutorDashboardPage() {
   // page and its `.totalCount` comes from a `.count()` aggregation, not
   // a full-collection read; getMyApplicationStatusCounts is
   // aggregation-only, no document reads at all.
-  const [openOpportunitiesPage, applicationCounts] = await Promise.all([
+  const [openOpportunitiesPage, applicationCounts, recentNotifications] = await Promise.all([
     getOpenOpportunities({}, null),
     getMyApplicationStatusCounts(session.uid),
+    getNotifications(session.uid, null),
   ]);
 
   return (
@@ -109,8 +111,31 @@ export default async function TutorDashboardPage() {
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Notifications</h2>
-        <p className="font-body-sm text-body-sm text-on-surface-variant">No notifications yet.</p>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="font-headline-sm text-headline-sm text-on-surface">Notifications</h2>
+          {recentNotifications.totalCount > 0 && (
+            <Link href="/tutor/notifications" className="font-label-md text-label-md text-primary-container">
+              View all
+            </Link>
+          )}
+        </div>
+        {recentNotifications.items.length === 0 ? (
+          <p className="font-body-sm text-body-sm text-on-surface-variant">No notifications yet.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {recentNotifications.items.slice(0, 5).map((n) => (
+              <Link
+                key={n.id}
+                href="/tutor/notifications"
+                className={`font-body-sm text-body-sm hover:text-primary-container transition-colors ${
+                  n.read ? "text-on-surface-variant" : "text-on-surface font-medium"
+                }`}
+              >
+                {n.title}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

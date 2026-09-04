@@ -17,6 +17,11 @@ export default async function SuspendedPage() {
           <p className="font-body-md text-body-md text-on-surface-variant mb-2">
             Your tutor account is currently suspended.
           </p>
+          {session.tutor?.suspensionReason && (
+            <p className="font-body-sm text-body-sm text-on-surface-variant mb-4 bg-surface-container rounded-lg p-3">
+              {session.tutor.suspensionReason}
+            </p>
+          )}
           <p className="font-body-md text-body-md text-on-surface-variant mb-8">
             Please contact support for assistance.
           </p>
