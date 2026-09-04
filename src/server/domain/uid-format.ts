@@ -12,6 +12,7 @@ export const UID_PREFIXES = {
   assignment: "TS-ASG-",
   profileChange: "TS-PC-",
   conversation: "TS-CONV-",
+  parent: "TS-P-",
 } as const;
 
 export type UidKind = keyof typeof UID_PREFIXES;

@@ -4,9 +4,12 @@ import type {
   Branch,
   GeographicLocation,
   Notification,
+  Parent,
+  Student,
   Tutor,
   TutorDocument,
   TutorProfile,
+  TuitionRequest,
   UserAccount,
 } from "./types";
 
@@ -23,5 +26,8 @@ export const geographicLocationsCollection = () =>
 export const branchesCollection = () => typedCollection<Branch>("branches");
 export const auditEventsCollection = () => typedCollection<AuditEvent>("auditEvents");
 export const notificationsCollection = () => typedCollection<Notification>("notifications");
+export const parentsCollection = () => typedCollection<Parent>("parents");
+export const studentsCollection = () => typedCollection<Student>("students");
+export const tuitionRequestsCollection = () => typedCollection<TuitionRequest>("tuitionRequests");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");

@@ -2,12 +2,14 @@ import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
 import { getTutorReviewQueue } from "@/server/queries/tutor-review";
+import { getTuitionRequestQueue } from "@/server/queries/tuition-requests";
+import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
   // same note in tutor/dashboard/page.tsx.
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [branchName, tutorReviewQueue] = await Promise.all([
+  const [branchName, tutorReviewQueue, tuitionRequestQueue] = await Promise.all([
     session.branchId
       ? branchesCollection()
           .doc(session.branchId)
@@ -15,7 +17,10 @@ export default async function AdminDashboardPage() {
           .then((snap) => snap.data()?.name ?? "Unknown branch")
       : Promise.resolve("All Branches"),
     getTutorReviewQueue(session),
+    getTuitionRequestQueue(session),
   ]);
+
+  const attentionItems = tutorReviewQueue.length + tuitionRequestQueue.length;
 
   return (
     <div className="flex flex-col gap-lg">
@@ -27,7 +32,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-md">
-        <QueueTile label="New Requests" value={0} href="/admin/tuition-requests" />
+        <QueueTile label="New Requests" value={tuitionRequestQueue.length} href="/admin/tuition-requests" />
         <QueueTile label="Tutor Reviews" value={tutorReviewQueue.length} href="/admin/tutors" />
         <QueueTile label="Open Tuitions" value={0} />
         <QueueTile label="Selections" value={0} />
@@ -35,22 +40,49 @@ export default async function AdminDashboardPage() {
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Needs Attention</h2>
-        {tutorReviewQueue.length === 0 ? (
+        {attentionItems === 0 ? (
           <p className="font-body-sm text-body-sm text-on-surface-variant">Nothing needs your attention right now.</p>
         ) : (
-          <p className="font-body-sm text-body-sm text-on-surface-variant">
-            {tutorReviewQueue.length} tutor application{tutorReviewQueue.length === 1 ? "" : "s"} awaiting review —{" "}
-            <Link href="/admin/tutors" className="text-primary-container font-medium">
-              review now
-            </Link>
-            .
-          </p>
+          <ul className="flex flex-col gap-2">
+            {tutorReviewQueue.length > 0 && (
+              <li className="font-body-sm text-body-sm text-on-surface-variant">
+                {tutorReviewQueue.length} tutor application{tutorReviewQueue.length === 1 ? "" : "s"} awaiting review —{" "}
+                <Link href="/admin/tutors" className="text-primary-container font-medium">
+                  review now
+                </Link>
+                .
+              </li>
+            )}
+            {tuitionRequestQueue.length > 0 && (
+              <li className="font-body-sm text-body-sm text-on-surface-variant">
+                {tuitionRequestQueue.length} tuition request{tuitionRequestQueue.length === 1 ? "" : "s"} awaiting review —{" "}
+                <Link href="/admin/tuition-requests" className="text-primary-container font-medium">
+                  review now
+                </Link>
+                .
+              </li>
+            )}
+          </ul>
         )}
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Tuition Requests</h2>
-        <p className="font-body-sm text-body-sm text-on-surface-variant">No tuition requests yet.</p>
+        {tuitionRequestQueue.length === 0 ? (
+          <p className="font-body-sm text-body-sm text-on-surface-variant">No tuition requests yet.</p>
+        ) : (
+          <div className="flex flex-col gap-2">
+            {tuitionRequestQueue.slice(0, 5).map(({ request, studentName }) => (
+              <Link
+                key={request.id}
+                href={`/admin/tuition-requests/${request.id}`}
+                className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors"
+              >
+                {studentName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

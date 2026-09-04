@@ -134,6 +134,75 @@ export interface GeographicLocation {
   parentLocationId: string | null; // CITY -> PROVINCE id; PROVINCE -> null.
 }
 
+/**
+ * Parents never have accounts (PRD: public form only). `phone` is the
+ * matching key used to reuse an existing Parent record across multiple
+ * submissions rather than creating a duplicate every time.
+ */
+export interface Parent {
+  id: string;
+  parentUid: string; // TS-P-###### — internal reference only, never shown as a login identity.
+  fullName: string;
+  phone: string;
+  email: string | null;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
+export interface Student {
+  id: string;
+  parentId: string;
+  fullName: string;
+  gradeId: string; // catalog id, src/lib/catalog.ts GRADES
+  schoolName: string | null;
+  createdAt: FirebaseFirestore.Timestamp;
+}
+
+export type TuitionRequestStatus =
+  | "NEW"
+  | "UNDER_REVIEW"
+  | "REJECTED"
+  | "CONFIRMED"
+  | "OPEN"
+  | "ASSIGNED"
+  | "ONGOING"
+  | "COMPLETED"
+  | "CANCELLED";
+// Only NEW/CONFIRMED/REJECTED are reachable in this milestone (M5). OPEN
+// onward belong to future milestones (opportunities/assignment) — the
+// full union is declared now so the schema doesn't need to change later.
+
+/**
+ * A parent's home-tuition request. Location privacy (location-privacy
+ * skill) is structural, not just a UI concern: `exactAddress` is the
+ * private street address (admin-only — no tutor-facing surface reads this
+ * collection yet, but when one exists it must never select this field);
+ * `locationId` is the structured city-level reference used for branch
+ * routing; `tutorVisibleLocality` is the free-text area name a tutor
+ * would eventually see. Keep these three separate — do not collapse them.
+ */
+export interface TuitionRequest {
+  id: string;
+  tuitionUid: string; // TS-TU-#####
+  branchId: string | null; // resolved via resolveBranchIdForLocation; null = unrouted
+  parentId: string;
+  studentId: string;
+  status: TuitionRequestStatus;
+  subjectId: string; // catalog id
+  gradeId: string; // catalog id, snapshot of Student.gradeId at request time
+  exactAddress: string; // PRIVATE — admin-only, never for a tutor-facing response
+  locationId: string; // -> geographicLocations (city-level)
+  tutorVisibleLocality: string; // free-text area, e.g. "Devichowk"
+  availability: AvailabilitySlot[];
+  notes: string | null;
+  rejectionReason: string | null;
+  confirmedAt: FirebaseFirestore.Timestamp | null;
+  rejectedAt: FirebaseFirestore.Timestamp | null;
+  reviewedBy: string | null;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
 export interface AuditEvent {
   id: string;
   action: string;

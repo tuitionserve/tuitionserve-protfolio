@@ -97,9 +97,18 @@ docs/                    Authoritative product/UX/domain/technical specs
 ## Implementation status
 
 Tracks `docs/07_Tuition_Serve_Implementation_Plan.md`. See project history /
-commit log for what has landed; M1 (Foundation), M2 (Authentication +
-Roles), and M3 (Tutor Onboarding — the profile wizard: personal, education,
-teaching, preferred location, availability, CV, submit-for-review) are the
-current baseline. Later milestones (verification/review queue, parent
-requests, full location data-engineering pass, opportunities, applications,
-messaging, assignment, withdrawal/reopen, notifications) are not yet built.
+commit log for what has landed:
+
+- **M1 Foundation**, **M2 Authentication + Roles**
+- **M3 Tutor Onboarding** — profile wizard (personal, education, teaching,
+  preferred location, availability, CV, submit-for-review)
+- **M4 Verification** — admin review queue, approve/reject with mandatory
+  reason, reapplication after rejection, one-time approval banner
+- **M5 Parent Requests** — public tuition request form (no account),
+  Parent/Student/TuitionRequest records with private-address vs.
+  tutor-visible-locality separation, branch routing, admin confirm/reject
+  queue
+
+Later milestones (full location data-engineering pass, opportunities,
+applications, messaging, assignment, withdrawal/reopen, external
+notification delivery) are not yet built.
