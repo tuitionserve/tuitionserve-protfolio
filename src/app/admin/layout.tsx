@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
@@ -20,8 +21,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <header className="bg-surface-container-lowest border-b border-surface-variant relative">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
           <div className="flex items-center gap-xl">
-            <Link href="/admin/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
-              Tuition Serve Admin
+            <Link href="/admin/dashboard" className="flex items-center gap-2">
+              <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
+              <span className="font-label-md text-label-md font-bold text-on-surface-variant border-l border-surface-variant pl-2">Admin</span>
             </Link>
             <nav className="hidden md:flex gap-gutter items-center">
               <Link href="/admin/dashboard" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">

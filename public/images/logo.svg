@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="48" viewBox="0 0 220 48" fill="none">
+  <g>
+    <path d="M24 8 L4 16 L24 24 L44 16 Z" fill="#006c49"/>
+    <path d="M4 16 V30 L24 38 L44 30 V16" stroke="#006c49" stroke-width="3" fill="none" stroke-linejoin="round"/>
+    <path d="M24 24 V38" stroke="#006c49" stroke-width="3"/>
+  </g>
+  <text x="56" y="31" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" fill="#006c49">Tuition Serve</text>
+</svg>

@@ -14,7 +14,7 @@ export function Hero() {
           <h1 className="block md:hidden font-headline-lg-mobile text-headline-lg-mobile text-on-surface">
             Find the Right Tutor for Your Learning Journey
           </h1>
-          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+          <p className="font-body-lg text-body-lg text-on-surface-variant max-w-[32rem]">
             Connect with verified educators, personalized to your academic goals. Experience
             reliable, high-quality tuition designed for steady progress.
           </p>
@@ -37,9 +37,11 @@ export function Hero() {
         <FadeIn className="md:col-span-6 relative" direction="right" delay={0.15} mode="mount">
           <div className="absolute inset-0 bg-primary-container/10 rounded-full blur-3xl -z-10 transform scale-90 translate-x-10 translate-y-10" />
           <Image
+            // TODO: swap for the client's real photo at public/images/hero.jpg
+            // (same filename/size keeps this code unchanged).
             alt="A teacher and student engaged in a home tuition session"
             className="w-full h-auto object-cover rounded-xl shadow-md border border-surface-variant"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN8RX5vMPsbD82PxMq7K8gsWLNXwrAiQfs3jwL_Z9aRFrPS5s10VjWHC7j8_I1OLyiTw6VOfyzd4NFHiuEwRdxHlVD3wUD5LZRfnUDhO3Ijxe06kRk7UlKy3e_ishmKtZxst0bWO7lOES_kQueNzpcwvnIsOxonN8yvo4X7A30sXFpb0CPd9E7wVhabNUbYCv2DeJ1gZ3Ai3rVMQNfOgDUQHyk6zDI2kk6XHSk1JKIs4_ao6-uWoj9bg"
+            src="/images/hero.jpg"
             width={800}
             height={600}
             priority

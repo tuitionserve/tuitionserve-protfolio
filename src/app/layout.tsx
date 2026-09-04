@@ -9,15 +9,33 @@ const inter = Inter({
   weight: ["400", "600", "700"],
 });
 
+const description =
+  "Tuition Serve connects parents with verified home tutors. Submit your requirements and get matched by our admin team.";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://example.com"),
   title: "Tuition Serve - Find the Right Tutor",
-  description:
-    "Tuition Serve connects parents with verified home tutors. Submit your requirements and get matched by our admin team.",
+  description,
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Tuition Serve",
+  },
+  icons: {
+    apple: "/apple-touch-icon.png",
+  },
+  openGraph: {
+    title: "Tuition Serve - Find the Right Tutor",
+    description,
+    images: ["/images/og-image.jpg"],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tuition Serve - Find the Right Tutor",
+    description,
+    images: ["/images/og-image.jpg"],
   },
 };
 

@@ -8,9 +8,9 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Find a Tutor", href: "/request-tutor" },
   { label: "Become a Tutor", href: "/register" },
-  { label: "For Schools", href: "/#for-schools" },
-  { label: "Courses", href: "/#courses" },
-  { label: "About Us", href: "/#about" },
+  { label: "For Schools", href: "/for-schools" },
+  { label: "Courses", href: "/courses" },
+  { label: "About Us", href: "/about" },
 ];
 
 export function MobileNav({ active }: { active: string }) {

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MobileNav } from "./MobileNav";
 
@@ -5,17 +6,17 @@ const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Find a Tutor", href: "/request-tutor" },
   { label: "Become a Tutor", href: "/register" },
-  { label: "For Schools", href: "/#for-schools" },
-  { label: "Courses", href: "/#courses" },
-  { label: "About Us", href: "/#about" },
+  { label: "For Schools", href: "/for-schools" },
+  { label: "Courses", href: "/courses" },
+  { label: "About Us", href: "/about" },
 ];
 
 export function PublicHeader({ active = "Home" }: { active?: string }) {
   return (
     <header className="bg-surface-container-lowest shadow-sm sticky top-0 z-50 transition-colors duration-200 relative">
       <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
-        <Link href="/" className="font-headline-md text-headline-md font-bold text-primary">
-          Tuition Serve
+        <Link href="/" className="flex items-center">
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto md:h-9" priority />
         </Link>
 
         <nav className="hidden md:flex gap-gutter items-center">
