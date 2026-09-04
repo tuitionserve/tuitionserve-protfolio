@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
@@ -53,11 +54,17 @@ export default async function TutorDashboardPage() {
       </div>
 
       {tutor.verificationStatus === "PROFILE_INCOMPLETE" && (
-        <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
+        <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="font-body-md text-body-md text-on-surface-variant">
             Your profile is incomplete. Complete your personal, education, teaching, and
             document details, then submit for admin review to start applying to tuitions.
           </p>
+          <Link
+            href="/tutor/onboarding"
+            className="shrink-0 bg-primary-container text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all text-center"
+          >
+            Complete Your Profile
+          </Link>
         </div>
       )}
 

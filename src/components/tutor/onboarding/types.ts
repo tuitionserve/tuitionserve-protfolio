@@ -1,0 +1,53 @@
+export interface AvailabilitySlotState {
+  dayOfWeek: string;
+  startTime: string;
+  endTime: string;
+}
+
+export interface WizardProfileState {
+  fullName: string | null;
+  phone: string | null;
+  gender: string | null;
+  dateOfBirth: string | null;
+  address: string | null;
+  hasPhoto: boolean;
+  highestQualification: string | null;
+  institution: string | null;
+  graduationYear: number | null;
+  majorSubject: string | null;
+  subjects: string[];
+  grades: string[];
+  teachingExperienceSummary: string | null;
+  expectedMonthlyFee: number | null;
+  preferredLocationId: string | null;
+  preferredLocality: string | null;
+  availability: AvailabilitySlotState[];
+  hasCv: boolean;
+}
+
+export const EMPTY_WIZARD_PROFILE: WizardProfileState = {
+  fullName: null,
+  phone: null,
+  gender: null,
+  dateOfBirth: null,
+  address: null,
+  hasPhoto: false,
+  highestQualification: null,
+  institution: null,
+  graduationYear: null,
+  majorSubject: null,
+  subjects: [],
+  grades: [],
+  teachingExperienceSummary: null,
+  expectedMonthlyFee: null,
+  preferredLocationId: null,
+  preferredLocality: null,
+  availability: [],
+  hasCv: false,
+};
+
+export interface LocationOption {
+  id: string;
+  name: string;
+  provinceName: string | null;
+}

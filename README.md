@@ -52,6 +52,22 @@ pnpm provision-admin --role=BRANCH_ADMIN --email=jp-admin@example.com --password
   --name="Janakpur Admin" --branch-name="Janakpur" --branch-city="Janakpur"
 ```
 
+## Location data
+
+Tutor onboarding needs at least the province/city reference data seeded
+before the Location step will show options:
+
+```bash
+pnpm seed-locations
+```
+
+This is a **provisional starter dataset** (Nepal's 7 provinces + ~20 widely-known
+cities) to unblock structured location selection — not the authoritative
+production dataset. See `src/server/domain/location-seed-data.ts`; the full
+district/municipality/ward/postal-code hierarchy is a dedicated
+data-engineering milestone (implementation plan M6), sourced from reliable
+external geographic data, not fabricated.
+
 ## Scripts
 
 | Command | Purpose |
@@ -63,6 +79,7 @@ pnpm provision-admin --role=BRANCH_ADMIN --email=jp-admin@example.com --password
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm emulators` | Firebase Auth/Firestore/Storage emulators |
 | `pnpm provision-admin --role=... --email=...` | Create a Super Admin / Branch Admin account |
+| `pnpm seed-locations` | Seed provisional province/city location reference data |
 
 ## Project structure
 
@@ -80,7 +97,9 @@ docs/                    Authoritative product/UX/domain/technical specs
 ## Implementation status
 
 Tracks `docs/07_Tuition_Serve_Implementation_Plan.md`. See project history /
-commit log for what has landed; M1 (Foundation) and M2 (Authentication +
-Roles) are the current baseline. Later milestones (tutor onboarding,
-verification, parent requests, location, opportunities, applications,
+commit log for what has landed; M1 (Foundation), M2 (Authentication +
+Roles), and M3 (Tutor Onboarding — the profile wizard: personal, education,
+teaching, preferred location, availability, CV, submit-for-review) are the
+current baseline. Later milestones (verification/review queue, parent
+requests, full location data-engineering pass, opportunities, applications,
 messaging, assignment, withdrawal/reopen, notifications) are not yet built.

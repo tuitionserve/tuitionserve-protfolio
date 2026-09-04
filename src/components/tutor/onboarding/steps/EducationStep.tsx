@@ -1,0 +1,110 @@
+"use client";
+
+import { useState, useTransition, type FormEvent } from "react";
+import { QUALIFICATIONS } from "@/lib/catalog";
+import { saveTutorEducationStep } from "@/server/actions/onboarding";
+import { errorTextClass, fieldWrapClass, inputClass, labelClass } from "../formStyles";
+import type { WizardProfileState } from "../types";
+
+export function EducationStep({
+  initial,
+  onSaved,
+  onBack,
+}: {
+  initial: WizardProfileState;
+  onSaved: (patch: Partial<WizardProfileState>) => void;
+  onBack: () => void;
+}) {
+  const [highestQualification, setHighestQualification] = useState(initial.highestQualification ?? "");
+  const [institution, setInstitution] = useState(initial.institution ?? "");
+  const [graduationYear, setGraduationYear] = useState(initial.graduationYear?.toString() ?? "");
+  const [majorSubject, setMajorSubject] = useState(initial.majorSubject ?? "");
+  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [pending, startTransition] = useTransition();
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setFieldErrors({});
+
+    const formData = new FormData();
+    formData.set("highestQualification", highestQualification);
+    formData.set("institution", institution);
+    formData.set("graduationYear", graduationYear);
+    formData.set("majorSubject", majorSubject);
+
+    startTransition(async () => {
+      const result = await saveTutorEducationStep(formData);
+      if (result.ok) {
+        onSaved({ highestQualification, institution, graduationYear: Number(graduationYear), majorSubject });
+      } else {
+        setError(result.error);
+        setFieldErrors(result.fieldErrors ?? {});
+      }
+    });
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <h2 className="font-headline-md text-headline-md text-on-surface">Education</h2>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="highestQualification">Highest qualification</label>
+        <select
+          id="highestQualification"
+          className={inputClass}
+          value={highestQualification}
+          onChange={(e) => setHighestQualification(e.target.value)}
+          required
+        >
+          <option value="" disabled>Select qualification</option>
+          {QUALIFICATIONS.map((q) => (
+            <option key={q.id} value={q.id}>{q.label}</option>
+          ))}
+        </select>
+        {fieldErrors.highestQualification && <p className={errorTextClass}>{fieldErrors.highestQualification}</p>}
+      </div>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="institution">Institution</label>
+        <input id="institution" className={inputClass} value={institution} onChange={(e) => setInstitution(e.target.value)} required />
+        {fieldErrors.institution && <p className={errorTextClass}>{fieldErrors.institution}</p>}
+      </div>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="graduationYear">Graduation year</label>
+        <input
+          id="graduationYear"
+          type="number"
+          className={inputClass}
+          value={graduationYear}
+          onChange={(e) => setGraduationYear(e.target.value)}
+          required
+        />
+        {fieldErrors.graduationYear && <p className={errorTextClass}>{fieldErrors.graduationYear}</p>}
+      </div>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="majorSubject">Major / subject</label>
+        <input id="majorSubject" className={inputClass} value={majorSubject} onChange={(e) => setMajorSubject(e.target.value)} required />
+        {fieldErrors.majorSubject && <p className={errorTextClass}>{fieldErrors.majorSubject}</p>}
+      </div>
+
+      {error && <p className={errorTextClass}>{error}</p>}
+
+      <div className="flex justify-between">
+        <button type="button" onClick={onBack} className="font-label-md text-label-md text-secondary px-6 py-3">
+          Back
+        </button>
+        <button
+          type="submit"
+          disabled={pending}
+          className="bg-primary-container text-on-primary font-label-md text-label-md rounded-lg px-6 py-3 shadow-sm hover:shadow-md transition-all disabled:opacity-60"
+        >
+          {pending ? "Saving..." : "Save & Continue"}
+        </button>
+      </div>
+    </form>
+  );
+}

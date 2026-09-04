@@ -21,7 +21,10 @@ function createAdminApp(): App {
   }
 
   if (useEmulators) {
-    return initializeApp({ projectId });
+    return initializeApp({
+      projectId,
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    });
   }
 
   const clientEmail = process.env.FIREBASE_ADMIN_CLIENT_EMAIL;

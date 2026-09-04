@@ -55,6 +55,85 @@ export interface Tutor {
   updatedAt: FirebaseFirestore.Timestamp;
 }
 
+export type Gender = "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY";
+
+export type HighestQualification =
+  | "SEE_SLC"
+  | "PLUS_TWO"
+  | "BACHELORS"
+  | "MASTERS"
+  | "MPHIL_PHD"
+  | "OTHER";
+
+export interface AvailabilitySlot {
+  dayOfWeek: "SUN" | "MON" | "TUE" | "WED" | "THU" | "FRI" | "SAT";
+  startTime: string; // "HH:mm", 24h
+  endTime: string; // "HH:mm", 24h
+}
+
+/**
+ * The tutor's current profile data. Kept separate from `Tutor` (identity +
+ * lifecycle status) so a future "advanced edit" pending-change record can
+ * stage proposed values here without touching the approved copy (PRD
+ * section 13 / tutor-lifecycle skill).
+ */
+export interface TutorProfile {
+  tutorId: string; // == Tutor.id, document ID.
+  fullName: string | null;
+  phone: string | null;
+  gender: Gender | null;
+  dateOfBirth: string | null; // "YYYY-MM-DD"
+  address: string | null;
+  profilePhotoDocumentId: string | null;
+
+  highestQualification: HighestQualification | null;
+  institution: string | null;
+  graduationYear: number | null;
+  majorSubject: string | null;
+
+  subjects: string[]; // catalog ids, see domain/catalog.ts
+  grades: string[]; // catalog ids
+  teachingExperienceSummary: string | null;
+  expectedMonthlyFee: number | null;
+
+  preferredLocationId: string | null; // -> geographicLocations
+  preferredLocality: string | null; // free-text area/locality within the city
+
+  availability: AvailabilitySlot[];
+
+  cvDocumentId: string | null;
+
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
+export type DocumentType = "CV" | "PROFILE_PHOTO";
+
+export interface TutorDocument {
+  id: string;
+  tutorId: string;
+  documentType: DocumentType;
+  storagePath: string; // private Firebase Storage object path.
+  fileName: string; // original filename, display-only.
+  mimeType: string;
+  sizeBytes: number;
+  uploadedAt: FirebaseFirestore.Timestamp;
+}
+
+/**
+ * Provisional/starter geographic reference data (province + major city
+ * level only). This is NOT the authoritative Nepal location dataset —
+ * that is a dedicated data-engineering milestone (implementation plan M6)
+ * sourced from reliable external geographic data. Do not add
+ * ward/postal-code/coordinate precision here without real sourcing
+ * (location-data-engineering skill).
+ */
+export interface GeographicLocation {
+  id: string;
+  level: "PROVINCE" | "CITY";
+  name: string;
+  parentLocationId: string | null; // CITY -> PROVINCE id; PROVINCE -> null.
+}
+
 export interface AuditEvent {
   id: string;
   action: string;
