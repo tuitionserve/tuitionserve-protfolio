@@ -2,15 +2,23 @@ import Link from "next/link";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { getConversationsForTutor } from "@/server/actions/messaging";
 import { branchesCollection } from "@/server/domain/collections";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
+import { PaginationBar } from "@/components/shared/PaginationBar";
 
 function formatDate(millis: number | null): string {
   if (!millis) return "";
   return new Date(millis).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-export default async function TutorMessagesPage() {
+export default async function TutorMessagesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cursors?: string }>;
+}) {
   await requireActiveTutor();
-  const conversations = await getConversationsForTutor();
+  const cursorStack = parseCursorStack((await searchParams).cursors);
+  const page = await getConversationsForTutor(currentCursor(cursorStack));
+  const conversations = page.items;
 
   const branches = await Promise.all(
     conversations.map((c) => (c.branchId ? branchesCollection().doc(c.branchId).get() : null)),
@@ -61,6 +69,17 @@ export default async function TutorMessagesPage() {
           ))}
         </div>
       )}
+
+      <PaginationBar
+        basePath="/tutor/messages"
+        cursorParamName="cursors"
+        cursorStack={cursorStack}
+        nextCursor={page.nextCursor}
+        hasNextPage={page.hasNextPage}
+        itemsCount={page.items.length}
+        totalCount={page.totalCount}
+        pageSize={DEFAULT_PAGE_SIZE}
+      />
     </div>
   );
 }

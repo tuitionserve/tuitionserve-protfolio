@@ -1,5 +1,6 @@
 import { tuitionRequestsCollection } from "@/server/domain/collections";
 import type { AvailabilitySlot, TuitionRequest } from "@/server/domain/types";
+import { fetchPage, type PageResult } from "@/server/domain/pagination";
 
 /**
  * Tutor-safe view of an open tuition opportunity (PRD section 15 /
@@ -46,32 +47,43 @@ export interface OpportunityFilters {
 }
 
 /**
- * Open opportunities, tutor-safe projection only. Preferred location is
- * a filter, never a hard wall (tuition-workflow skill: "A tutor based
- * in Devichowk can still browse Janakpur-wide opportunities") — callers
- * choose whether to pass `localGovernmentId` at all.
+ * Open opportunities, tutor-safe projection only, paginated. Preferred
+ * location is a filter, never a hard wall (tuition-workflow skill: "A
+ * tutor based in Devichowk can still browse Janakpur-wide
+ * opportunities") — callers choose whether to pass `localGovernmentId`
+ * at all.
+ *
+ * Indexing scope: `status==OPEN` alone, and `status==OPEN +
+ * localGovernmentId==` (the one filter combination with its own
+ * composite index — location is the primary/most common filter per the
+ * product docs), are both fully server-side paginated with an accurate
+ * total. `subjectId`/`gradeId`/`dayOfWeek` — and localGovernmentId
+ * combined with either of them — are applied in-memory within the
+ * fetched page rather than adding a composite index per combination
+ * (avoids a combinatorial explosion of indexes); in that case the page
+ * may return fewer than `pageSize` matches and "of Z" reflects the
+ * broader (pre-refinement) total, not the exact filtered count. This is
+ * a deliberate scope trade-off, not an oversight.
  */
-export async function getOpenOpportunities(filters: OpportunityFilters): Promise<TutorOpportunityView[]> {
-  let query = tuitionRequestsCollection().where("status", "==", "OPEN") as FirebaseFirestore.Query<TuitionRequest>;
-  if (filters.subjectId) query = query.where("subjectId", "==", filters.subjectId);
-  if (filters.gradeId) query = query.where("gradeId", "==", filters.gradeId);
-  if (filters.localGovernmentId) query = query.where("localGovernmentId", "==", filters.localGovernmentId);
-
-  const snap = await query.get();
-  let results = snap.docs.map((d) => d.data());
-
-  // Day-of-week filtering happens in memory: AvailabilitySlot is an
-  // array of objects, which Firestore cannot query "does any element
-  // have dayOfWeek == X" over without a denormalized field we don't
-  // have yet — fine at this data volume (performance-engineering skill:
-  // don't add infrastructure without a demonstrated need).
-  if (filters.dayOfWeek) {
-    results = results.filter((r) => r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek));
+export async function getOpenOpportunities(
+  filters: OpportunityFilters,
+  cursor: string | null,
+): Promise<PageResult<TutorOpportunityView>> {
+  let base = tuitionRequestsCollection().where("status", "==", "OPEN") as FirebaseFirestore.Query<TuitionRequest>;
+  if (filters.localGovernmentId) {
+    base = base.where("localGovernmentId", "==", filters.localGovernmentId);
   }
 
-  return results
-    .sort((a, b) => (b.createdAt?.toMillis() ?? 0) - (a.createdAt?.toMillis() ?? 0))
-    .map(toTutorView);
+  const page = await fetchPage(base, "createdAt", cursor);
+  let items = page.items;
+
+  if (filters.subjectId) items = items.filter((r) => r.subjectId === filters.subjectId);
+  if (filters.gradeId) items = items.filter((r) => r.gradeId === filters.gradeId);
+  if (filters.dayOfWeek) {
+    items = items.filter((r) => r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek));
+  }
+
+  return { ...page, items: items.map(toTutorView) };
 }
 
 export async function getOpenOpportunityById(id: string): Promise<TutorOpportunityView | null> {

@@ -4,6 +4,8 @@ import { getMyApplications } from "@/server/queries/my-applications";
 import { catalogLabel, GRADES, SUBJECTS } from "@/lib/catalog";
 import { WithdrawApplicationButton } from "@/components/tutor/opportunities/WithdrawApplicationButton";
 import type { TutorApplicationStatus } from "@/server/domain/types";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
+import { PaginationBar } from "@/components/shared/PaginationBar";
 
 const STATUS_LABEL: Record<TutorApplicationStatus, string> = {
   APPLIED: "Applied",
@@ -19,16 +21,22 @@ const STATUS_COLOR: Record<TutorApplicationStatus, string> = {
   REJECTED: "bg-surface-container text-on-surface-variant",
 };
 
-export default async function MyApplicationsPage() {
+export default async function MyApplicationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cursors?: string }>;
+}) {
   const session = await requireActiveTutor();
-  const rows = await getMyApplications(session.uid);
+  const cursorStack = parseCursorStack((await searchParams).cursors);
+  const page = await getMyApplications(session.uid, currentCursor(cursorStack));
+  const rows = page.items;
 
   return (
     <div className="flex flex-col gap-lg">
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">My Applications</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          {rows.length} application{rows.length === 1 ? "" : "s"} total.
+          {page.totalCount} application{page.totalCount === 1 ? "" : "s"} total.
         </p>
       </div>
 
@@ -73,6 +81,17 @@ export default async function MyApplicationsPage() {
           ))}
         </div>
       )}
+
+      <PaginationBar
+        basePath="/tutor/applications"
+        cursorParamName="cursors"
+        cursorStack={cursorStack}
+        nextCursor={page.nextCursor}
+        hasNextPage={page.hasNextPage}
+        itemsCount={page.items.length}
+        totalCount={page.totalCount}
+        pageSize={DEFAULT_PAGE_SIZE}
+      />
     </div>
   );
 }

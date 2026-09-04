@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { getTutorReviewQueue } from "@/server/queries/tutor-review";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
+import { PaginationBar } from "@/components/shared/PaginationBar";
 
 const STATUS_LABEL: Record<string, string> = {
   SUBMITTED: "Submitted",
@@ -8,9 +10,14 @@ const STATUS_LABEL: Record<string, string> = {
   RESUBMITTED: "Resubmitted",
 };
 
-export default async function AdminTutorsQueuePage() {
+export default async function AdminTutorsQueuePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cursors?: string }>;
+}) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const rows = await getTutorReviewQueue(session);
+  const cursorStack = parseCursorStack((await searchParams).cursors);
+  const page = await getTutorReviewQueue(session, currentCursor(cursorStack));
 
   return (
     <div className="flex flex-col gap-lg">
@@ -21,7 +28,7 @@ export default async function AdminTutorsQueuePage() {
         </p>
       </div>
 
-      {rows.length === 0 ? (
+      {page.items.length === 0 ? (
         <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
             No tutor profiles are currently awaiting review.
@@ -29,7 +36,7 @@ export default async function AdminTutorsQueuePage() {
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {rows.map(({ tutor, fullName }) => (
+          {page.items.map(({ tutor, fullName }) => (
             <Link
               key={tutor.id}
               href={`/admin/tutors/${tutor.id}`}
@@ -46,6 +53,17 @@ export default async function AdminTutorsQueuePage() {
           ))}
         </div>
       )}
+
+      <PaginationBar
+        basePath="/admin/tutors"
+        cursorParamName="cursors"
+        cursorStack={cursorStack}
+        nextCursor={page.nextCursor}
+        hasNextPage={page.hasNextPage}
+        itemsCount={page.items.length}
+        totalCount={page.totalCount}
+        pageSize={DEFAULT_PAGE_SIZE}
+      />
     </div>
   );
 }

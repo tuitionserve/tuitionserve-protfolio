@@ -2,6 +2,8 @@ import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { getOpenTuitionsQueue, getTuitionRequestQueue, type TuitionRequestQueueRow } from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
+import { PaginationBar } from "@/components/shared/PaginationBar";
 
 function RequestRow({ row, badgeLabel, badgeClass }: { row: TuitionRequestQueueRow; badgeLabel: string; badgeClass: string }) {
   const { request, parentName, studentName } = row;
@@ -25,11 +27,19 @@ function RequestRow({ row, badgeLabel, badgeClass }: { row: TuitionRequestQueueR
   );
 }
 
-export default async function AdminTuitionRequestsQueuePage() {
+export default async function AdminTuitionRequestsQueuePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ newCursors?: string; openCursors?: string }>;
+}) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [newRows, openRows] = await Promise.all([
-    getTuitionRequestQueue(session),
-    getOpenTuitionsQueue(session),
+  const params = await searchParams;
+  const newCursorStack = parseCursorStack(params.newCursors);
+  const openCursorStack = parseCursorStack(params.openCursors);
+
+  const [newPage, openPage] = await Promise.all([
+    getTuitionRequestQueue(session, currentCursor(newCursorStack)),
+    getOpenTuitionsQueue(session, currentCursor(openCursorStack)),
   ]);
 
   return (
@@ -43,32 +53,54 @@ export default async function AdminTuitionRequestsQueuePage() {
 
       <div className="flex flex-col gap-md">
         <h2 className="font-headline-sm text-headline-sm text-on-surface">New Requests</h2>
-        {newRows.length === 0 ? (
+        {newPage.items.length === 0 ? (
           <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
             <p className="font-body-sm text-body-sm text-on-surface-variant">No new requests awaiting review.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {newRows.map((row) => (
+            {newPage.items.map((row) => (
               <RequestRow key={row.request.id} row={row} badgeLabel="New" badgeClass="bg-tertiary-container/30 text-on-tertiary-container" />
             ))}
           </div>
         )}
+        <PaginationBar
+          basePath="/admin/tuition-requests"
+          cursorParamName="newCursors"
+          cursorStack={newCursorStack}
+          nextCursor={newPage.nextCursor}
+          hasNextPage={newPage.hasNextPage}
+          itemsCount={newPage.items.length}
+          totalCount={newPage.totalCount}
+          pageSize={DEFAULT_PAGE_SIZE}
+          extraParams={openCursorStack.length > 0 ? { openCursors: openCursorStack.join(",") } : undefined}
+        />
       </div>
 
       <div className="flex flex-col gap-md">
         <h2 className="font-headline-sm text-headline-sm text-on-surface">Open Tuitions</h2>
-        {openRows.length === 0 ? (
+        {openPage.items.length === 0 ? (
           <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
             <p className="font-body-sm text-body-sm text-on-surface-variant">No open tuitions right now.</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
-            {openRows.map((row) => (
+            {openPage.items.map((row) => (
               <RequestRow key={row.request.id} row={row} badgeLabel="Open" badgeClass="bg-primary-container/20 text-primary-container" />
             ))}
           </div>
         )}
+        <PaginationBar
+          basePath="/admin/tuition-requests"
+          cursorParamName="openCursors"
+          cursorStack={openCursorStack}
+          nextCursor={openPage.nextCursor}
+          hasNextPage={openPage.hasNextPage}
+          itemsCount={openPage.items.length}
+          totalCount={openPage.totalCount}
+          pageSize={DEFAULT_PAGE_SIZE}
+          extraParams={newCursorStack.length > 0 ? { newCursors: newCursorStack.join(",") } : undefined}
+        />
       </div>
     </div>
   );

@@ -1,29 +1,39 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
-import { getTutorReviewQueue } from "@/server/queries/tutor-review";
-import { getOpenTuitionsQueue, getSelectionsReadyQueue, getTuitionRequestQueue } from "@/server/queries/tuition-requests";
+import { countTutorReviewQueue } from "@/server/queries/tutor-review";
+import {
+  countOpenTuitionsQueue,
+  countSelectionsReady,
+  getTuitionRequestQueue,
+} from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
   // same note in tutor/dashboard/page.tsx.
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [branchName, tutorReviewQueue, tuitionRequestQueue, openTuitionsQueue, selectionsReadyQueue] =
-    await Promise.all([
-      session.branchId
-        ? branchesCollection()
-            .doc(session.branchId)
-            .get()
-            .then((snap) => snap.data()?.name ?? "Unknown branch")
-        : Promise.resolve("All Branches"),
-      getTutorReviewQueue(session),
-      getTuitionRequestQueue(session),
-      getOpenTuitionsQueue(session),
-      getSelectionsReadyQueue(session),
-    ]);
+  // "Recent Tuition Requests" and the "New Requests" tile/attention-list
+  // all derive from one bounded page fetch (first 20 NEW requests) — the
+  // tile/attention counts use `.totalCount` (a cheap aggregation), the
+  // list below just slices the same page. Everything else on this
+  // dashboard is a count-only tile, so it uses `.count()` aggregations
+  // rather than fetching full queues just to read `.length`
+  // (performance-engineering skill).
+  const [branchName, newRequestsPage, tutorReviewCount, openTuitionsCount, selectionsReadyCount] = await Promise.all([
+    session.branchId
+      ? branchesCollection()
+          .doc(session.branchId)
+          .get()
+          .then((snap) => snap.data()?.name ?? "Unknown branch")
+      : Promise.resolve("All Branches"),
+    getTuitionRequestQueue(session, null),
+    countTutorReviewQueue(session),
+    countOpenTuitionsQueue(session),
+    countSelectionsReady(session),
+  ]);
 
-  const attentionItems = tutorReviewQueue.length + tuitionRequestQueue.length;
+  const attentionItems = tutorReviewCount + newRequestsPage.totalCount;
 
   return (
     <div className="flex flex-col gap-lg">
@@ -35,12 +45,12 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-md">
-        <QueueTile label="New Requests" value={tuitionRequestQueue.length} href="/admin/tuition-requests" />
-        <QueueTile label="Tutor Reviews" value={tutorReviewQueue.length} href="/admin/tutors" />
-        <QueueTile label="Open Tuitions" value={openTuitionsQueue.length} href="/admin/tuition-requests" />
+        <QueueTile label="New Requests" value={newRequestsPage.totalCount} href="/admin/tuition-requests" />
+        <QueueTile label="Tutor Reviews" value={tutorReviewCount} href="/admin/tutors" />
+        <QueueTile label="Open Tuitions" value={openTuitionsCount} href="/admin/tuition-requests" />
         {/* "Ready for selection" = OPEN tuitions that already have >=1 applicant, i.e. an
-            admin can act on them right now (see getSelectionsReadyQueue doc comment). */}
-        <QueueTile label="Selections" value={selectionsReadyQueue.length} href="/admin/tuition-requests" />
+            admin can act on them right now (see countSelectionsReady doc comment). */}
+        <QueueTile label="Selections" value={selectionsReadyCount} href="/admin/tuition-requests" />
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -49,18 +59,18 @@ export default async function AdminDashboardPage() {
           <p className="font-body-sm text-body-sm text-on-surface-variant">Nothing needs your attention right now.</p>
         ) : (
           <ul className="flex flex-col gap-2">
-            {tutorReviewQueue.length > 0 && (
+            {tutorReviewCount > 0 && (
               <li className="font-body-sm text-body-sm text-on-surface-variant">
-                {tutorReviewQueue.length} tutor application{tutorReviewQueue.length === 1 ? "" : "s"} awaiting review —{" "}
+                {tutorReviewCount} tutor application{tutorReviewCount === 1 ? "" : "s"} awaiting review —{" "}
                 <Link href="/admin/tutors" className="text-primary-container font-medium">
                   review now
                 </Link>
                 .
               </li>
             )}
-            {tuitionRequestQueue.length > 0 && (
+            {newRequestsPage.totalCount > 0 && (
               <li className="font-body-sm text-body-sm text-on-surface-variant">
-                {tuitionRequestQueue.length} tuition request{tuitionRequestQueue.length === 1 ? "" : "s"} awaiting review —{" "}
+                {newRequestsPage.totalCount} tuition request{newRequestsPage.totalCount === 1 ? "" : "s"} awaiting review —{" "}
                 <Link href="/admin/tuition-requests" className="text-primary-container font-medium">
                   review now
                 </Link>
@@ -73,11 +83,11 @@ export default async function AdminDashboardPage() {
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Tuition Requests</h2>
-        {tuitionRequestQueue.length === 0 ? (
+        {newRequestsPage.items.length === 0 ? (
           <p className="font-body-sm text-body-sm text-on-surface-variant">No tuition requests yet.</p>
         ) : (
           <div className="flex flex-col gap-2">
-            {tuitionRequestQueue.slice(0, 5).map(({ request, studentName }) => (
+            {newRequestsPage.items.slice(0, 5).map(({ request, studentName }) => (
               <Link
                 key={request.id}
                 href={`/admin/tuition-requests/${request.id}`}

@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
 import { getOpenOpportunities } from "@/server/queries/opportunities";
-import { getMyApplications } from "@/server/queries/my-applications";
+import { getMyApplicationStatusCounts } from "@/server/queries/my-applications";
 import type { TutorVerificationStatus } from "@/server/domain/types";
 
 const STATUS_LABEL: Record<TutorVerificationStatus, string> = {
@@ -35,12 +35,14 @@ export default async function TutorDashboardPage() {
   if (!session.tutor) redirect("/login");
   const tutor = session.tutor;
 
-  const [openOpportunities, myApplications] = await Promise.all([
-    getOpenOpportunities({}),
-    getMyApplications(session.uid),
+  // Both are cheap: getOpenOpportunities(..., null) fetches one bounded
+  // page and its `.totalCount` comes from a `.count()` aggregation, not
+  // a full-collection read; getMyApplicationStatusCounts is
+  // aggregation-only, no document reads at all.
+  const [openOpportunitiesPage, applicationCounts] = await Promise.all([
+    getOpenOpportunities({}, null),
+    getMyApplicationStatusCounts(session.uid),
   ]);
-  const activeApplications = myApplications.filter((a) => a.application.status === "APPLIED");
-  const assigned = myApplications.find((a) => a.application.status === "SELECTED");
 
   return (
     <div className="flex flex-col gap-lg">
@@ -97,9 +99,13 @@ export default async function TutorDashboardPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-md">
-        <SummaryTile label="Available Tuitions" value={String(openOpportunities.length)} href="/tutor/opportunities" />
-        <SummaryTile label="My Applications" value={String(activeApplications.length)} href="/tutor/applications" />
-        <SummaryTile label="Assigned Tuition" value={assigned ? "1" : "0"} href={assigned ? "/tutor/applications" : undefined} />
+        <SummaryTile label="Available Tuitions" value={String(openOpportunitiesPage.totalCount)} href="/tutor/opportunities" />
+        <SummaryTile label="My Applications" value={String(applicationCounts.APPLIED)} href="/tutor/applications" />
+        <SummaryTile
+          label="Assigned Tuition"
+          value={String(applicationCounts.SELECTED)}
+          href={applicationCounts.SELECTED > 0 ? "/tutor/applications" : undefined}
+        />
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">

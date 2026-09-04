@@ -13,6 +13,7 @@ import {
 import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { createNotification, notifyAdminsForBranch } from "@/server/domain/notifications";
+import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import type { AuthSession } from "@/server/auth/session";
 import type { Conversation, Message } from "@/server/domain/types";
 
@@ -358,27 +359,23 @@ export async function markConversationRead(conversationId: string): Promise<Acti
   return { ok: true };
 }
 
-/** The signed-in tutor's own conversations, sorted by most recent activity. Always session-derived — never trusts a client-supplied tutor id (role-authorization skill). */
-export async function getConversationsForTutor(): Promise<ConversationView[]> {
+/** The signed-in tutor's own conversations, paginated, sorted by most recent activity. Always session-derived — never trusts a client-supplied tutor id (role-authorization skill). */
+export async function getConversationsForTutor(cursor: string | null): Promise<PageResult<ConversationView>> {
   const session = await requireActiveTutor();
-  const snap = await conversationsCollection().where("tutorId", "==", session.uid).get();
-  return snap.docs
-    .map((d) => d.data())
-    .sort((a, b) => (b.lastMessageAt?.toMillis() ?? 0) - (a.lastMessageAt?.toMillis() ?? 0))
-    .map(toConversationView);
+  const base = conversationsCollection().where("tutorId", "==", session.uid);
+  const page = await fetchPage(base, "lastMessageAt", cursor);
+  return { ...page, items: page.items.map(toConversationView) };
 }
 
-/** Admin-side conversation list: branch-scoped for Branch Admin, all conversations for Super Admin. Always session-derived. */
-export async function getConversationsForAdmin(): Promise<ConversationView[]> {
+/** Admin-side conversation list, paginated: branch-scoped for Branch Admin, all conversations for Super Admin. Always session-derived. */
+export async function getConversationsForAdmin(cursor: string | null): Promise<PageResult<ConversationView>> {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const snap =
+  const base =
     session.role === "BRANCH_ADMIN"
-      ? await conversationsCollection().where("branchId", "==", session.branchId).get()
-      : await conversationsCollection().get();
-  return snap.docs
-    .map((d) => d.data())
-    .sort((a, b) => (b.lastMessageAt?.toMillis() ?? 0) - (a.lastMessageAt?.toMillis() ?? 0))
-    .map(toConversationView);
+      ? conversationsCollection().where("branchId", "==", session.branchId)
+      : (conversationsCollection() as FirebaseFirestore.Query<Conversation>);
+  const page = await fetchPage(base, "lastMessageAt", cursor);
+  return { ...page, items: page.items.map(toConversationView) };
 }
 
 /** Most recent MESSAGES_PAGE_SIZE messages, oldest first (ready to render top-to-bottom). Re-verifies participant access. */

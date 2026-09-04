@@ -3,15 +3,23 @@ import { requireRole } from "@/server/auth/guards";
 import { getConversationsForAdmin } from "@/server/actions/messaging";
 import { tutorsCollection } from "@/server/domain/collections";
 import { StartConversationForm } from "@/components/admin/messages/StartConversationForm";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
+import { PaginationBar } from "@/components/shared/PaginationBar";
 
 function formatDate(millis: number | null): string {
   if (!millis) return "";
   return new Date(millis).toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
-export default async function AdminMessagesPage() {
+export default async function AdminMessagesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ cursors?: string }>;
+}) {
   await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const conversations = await getConversationsForAdmin();
+  const cursorStack = parseCursorStack((await searchParams).cursors);
+  const page = await getConversationsForAdmin(currentCursor(cursorStack));
+  const conversations = page.items;
 
   const tutors = await Promise.all(conversations.map((c) => tutorsCollection().doc(c.tutorId).get()));
 
@@ -60,6 +68,17 @@ export default async function AdminMessagesPage() {
           ))}
         </div>
       )}
+
+      <PaginationBar
+        basePath="/admin/messages"
+        cursorParamName="cursors"
+        cursorStack={cursorStack}
+        nextCursor={page.nextCursor}
+        hasNextPage={page.hasNextPage}
+        itemsCount={page.items.length}
+        totalCount={page.totalCount}
+        pageSize={DEFAULT_PAGE_SIZE}
+      />
     </div>
   );
 }
