@@ -46,9 +46,9 @@ Super Admin and Branch Admin accounts are never created through public
 signup. Provision them out of band:
 
 ```bash
-pnpm provision-admin -- --role=SUPER_ADMIN --email=admin@example.com --password=... --name="Ops Admin"
+pnpm provision-admin --role=SUPER_ADMIN --email=admin@example.com --password=... --name="Ops Admin"
 
-pnpm provision-admin -- --role=BRANCH_ADMIN --email=jp-admin@example.com --password=... \
+pnpm provision-admin --role=BRANCH_ADMIN --email=jp-admin@example.com --password=... \
   --name="Janakpur Admin" --branch-name="Janakpur" --branch-city="Janakpur"
 ```
 
@@ -62,7 +62,7 @@ pnpm provision-admin -- --role=BRANCH_ADMIN --email=jp-admin@example.com --passw
 | `pnpm typecheck` | `tsc --noEmit` |
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm emulators` | Firebase Auth/Firestore/Storage emulators |
-| `pnpm provision-admin -- --role=... --email=...` | Create a Super Admin / Branch Admin account |
+| `pnpm provision-admin --role=... --email=...` | Create a Super Admin / Branch Admin account |
 
 ## Project structure
 

@@ -1,9 +1,11 @@
-import { getCurrentSession } from "@/server/auth/session";
+import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
 
 export default async function AdminDashboardPage() {
-  const session = await getCurrentSession(); // Layout already enforced admin role.
-  const branchName = session?.branchId
+  // Re-runs the guard rather than trusting the layout ran first — see the
+  // same note in tutor/dashboard/page.tsx.
+  const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
+  const branchName = session.branchId
     ? ((await branchesCollection().doc(session.branchId).get()).data()?.name ?? "Unknown branch")
     : "All Branches";
 
@@ -12,7 +14,7 @@ export default async function AdminDashboardPage() {
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">{branchName}</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          {session?.role === "SUPER_ADMIN" ? "Platform-wide view" : "Branch operations"}
+          {session.role === "SUPER_ADMIN" ? "Platform-wide view" : "Branch operations"}
         </p>
       </div>
 

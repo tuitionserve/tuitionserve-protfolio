@@ -1,4 +1,5 @@
-import { getCurrentSession } from "@/server/auth/session";
+import { redirect } from "next/navigation";
+import { requireActiveTutor } from "@/server/auth/guards";
 import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
 import type { TutorVerificationStatus } from "@/server/domain/types";
 
@@ -23,9 +24,13 @@ const STATUS_COLOR: Record<TutorVerificationStatus, string> = {
 };
 
 export default async function TutorDashboardPage() {
-  // Layout already enforces requireActiveTutor(); session/tutor are present here.
-  const session = await getCurrentSession();
-  const tutor = session!.tutor!;
+  // Re-runs the guard rather than trusting the layout ran first: Next.js
+  // does not guarantee a parent layout finishes before a child page starts
+  // rendering, so a page must not assume a sibling/parent already
+  // validated the session.
+  const session = await requireActiveTutor();
+  if (!session.tutor) redirect("/login");
+  const tutor = session.tutor;
 
   return (
     <div className="flex flex-col gap-lg">
@@ -34,7 +39,7 @@ export default async function TutorDashboardPage() {
       <div>
         <div className="flex items-center gap-3 flex-wrap">
           <h1 className="font-headline-lg text-headline-lg text-on-surface">
-            {session!.email ?? "Welcome"}
+            {session.email ?? "Welcome"}
           </h1>
           <span
             className={`font-label-md text-label-md px-3 py-1 rounded-full ${STATUS_COLOR[tutor.verificationStatus]}`}
