@@ -9,6 +9,8 @@ import {
 } from "@/server/domain/collections";
 import { uploadTutorDocument, InvalidDocumentError } from "@/server/domain/documents";
 import { writeAuditEvent } from "@/server/domain/audit";
+import { resolveBranchIdForLocation } from "@/server/domain/branch-routing";
+import { notifyAdminsForBranch } from "@/server/domain/notifications";
 import {
   availabilityStepSchema,
   educationStepSchema,
@@ -221,12 +223,18 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
   if (!profile || profile.grades.length === 0) missing.push("grades");
   if (!profile || profile.availability.length === 0) missing.push("availability");
 
-  if (missing.length > 0) {
+  if (missing.length > 0 || !profile) {
     return { ok: false, error: `Complete all sections before submitting: ${missing.join(", ")}.` };
   }
 
+  // Route to the Branch Admin covering the tutor's preferred city, so
+  // branch-scoped review (M4) can find them. See branch-routing.ts —
+  // null (unrouted) falls back to Super Admin visibility, not an error.
+  const branchId = await resolveBranchIdForLocation(profile.preferredLocationId!);
+
   await tutorsCollection().doc(session.uid).update({
     verificationStatus: "SUBMITTED",
+    branchId,
     submittedAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
   });
@@ -237,7 +245,15 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
     actorRole: "TUTOR",
     targetType: "Tutor",
     targetId: session.uid,
-    metadata: {},
+    metadata: { branchId },
+  });
+
+  await notifyAdminsForBranch(branchId, {
+    type: "TUTOR_SUBMITTED",
+    title: "New tutor profile submitted",
+    body: `${profile.fullName ?? "A tutor"} (${session.tutor!.tutorUid}) submitted their profile for review.`,
+    relatedEntityType: "Tutor",
+    relatedEntityId: session.uid,
   });
 
   return { ok: true };

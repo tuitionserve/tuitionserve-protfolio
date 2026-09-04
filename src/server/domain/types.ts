@@ -144,3 +144,22 @@ export interface AuditEvent {
   metadata: Record<string, unknown>;
   createdAt: FirebaseFirestore.Timestamp;
 }
+
+/**
+ * Durable in-app notification (PRD section 20 / TRD section 21). This is
+ * the baseline store only — no external channel adapters yet (M12).
+ * `type` is a stable event-name string (e.g. "TUTOR_APPROVED",
+ * "TUTOR_REJECTED", "NEW_TUITION_REQUEST") so the UI can map it to an
+ * icon/deep-link without parsing free text.
+ */
+export interface Notification {
+  id: string;
+  recipientUserId: string;
+  type: string;
+  title: string;
+  body: string;
+  relatedEntityType: string | null;
+  relatedEntityId: string | null;
+  readAt: FirebaseFirestore.Timestamp | null;
+  createdAt: FirebaseFirestore.Timestamp;
+}

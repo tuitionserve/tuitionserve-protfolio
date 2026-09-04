@@ -3,6 +3,7 @@ import type {
   AuditEvent,
   Branch,
   GeographicLocation,
+  Notification,
   Tutor,
   TutorDocument,
   TutorProfile,
@@ -21,5 +22,6 @@ export const geographicLocationsCollection = () =>
   typedCollection<GeographicLocation>("geographicLocations");
 export const branchesCollection = () => typedCollection<Branch>("branches");
 export const auditEventsCollection = () => typedCollection<AuditEvent>("auditEvents");
+export const notificationsCollection = () => typedCollection<Notification>("notifications");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");
