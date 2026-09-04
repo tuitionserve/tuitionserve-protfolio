@@ -33,11 +33,16 @@ function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string
   return out;
 }
 
-/** Only the tutor who owns the profile, and only before it's submitted. */
+/**
+ * Only the tutor who owns the profile, and only while it's still editable:
+ * before first submission (PROFILE_INCOMPLETE), or after a rejection
+ * (REJECTED — PRD: "Rejected tutors can improve and resubmit").
+ */
 async function requireEditableTutorSession() {
   const session = await requireRole(["TUTOR"]);
   if (!session.tutor) throw new Error("Tutor record missing for an authenticated tutor session.");
-  if (session.tutor.verificationStatus !== "PROFILE_INCOMPLETE") {
+  const status = session.tutor.verificationStatus;
+  if (status !== "PROFILE_INCOMPLETE" && status !== "REJECTED") {
     return { session, editable: false as const };
   }
   return { session, editable: true as const };
@@ -207,7 +212,11 @@ const REQUIRED_PROFILE_FIELDS: (keyof TutorProfile)[] = [
   "cvDocumentId",
 ];
 
-/** Transitions PROFILE_INCOMPLETE -> SUBMITTED once every required field is present. */
+/**
+ * Transitions PROFILE_INCOMPLETE -> SUBMITTED, or REJECTED -> RESUBMITTED,
+ * once every required field is present (tutor-lifecycle skill: rejection
+ * and resubmission are distinct statuses from a first-time submission).
+ */
 export async function submitTutorProfileForReview(): Promise<ActionResult> {
   const { session, editable } = await requireEditableTutorSession();
   if (!editable) return { ok: false, error: "This profile has already been submitted." };
@@ -227,20 +236,26 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
     return { ok: false, error: `Complete all sections before submitting: ${missing.join(", ")}.` };
   }
 
+  const wasRejected = session.tutor!.verificationStatus === "REJECTED";
+  const nextStatus = wasRejected ? "RESUBMITTED" : "SUBMITTED";
+
   // Route to the Branch Admin covering the tutor's preferred city, so
   // branch-scoped review (M4) can find them. See branch-routing.ts —
   // null (unrouted) falls back to Super Admin visibility, not an error.
+  // Re-resolved on every (re)submission in case the tutor changed their
+  // preferred location while editing.
   const branchId = await resolveBranchIdForLocation(profile.preferredLocationId!);
 
   await tutorsCollection().doc(session.uid).update({
-    verificationStatus: "SUBMITTED",
+    verificationStatus: nextStatus,
     branchId,
+    rejectionReason: null,
     submittedAt: FieldValue.serverTimestamp(),
     updatedAt: FieldValue.serverTimestamp(),
   });
 
   await writeAuditEvent({
-    action: "TUTOR_PROFILE_SUBMITTED",
+    action: wasRejected ? "TUTOR_PROFILE_RESUBMITTED" : "TUTOR_PROFILE_SUBMITTED",
     actorUserId: session.uid,
     actorRole: "TUTOR",
     targetType: "Tutor",
@@ -249,9 +264,9 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
   });
 
   await notifyAdminsForBranch(branchId, {
-    type: "TUTOR_SUBMITTED",
-    title: "New tutor profile submitted",
-    body: `${profile.fullName ?? "A tutor"} (${session.tutor!.tutorUid}) submitted their profile for review.`,
+    type: wasRejected ? "TUTOR_RESUBMITTED" : "TUTOR_SUBMITTED",
+    title: wasRejected ? "Tutor resubmitted their profile" : "New tutor profile submitted",
+    body: `${profile.fullName ?? "A tutor"} (${session.tutor!.tutorUid}) ${wasRejected ? "resubmitted" : "submitted"} their profile for review.`,
     relatedEntityType: "Tutor",
     relatedEntityId: session.uid,
   });

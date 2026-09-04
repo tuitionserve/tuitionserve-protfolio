@@ -69,13 +69,21 @@ export default async function TutorDashboardPage() {
       )}
 
       {tutor.verificationStatus === "REJECTED" && (
-        <div className="bg-error-container/60 border border-error rounded-xl p-lg">
-          <p className="font-label-md text-label-md text-on-error-container mb-1">
-            Changes required
-          </p>
-          <p className="font-body-sm text-body-sm text-on-error-container">
-            {tutor.rejectionReason ?? "The admin team requested changes to your profile."}
-          </p>
+        <div className="bg-error-container/60 border border-error rounded-xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="font-label-md text-label-md text-on-error-container mb-1">
+              Changes required
+            </p>
+            <p className="font-body-sm text-body-sm text-on-error-container">
+              {tutor.rejectionReason ?? "The admin team requested changes to your profile."}
+            </p>
+          </div>
+          <Link
+            href="/tutor/onboarding"
+            className="shrink-0 bg-on-error-container text-error-container font-label-md text-label-md px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all text-center"
+          >
+            Improve Profile
+          </Link>
         </div>
       )}
 

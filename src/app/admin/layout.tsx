@@ -9,9 +9,22 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <div className="min-h-full flex flex-col">
       <header className="bg-surface-container-lowest border-b border-surface-variant">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
-          <Link href="/admin/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
-            Tuition Serve Admin
-          </Link>
+          <div className="flex items-center gap-xl">
+            <Link href="/admin/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
+              Tuition Serve Admin
+            </Link>
+            <nav className="hidden md:flex gap-gutter items-center">
+              <Link href="/admin/dashboard" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/admin/tutors" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Tutors
+              </Link>
+              <Link href="/admin/tuition-requests" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Tuition Requests
+              </Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-md">
             <span className="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">
               {session.role === "SUPER_ADMIN" ? "Super Admin" : "Branch Admin"}
