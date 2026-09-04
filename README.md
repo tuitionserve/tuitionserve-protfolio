@@ -54,19 +54,25 @@ pnpm provision-admin --role=BRANCH_ADMIN --email=jp-admin@example.com --password
 
 ## Location data
 
-Tutor onboarding needs at least the province/city reference data seeded
-before the Location step will show options:
+The authoritative Nepal location hierarchy (Province → District → Local
+Government → Ward, with official 2025 GPO postal codes) must be imported
+before the Location step / parent request form will show options:
 
 ```bash
-pnpm seed-locations
+pnpm import-locations     # imports data/locations/processed/*.json into Firestore
+pnpm validate-locations   # verifies hierarchy integrity, counts, postal-code uniqueness
 ```
 
-This is a **provisional starter dataset** (Nepal's 7 provinces + ~20 widely-known
-cities) to unblock structured location selection — not the authoritative
-production dataset. See `src/server/domain/location-seed-data.ts`; the full
-district/municipality/ward/postal-code hierarchy is a dedicated
-data-engineering milestone (implementation plan M6), sourced from reliable
-external geographic data, not fabricated.
+See `data/locations/SOURCES.md` for full provenance, licensing, the exact
+source-reconciliation methodology, and known limitations (English names
+cover 445/753 local governments; no locality/tole-level catalog exists
+officially below ward — that stays a free-text field, as it did
+provisionally since M3).
+
+`pnpm seed-locations` still exists but is **superseded** — it wrote the
+M3-era provisional ~20-city dataset, kept in Firestore (not deleted) only
+until the application is fully validated against the M6 dataset above.
+Do not use it for new environments.
 
 ## Scripts
 
@@ -79,7 +85,9 @@ external geographic data, not fabricated.
 | `pnpm test` | Unit tests (Vitest) |
 | `pnpm emulators` | Firebase Auth/Firestore/Storage emulators |
 | `pnpm provision-admin --role=... --email=...` | Create a Super Admin / Branch Admin account |
-| `pnpm seed-locations` | Seed provisional province/city location reference data |
+| `pnpm import-locations` | Import the authoritative Nepal location hierarchy |
+| `pnpm validate-locations` | Validate imported location hierarchy integrity |
+| `pnpm seed-locations` | (superseded) Seed M3's provisional province/city data |
 
 ## Project structure
 
@@ -108,7 +116,12 @@ commit log for what has landed:
   Parent/Student/TuitionRequest records with private-address vs.
   tutor-visible-locality separation, branch routing, admin confirm/reject
   queue
+- **M6 Location** — authoritative Province/District/Local
+  Government/Ward hierarchy (7,580 records) sourced from the Government
+  of Nepal's 2025 postal code table, with a Province → District → Local
+  Government → Ward cascading selector replacing the M3 flat city
+  picker everywhere. See `data/locations/SOURCES.md`.
 
-Later milestones (full location data-engineering pass, opportunities,
-applications, messaging, assignment, withdrawal/reopen, external
-notification delivery) are not yet built.
+Later milestones (opportunities, applications, messaging, assignment,
+withdrawal/reopen, external notification delivery, bilingual
+English/Nepali UI) are not yet built.

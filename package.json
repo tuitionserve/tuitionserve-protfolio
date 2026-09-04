@@ -12,7 +12,9 @@
     "test:watch": "vitest",
     "emulators": "firebase emulators:start",
     "provision-admin": "node --env-file=.env.local --import tsx scripts/provision-admin.ts",
-    "seed-locations": "node --env-file=.env.local --import tsx scripts/seed-locations.ts"
+    "seed-locations": "node --env-file=.env.local --import tsx scripts/seed-locations.ts",
+    "import-locations": "node --env-file=.env.local --import tsx scripts/import-locations.ts",
+    "validate-locations": "node --env-file=.env.local --import tsx scripts/validate-locations.ts"
   },
   "dependencies": {
     "firebase": "^12.18.0",

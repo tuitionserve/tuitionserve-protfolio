@@ -62,8 +62,12 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
   const data = parsed.data;
 
   const locationSnap = await geographicLocationsCollection().doc(data.locationId).get();
-  if (!locationSnap.exists || locationSnap.data()?.level !== "CITY") {
-    return { ok: false, error: "Select a valid city.", fieldErrors: { locationId: "Select a valid city." } };
+  if (!locationSnap.exists || locationSnap.data()?.level !== "WARD") {
+    return {
+      ok: false,
+      error: "Select your full location down to ward.",
+      fieldErrors: { locationId: "Select your full location down to ward." },
+    };
   }
 
   const now = FieldValue.serverTimestamp();

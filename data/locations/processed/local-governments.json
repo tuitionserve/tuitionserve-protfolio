@@ -1,0 +1,6779 @@
+[
+  {
+    "id": "lg-10101",
+    "name": "फक्ताङ्लुङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 7,
+    "sourceCode": "10101"
+  },
+  {
+    "id": "lg-10102",
+    "name": "मिक्वाखोला गाउँपालिका",
+    "nameEnglish": "Mikwakhola",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 5,
+    "sourceCode": "10102"
+  },
+  {
+    "id": "lg-10103",
+    "name": "मेरिङ्गदेन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 6,
+    "sourceCode": "10103"
+  },
+  {
+    "id": "lg-10104",
+    "name": "मैवाखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 6,
+    "sourceCode": "10104"
+  },
+  {
+    "id": "lg-10105",
+    "name": "आठराई त्रिवेणी गाउँपालिका",
+    "nameEnglish": "Aathrai Tribeni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 5,
+    "sourceCode": "10105"
+  },
+  {
+    "id": "lg-10106",
+    "name": "फुङलिङ्ग नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 11,
+    "sourceCode": "10106"
+  },
+  {
+    "id": "lg-10107",
+    "name": "पाथिभरा याङ्वराक गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 6,
+    "sourceCode": "10107"
+  },
+  {
+    "id": "lg-10108",
+    "name": "सिरीजङ्गा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 8,
+    "sourceCode": "10108"
+  },
+  {
+    "id": "lg-10109",
+    "name": "सिदिङ्गवा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-taplejung",
+    "wardCount": 7,
+    "sourceCode": "10109"
+  },
+  {
+    "id": "lg-10201",
+    "name": "भोटखोला गाउँपालिका",
+    "nameEnglish": "Bhotkhola",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 5,
+    "sourceCode": "10201"
+  },
+  {
+    "id": "lg-10202",
+    "name": "मकालु गाउँपालिका",
+    "nameEnglish": "Makalu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 6,
+    "sourceCode": "10202"
+  },
+  {
+    "id": "lg-10203",
+    "name": "सिलीचोङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 5,
+    "sourceCode": "10203"
+  },
+  {
+    "id": "lg-10204",
+    "name": "चिचिला गाउँपालिका",
+    "nameEnglish": "Chichila",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 5,
+    "sourceCode": "10204"
+  },
+  {
+    "id": "lg-10205",
+    "name": "सभापोखरी गाउँपालिका",
+    "nameEnglish": "Sabhapokhari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 6,
+    "sourceCode": "10205"
+  },
+  {
+    "id": "lg-10206",
+    "name": "खाँदबारी नगरपालिका",
+    "nameEnglish": "Khandbari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 11,
+    "sourceCode": "10206"
+  },
+  {
+    "id": "lg-10207",
+    "name": "पाँचखपन नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 9,
+    "sourceCode": "10207"
+  },
+  {
+    "id": "lg-10208",
+    "name": "चैनपुर नगरपालिका",
+    "nameEnglish": "Chainpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 11,
+    "sourceCode": "10208"
+  },
+  {
+    "id": "lg-10209",
+    "name": "मादी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 9,
+    "sourceCode": "10209"
+  },
+  {
+    "id": "lg-10210",
+    "name": "धर्मदेवी नगरपालिका",
+    "nameEnglish": "Dharmadevi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sankhuwasabha",
+    "wardCount": 9,
+    "sourceCode": "10210"
+  },
+  {
+    "id": "lg-10301",
+    "name": "खुम्बु पासाङल्हामु गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 5,
+    "sourceCode": "10301"
+  },
+  {
+    "id": "lg-10302",
+    "name": "माहाकुलुङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 5,
+    "sourceCode": "10302"
+  },
+  {
+    "id": "lg-10303",
+    "name": "सोताङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 5,
+    "sourceCode": "10303"
+  },
+  {
+    "id": "lg-10304",
+    "name": "माप्य दुधकोशी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 7,
+    "sourceCode": "10304"
+  },
+  {
+    "id": "lg-10305",
+    "name": "थुलुङ दुधकोशी गाउँपालिका",
+    "nameEnglish": "Thulung Dudhkoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 9,
+    "sourceCode": "10305"
+  },
+  {
+    "id": "lg-10306",
+    "name": "नेचासल्यान गाउँपालिका",
+    "nameEnglish": "Nechasalyan",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 5,
+    "sourceCode": "10306"
+  },
+  {
+    "id": "lg-10307",
+    "name": "सोलुदुधकुण्ड नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 11,
+    "sourceCode": "10307"
+  },
+  {
+    "id": "lg-10308",
+    "name": "लिखु पिके गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-solukhumbu",
+    "wardCount": 5,
+    "sourceCode": "10308"
+  },
+  {
+    "id": "lg-10401",
+    "name": "चिशंखुगढी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 8,
+    "sourceCode": "10401"
+  },
+  {
+    "id": "lg-10402",
+    "name": "सिद्धिचरण नगरपालिका",
+    "nameEnglish": "Siddhicharan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 12,
+    "sourceCode": "10402"
+  },
+  {
+    "id": "lg-10403",
+    "name": "मोलुङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 8,
+    "sourceCode": "10403"
+  },
+  {
+    "id": "lg-10404",
+    "name": "खिजीदेम्बा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 9,
+    "sourceCode": "10404"
+  },
+  {
+    "id": "lg-10405",
+    "name": "लिखु गाउँपालिका",
+    "nameEnglish": "Likhu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 9,
+    "sourceCode": "10405"
+  },
+  {
+    "id": "lg-10406",
+    "name": "चम्पादेवी गाउँपालिका",
+    "nameEnglish": "Champadevi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 10,
+    "sourceCode": "10406"
+  },
+  {
+    "id": "lg-10407",
+    "name": "सुनकोशी गाउँपालिका",
+    "nameEnglish": "Sunkoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 10,
+    "sourceCode": "10407"
+  },
+  {
+    "id": "lg-10408",
+    "name": "मानेभन्ज्याङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-okhaldhunga",
+    "wardCount": 9,
+    "sourceCode": "10408"
+  },
+  {
+    "id": "lg-10501",
+    "name": "केपिलासगढी गाउँपालिका",
+    "nameEnglish": "Kepilasagadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 7,
+    "sourceCode": "10501"
+  },
+  {
+    "id": "lg-10502",
+    "name": "ऐसेलुखर्क गाउँपालिका",
+    "nameEnglish": "Ainselukhark",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 7,
+    "sourceCode": "10502"
+  },
+  {
+    "id": "lg-10503",
+    "name": "रावा बेसी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 6,
+    "sourceCode": "10503"
+  },
+  {
+    "id": "lg-10504",
+    "name": "हलेसी तुवाचुङ नगरपालिका",
+    "nameEnglish": "Halesi Tuwachung",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 11,
+    "sourceCode": "10504"
+  },
+  {
+    "id": "lg-10505",
+    "name": "दिक्तेल रुपाकोट मझुवागढी नगरपालिका",
+    "nameEnglish": "Diktel Rupakot Majhuwagadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 15,
+    "sourceCode": "10505"
+  },
+  {
+    "id": "lg-10506",
+    "name": "साकेला गाउँपालिका",
+    "nameEnglish": "Sakela",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 5,
+    "sourceCode": "10506"
+  },
+  {
+    "id": "lg-10507",
+    "name": "दिप्रुङ चुइचुम्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 7,
+    "sourceCode": "10507"
+  },
+  {
+    "id": "lg-10508",
+    "name": "खोटेहाङ गाउँपालिका",
+    "nameEnglish": "Khotehang",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 9,
+    "sourceCode": "10508"
+  },
+  {
+    "id": "lg-10509",
+    "name": "जन्तेढुङ्गा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 6,
+    "sourceCode": "10509"
+  },
+  {
+    "id": "lg-10510",
+    "name": "बराहपोखरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-khotang",
+    "wardCount": 6,
+    "sourceCode": "10510"
+  },
+  {
+    "id": "lg-10601",
+    "name": "षडानन्द नगरपालिका",
+    "nameEnglish": "Shadananda",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 14,
+    "sourceCode": "10601"
+  },
+  {
+    "id": "lg-10602",
+    "name": "साल्पासिलिछो गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 6,
+    "sourceCode": "10602"
+  },
+  {
+    "id": "lg-10603",
+    "name": "टेम्केमैयुङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 9,
+    "sourceCode": "10603"
+  },
+  {
+    "id": "lg-10604",
+    "name": "भोजपुर नगरपालिका",
+    "nameEnglish": "Bhojpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 12,
+    "sourceCode": "10604"
+  },
+  {
+    "id": "lg-10605",
+    "name": "अरुण गाउँपालिका",
+    "nameEnglish": "Arun",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 7,
+    "sourceCode": "10605"
+  },
+  {
+    "id": "lg-10606",
+    "name": "पौवा दुङ्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 6,
+    "sourceCode": "10606"
+  },
+  {
+    "id": "lg-10607",
+    "name": "रामप्रसाद राई गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 8,
+    "sourceCode": "10607"
+  },
+  {
+    "id": "lg-10608",
+    "name": "हतुवागढी गाउँपालिका",
+    "nameEnglish": "Hatuwagadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 9,
+    "sourceCode": "10608"
+  },
+  {
+    "id": "lg-10609",
+    "name": "आमचोक गाउँपालिका",
+    "nameEnglish": "Aamchowk",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-bhojpur",
+    "wardCount": 10,
+    "sourceCode": "10609"
+  },
+  {
+    "id": "lg-10701",
+    "name": "महालक्ष्मी नगरपालिका",
+    "nameEnglish": "Mahalaxmi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 9,
+    "sourceCode": "10701"
+  },
+  {
+    "id": "lg-10702",
+    "name": "पाख्रिबास नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 10,
+    "sourceCode": "10702"
+  },
+  {
+    "id": "lg-10703",
+    "name": "छथर जोरपाटी गाउँपालिका",
+    "nameEnglish": "Chhathar Jorpati",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 6,
+    "sourceCode": "10703"
+  },
+  {
+    "id": "lg-10704",
+    "name": "धनकुटा नगरपालिका",
+    "nameEnglish": "Dhankuta",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 10,
+    "sourceCode": "10704"
+  },
+  {
+    "id": "lg-10705",
+    "name": "सहिदभुमी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 7,
+    "sourceCode": "10705"
+  },
+  {
+    "id": "lg-10706",
+    "name": "साँगुरीगढी गाउँपालिका",
+    "nameEnglish": "Sangurigadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 10,
+    "sourceCode": "10706"
+  },
+  {
+    "id": "lg-10707",
+    "name": "चौविसे गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-dhankuta",
+    "wardCount": 8,
+    "sourceCode": "10707"
+  },
+  {
+    "id": "lg-10801",
+    "name": "आठराई गाउँपालिका",
+    "nameEnglish": "Aathrai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 7,
+    "sourceCode": "10801"
+  },
+  {
+    "id": "lg-10802",
+    "name": "फेदाप गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 5,
+    "sourceCode": "10802"
+  },
+  {
+    "id": "lg-10803",
+    "name": "मेन्छयायेम गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 6,
+    "sourceCode": "10803"
+  },
+  {
+    "id": "lg-10804",
+    "name": "म्याङ्गलुङ्ग नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 10,
+    "sourceCode": "10804"
+  },
+  {
+    "id": "lg-10805",
+    "name": "लालीगुराँस नगरपालिका",
+    "nameEnglish": "Laligurans",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 9,
+    "sourceCode": "10805"
+  },
+  {
+    "id": "lg-10806",
+    "name": "छथर गाउँपालिका",
+    "nameEnglish": "Chhathar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-terhathum",
+    "wardCount": 6,
+    "sourceCode": "10806"
+  },
+  {
+    "id": "lg-10901",
+    "name": "याङवरक गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 6,
+    "sourceCode": "10901"
+  },
+  {
+    "id": "lg-10902",
+    "name": "हिलिहाङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 7,
+    "sourceCode": "10902"
+  },
+  {
+    "id": "lg-10903",
+    "name": "फालेलुङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 8,
+    "sourceCode": "10903"
+  },
+  {
+    "id": "lg-10904",
+    "name": "फिदिम नगरपालिका",
+    "nameEnglish": "Phidim",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 14,
+    "sourceCode": "10904"
+  },
+  {
+    "id": "lg-10905",
+    "name": "फाल्गुनन्द गाउँपालिका",
+    "nameEnglish": "Falgunanda",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 7,
+    "sourceCode": "10905"
+  },
+  {
+    "id": "lg-10906",
+    "name": "कुम्मायक गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 5,
+    "sourceCode": "10906"
+  },
+  {
+    "id": "lg-10907",
+    "name": "तुम्बेवा गाउँपालिका",
+    "nameEnglish": "Tumbewa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 5,
+    "sourceCode": "10907"
+  },
+  {
+    "id": "lg-10908",
+    "name": "मिक्लाजुङ गाउँपालिका",
+    "nameEnglish": "Miklajung",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-pachthar",
+    "wardCount": 8,
+    "sourceCode": "10908"
+  },
+  {
+    "id": "lg-11001",
+    "name": "माई जोगमाई गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 6,
+    "sourceCode": "11001"
+  },
+  {
+    "id": "lg-11002",
+    "name": "सन्दकपुर गाउँपालिका",
+    "nameEnglish": "Sandakpur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 5,
+    "sourceCode": "11002"
+  },
+  {
+    "id": "lg-11003",
+    "name": "ईलाम नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 12,
+    "sourceCode": "11003"
+  },
+  {
+    "id": "lg-11004",
+    "name": "देउमाई नगरपालिका",
+    "nameEnglish": "Deumai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 9,
+    "sourceCode": "11004"
+  },
+  {
+    "id": "lg-11005",
+    "name": "फाकफोकथुम गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 7,
+    "sourceCode": "11005"
+  },
+  {
+    "id": "lg-11006",
+    "name": "माङसेबुङ गाउापालिका",
+    "nameEnglish": null,
+    "localGovernmentType": null,
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 6,
+    "sourceCode": "11006"
+  },
+  {
+    "id": "lg-11007",
+    "name": "चुलाचुली गाउँपालिका",
+    "nameEnglish": "Chulachuli",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 6,
+    "sourceCode": "11007"
+  },
+  {
+    "id": "lg-11008",
+    "name": "माई नगरपालिका",
+    "nameEnglish": "Mai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 10,
+    "sourceCode": "11008"
+  },
+  {
+    "id": "lg-11009",
+    "name": "सूर्योदय नगरपालिका",
+    "nameEnglish": "Suryodaya",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 14,
+    "sourceCode": "11009"
+  },
+  {
+    "id": "lg-11010",
+    "name": "रोङ गाउँपालिका",
+    "nameEnglish": "Rong",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-ilam",
+    "wardCount": 6,
+    "sourceCode": "11010"
+  },
+  {
+    "id": "lg-11101",
+    "name": "मेचीनगर नगरपालिका",
+    "nameEnglish": "Mechinagar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 15,
+    "sourceCode": "11101"
+  },
+  {
+    "id": "lg-11102",
+    "name": "बुद्धशान्ति गाउँपालिका",
+    "nameEnglish": "Buddhashanti",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 7,
+    "sourceCode": "11102"
+  },
+  {
+    "id": "lg-11103",
+    "name": "अर्जुनधारा नगरपालिका",
+    "nameEnglish": "Arjundhara",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 11,
+    "sourceCode": "11103"
+  },
+  {
+    "id": "lg-11104",
+    "name": "कन्काई नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 9,
+    "sourceCode": "11104"
+  },
+  {
+    "id": "lg-11105",
+    "name": "शिवसताक्षी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 11,
+    "sourceCode": "11105"
+  },
+  {
+    "id": "lg-11106",
+    "name": "कमल गाउँपालिका",
+    "nameEnglish": "Kamal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 7,
+    "sourceCode": "11106"
+  },
+  {
+    "id": "lg-11107",
+    "name": "दमक नगरपालिका",
+    "nameEnglish": "Damak",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 10,
+    "sourceCode": "11107"
+  },
+  {
+    "id": "lg-11108",
+    "name": "गौरादह नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 9,
+    "sourceCode": "11108"
+  },
+  {
+    "id": "lg-11109",
+    "name": "गौरिगञ्ज गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 6,
+    "sourceCode": "11109"
+  },
+  {
+    "id": "lg-11110",
+    "name": "झापा गाउँपालिका",
+    "nameEnglish": "Jhapa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 7,
+    "sourceCode": "11110"
+  },
+  {
+    "id": "lg-11111",
+    "name": "बाह्रदशी गाउँपालिका",
+    "nameEnglish": "Barhadashi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 7,
+    "sourceCode": "11111"
+  },
+  {
+    "id": "lg-11112",
+    "name": "बिर्तामोड नगरपालिका",
+    "nameEnglish": "Birtamod",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 10,
+    "sourceCode": "11112"
+  },
+  {
+    "id": "lg-11113",
+    "name": "हल्दीबारी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 5,
+    "sourceCode": "11113"
+  },
+  {
+    "id": "lg-11114",
+    "name": "भद्रपुर नगरपालिका",
+    "nameEnglish": "Bhadrapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 10,
+    "sourceCode": "11114"
+  },
+  {
+    "id": "lg-11115",
+    "name": "कचनकवल गाउँपालिका",
+    "nameEnglish": "Kachankawal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-jhapa",
+    "wardCount": 7,
+    "sourceCode": "11115"
+  },
+  {
+    "id": "lg-11201",
+    "name": "मिक्लाजुङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 9,
+    "sourceCode": "11201"
+  },
+  {
+    "id": "lg-11202",
+    "name": "लेटाङ नगरपालिका",
+    "nameEnglish": "Letang",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 9,
+    "sourceCode": "11202"
+  },
+  {
+    "id": "lg-11203",
+    "name": "केराबारी गाउँपालिका",
+    "nameEnglish": "Kerabari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 10,
+    "sourceCode": "11203"
+  },
+  {
+    "id": "lg-11204",
+    "name": "सुन्दरहरैंचा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 12,
+    "sourceCode": "11204"
+  },
+  {
+    "id": "lg-11205",
+    "name": "बेलबारी नगरपालिका",
+    "nameEnglish": "Belbari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 11,
+    "sourceCode": "11205"
+  },
+  {
+    "id": "lg-11206",
+    "name": "कानेपोखरी गाउँपालिका",
+    "nameEnglish": "Kanepokhari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11206"
+  },
+  {
+    "id": "lg-11207",
+    "name": "पथरी शनिश्चरे नगरपालिका",
+    "nameEnglish": "Pathari Shanishchare",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 10,
+    "sourceCode": "11207"
+  },
+  {
+    "id": "lg-11208",
+    "name": "उर्लाबारी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 9,
+    "sourceCode": "11208"
+  },
+  {
+    "id": "lg-11209",
+    "name": "रतुवामाई नगरपालिका",
+    "nameEnglish": "Ratuwamai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 10,
+    "sourceCode": "11209"
+  },
+  {
+    "id": "lg-11210",
+    "name": "सुनवर्षी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 9,
+    "sourceCode": "11210"
+  },
+  {
+    "id": "lg-11211",
+    "name": "रंगेली नगरपालिका",
+    "nameEnglish": "Rangeli",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 9,
+    "sourceCode": "11211"
+  },
+  {
+    "id": "lg-11212",
+    "name": "ग्रामथान गाउँपालिका",
+    "nameEnglish": "Gramthan",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11212"
+  },
+  {
+    "id": "lg-11213",
+    "name": "बुढीगंगा गाउँपालिका",
+    "nameEnglish": "Budhiganga",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11213"
+  },
+  {
+    "id": "lg-11214",
+    "name": "विराटनगर महानगरपालिका",
+    "nameEnglish": "Biratnagar",
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 19,
+    "sourceCode": "11214"
+  },
+  {
+    "id": "lg-11215",
+    "name": "कटहरी गाउँपालिका",
+    "nameEnglish": "Katahari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11215"
+  },
+  {
+    "id": "lg-11216",
+    "name": "धनपालथान गाउँपालिका",
+    "nameEnglish": "Dhanpalthan",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11216"
+  },
+  {
+    "id": "lg-11217",
+    "name": "जहदा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-morang",
+    "wardCount": 7,
+    "sourceCode": "11217"
+  },
+  {
+    "id": "lg-11301",
+    "name": "धरान उपमहानगरपालिका",
+    "nameEnglish": "Dharan",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 20,
+    "sourceCode": "11301"
+  },
+  {
+    "id": "lg-11302",
+    "name": "बराहक्षेत्र नगरपालिका",
+    "nameEnglish": "Barahchhetra",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 11,
+    "sourceCode": "11302"
+  },
+  {
+    "id": "lg-11303",
+    "name": "कोशी गाउँपालिका",
+    "nameEnglish": "Koshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 8,
+    "sourceCode": "11303"
+  },
+  {
+    "id": "lg-11304",
+    "name": "भोक्राहा नरसिंह गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 8,
+    "sourceCode": "11304"
+  },
+  {
+    "id": "lg-11305",
+    "name": "रामधुनी नगरपालिका",
+    "nameEnglish": "Ramdhuni",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 9,
+    "sourceCode": "11305"
+  },
+  {
+    "id": "lg-11306",
+    "name": "ईटहरी उपमहानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 20,
+    "sourceCode": "11306"
+  },
+  {
+    "id": "lg-11307",
+    "name": "दुहबी नगरपालिका",
+    "nameEnglish": "Duhabi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 12,
+    "sourceCode": "11307"
+  },
+  {
+    "id": "lg-11308",
+    "name": "गढी गाउँपालिका",
+    "nameEnglish": "Gadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 6,
+    "sourceCode": "11308"
+  },
+  {
+    "id": "lg-11309",
+    "name": "इनरुवा नगरपालिका",
+    "nameEnglish": "Inaruwa",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 10,
+    "sourceCode": "11309"
+  },
+  {
+    "id": "lg-11310",
+    "name": "हरिनगर गाउँपालिका",
+    "nameEnglish": "Harinagar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 7,
+    "sourceCode": "11310"
+  },
+  {
+    "id": "lg-11311",
+    "name": "देवानगन्ज गाउँपालिका",
+    "nameEnglish": "Dewanganj",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 7,
+    "sourceCode": "11311"
+  },
+  {
+    "id": "lg-11312",
+    "name": "बर्जु गाउँपालिका",
+    "nameEnglish": "Barju",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-sunsari",
+    "wardCount": 6,
+    "sourceCode": "11312"
+  },
+  {
+    "id": "lg-11401",
+    "name": "बेलका नगरपालिका",
+    "nameEnglish": "Belaka",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 9,
+    "sourceCode": "11401"
+  },
+  {
+    "id": "lg-11402",
+    "name": "चौदण्डीगढी नगरपालिका",
+    "nameEnglish": "Chaudandigadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 10,
+    "sourceCode": "11402"
+  },
+  {
+    "id": "lg-11403",
+    "name": "त्रियुगा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 16,
+    "sourceCode": "11403"
+  },
+  {
+    "id": "lg-11404",
+    "name": "रौतामाई गाउँपालिका",
+    "nameEnglish": "Rautamai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 8,
+    "sourceCode": "11404"
+  },
+  {
+    "id": "lg-11405",
+    "name": "लिम्चुङ्बुङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 5,
+    "sourceCode": "11405"
+  },
+  {
+    "id": "lg-11406",
+    "name": "ताप्ली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 5,
+    "sourceCode": "11406"
+  },
+  {
+    "id": "lg-11407",
+    "name": "कटारी नगरपालिका",
+    "nameEnglish": "Katari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 14,
+    "sourceCode": "11407"
+  },
+  {
+    "id": "lg-11408",
+    "name": "उदयपुरगढी गाउँपालिका",
+    "nameEnglish": "Udayapurgadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-koshi-udayapur",
+    "wardCount": 8,
+    "sourceCode": "11408"
+  },
+  {
+    "id": "lg-20101",
+    "name": "सप्तकोशी नगरपालिका",
+    "nameEnglish": "Saptakoshi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 11,
+    "sourceCode": "20101"
+  },
+  {
+    "id": "lg-20102",
+    "name": "कन्चनरुप नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 12,
+    "sourceCode": "20102"
+  },
+  {
+    "id": "lg-20103",
+    "name": "अग्मीसयर कृष्ण सवरन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 6,
+    "sourceCode": "20103"
+  },
+  {
+    "id": "lg-20104",
+    "name": "रुपनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 6,
+    "sourceCode": "20104"
+  },
+  {
+    "id": "lg-20105",
+    "name": "शम्भुनाथ नगरपालिका",
+    "nameEnglish": "Shambhunath",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 12,
+    "sourceCode": "20105"
+  },
+  {
+    "id": "lg-20106",
+    "name": "खडक नगरपालिका",
+    "nameEnglish": "Khadak",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 11,
+    "sourceCode": "20106"
+  },
+  {
+    "id": "lg-20107",
+    "name": "सुरुङ्गा नगरपालिका",
+    "nameEnglish": "Surunga",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 11,
+    "sourceCode": "20107"
+  },
+  {
+    "id": "lg-20108",
+    "name": "बलान बिहुल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 6,
+    "sourceCode": "20108"
+  },
+  {
+    "id": "lg-20109",
+    "name": "बोदेबरसाईन नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 10,
+    "sourceCode": "20109"
+  },
+  {
+    "id": "lg-20110",
+    "name": "डाक्नेश्वरी नगरपालिका",
+    "nameEnglish": "Dakneshwori",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 10,
+    "sourceCode": "20110"
+  },
+  {
+    "id": "lg-20111",
+    "name": "राजगढ गाउँपालिका",
+    "nameEnglish": "Rajgadh",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 6,
+    "sourceCode": "20111"
+  },
+  {
+    "id": "lg-20112",
+    "name": "बिष्णुपुर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 7,
+    "sourceCode": "20112"
+  },
+  {
+    "id": "lg-20113",
+    "name": "राजविराज नगरपालिका",
+    "nameEnglish": "Rajbiraj",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 16,
+    "sourceCode": "20113"
+  },
+  {
+    "id": "lg-20114",
+    "name": "महादेवा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 6,
+    "sourceCode": "20114"
+  },
+  {
+    "id": "lg-20115",
+    "name": "तिरहुत गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 5,
+    "sourceCode": "20115"
+  },
+  {
+    "id": "lg-20116",
+    "name": "हनुमाननगर कङ्कालिनी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 14,
+    "sourceCode": "20116"
+  },
+  {
+    "id": "lg-20117",
+    "name": "तिलाठी कोईलाडी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 8,
+    "sourceCode": "20117"
+  },
+  {
+    "id": "lg-20118",
+    "name": "छिन्नमस्ता गाउँपालिका",
+    "nameEnglish": "Chhinnamasta",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-saptari",
+    "wardCount": 7,
+    "sourceCode": "20118"
+  },
+  {
+    "id": "lg-20201",
+    "name": "लहान नगरपालिका",
+    "nameEnglish": "Lahan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 24,
+    "sourceCode": "20201"
+  },
+  {
+    "id": "lg-20202",
+    "name": "धनगढीमाई नगरपालिका",
+    "nameEnglish": "Dhangadhimai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 14,
+    "sourceCode": "20202"
+  },
+  {
+    "id": "lg-20203",
+    "name": "गोलबजार नगरपालिका",
+    "nameEnglish": "Golbazar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 13,
+    "sourceCode": "20203"
+  },
+  {
+    "id": "lg-20204",
+    "name": "मिर्चेया नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 12,
+    "sourceCode": "20204"
+  },
+  {
+    "id": "lg-20205",
+    "name": "कर्जन्हा नगरपालिका",
+    "nameEnglish": "Karjanha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 11,
+    "sourceCode": "20205"
+  },
+  {
+    "id": "lg-20206",
+    "name": "कल्याणपुर नगरपालिका",
+    "nameEnglish": "Kalyanpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 12,
+    "sourceCode": "20206"
+  },
+  {
+    "id": "lg-20207",
+    "name": "नरहा गाउँपालिका",
+    "nameEnglish": "Naraha",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20207"
+  },
+  {
+    "id": "lg-20208",
+    "name": "विष्णुपुर गाउँपालिका",
+    "nameEnglish": "Bishnupur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20208"
+  },
+  {
+    "id": "lg-20209",
+    "name": "अर्नमा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20209"
+  },
+  {
+    "id": "lg-20210",
+    "name": "सुखीपुर नगरपालिका",
+    "nameEnglish": "Sukhipur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 10,
+    "sourceCode": "20210"
+  },
+  {
+    "id": "lg-20211",
+    "name": "लक्ष्मीपुर पतारी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 6,
+    "sourceCode": "20211"
+  },
+  {
+    "id": "lg-20212",
+    "name": "सखुवानान्कारकट्टी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20212"
+  },
+  {
+    "id": "lg-20213",
+    "name": "भगवानपुर गाउँपालिका",
+    "nameEnglish": "Bhagawanpur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20213"
+  },
+  {
+    "id": "lg-20214",
+    "name": "नवराजपुर गाउँपालिका",
+    "nameEnglish": "Nawarajpur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20214"
+  },
+  {
+    "id": "lg-20215",
+    "name": "बरियारपट्टी गाउँपालिका",
+    "nameEnglish": "Bariyarpatti",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20215"
+  },
+  {
+    "id": "lg-20216",
+    "name": "औरही गाउँपालिका",
+    "nameEnglish": "Aurahi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 5,
+    "sourceCode": "20216"
+  },
+  {
+    "id": "lg-20217",
+    "name": "सिराहा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-siraha",
+    "wardCount": 22,
+    "sourceCode": "20217"
+  },
+  {
+    "id": "lg-20301",
+    "name": "गणेशमान चारनाथ नगरपालिका",
+    "nameEnglish": "Ganeshman Charnath",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 11,
+    "sourceCode": "20301"
+  },
+  {
+    "id": "lg-20302",
+    "name": "धनुषाधाम नगरपालिका",
+    "nameEnglish": "Dhanusadham",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20302"
+  },
+  {
+    "id": "lg-20303",
+    "name": "मिथिला नगरपालिका",
+    "nameEnglish": "Mithila",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 11,
+    "sourceCode": "20303"
+  },
+  {
+    "id": "lg-20304",
+    "name": "बटेश्वर गाउँपालिका",
+    "nameEnglish": "Bateshwor",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 5,
+    "sourceCode": "20304"
+  },
+  {
+    "id": "lg-20305",
+    "name": "क्षिरेश्वरनाथ नगरपालिका",
+    "nameEnglish": "Chhireshwarnath",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 10,
+    "sourceCode": "20305"
+  },
+  {
+    "id": "lg-20306",
+    "name": "लक्ष्मीनिया गाउँपालिका",
+    "nameEnglish": "Lakshminiya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 7,
+    "sourceCode": "20306"
+  },
+  {
+    "id": "lg-20307",
+    "name": "मिथिला बिहारी नगरपालिका",
+    "nameEnglish": "Mithila Bihari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 10,
+    "sourceCode": "20307"
+  },
+  {
+    "id": "lg-20308",
+    "name": "हंसपुर नगरपालिका",
+    "nameEnglish": "Hansapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20308"
+  },
+  {
+    "id": "lg-20309",
+    "name": "सबैला नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 13,
+    "sourceCode": "20309"
+  },
+  {
+    "id": "lg-20310",
+    "name": "शहीदनगर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20310"
+  },
+  {
+    "id": "lg-20311",
+    "name": "कमला नगरपालिका",
+    "nameEnglish": "Kamala",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20311"
+  },
+  {
+    "id": "lg-20312",
+    "name": "जनक नन्दिनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 6,
+    "sourceCode": "20312"
+  },
+  {
+    "id": "lg-20313",
+    "name": "बिदेह नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20313"
+  },
+  {
+    "id": "lg-20314",
+    "name": "औरही गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 6,
+    "sourceCode": "20314"
+  },
+  {
+    "id": "lg-20315",
+    "name": "जनकपुरधाम उपमहानगरपालिका",
+    "nameEnglish": "Janakpurdham",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 25,
+    "sourceCode": "20315"
+  },
+  {
+    "id": "lg-20316",
+    "name": "धनौजी गाउँपालिका",
+    "nameEnglish": "Dhanauji",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 5,
+    "sourceCode": "20316"
+  },
+  {
+    "id": "lg-20317",
+    "name": "नगराइन नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 9,
+    "sourceCode": "20317"
+  },
+  {
+    "id": "lg-20318",
+    "name": "मुखियापट्टी मुसहरमिया गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-dhanusha",
+    "wardCount": 6,
+    "sourceCode": "20318"
+  },
+  {
+    "id": "lg-20401",
+    "name": "बर्दिबास नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 14,
+    "sourceCode": "20401"
+  },
+  {
+    "id": "lg-20402",
+    "name": "गौशाला नगरपालिका",
+    "nameEnglish": "Gaushala",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 12,
+    "sourceCode": "20402"
+  },
+  {
+    "id": "lg-20403",
+    "name": "सोनमा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 8,
+    "sourceCode": "20403"
+  },
+  {
+    "id": "lg-20404",
+    "name": "औरही नगरपालिका",
+    "nameEnglish": "Aurahi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 9,
+    "sourceCode": "20404"
+  },
+  {
+    "id": "lg-20405",
+    "name": "भँगाहा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 9,
+    "sourceCode": "20405"
+  },
+  {
+    "id": "lg-20406",
+    "name": "लोहरपट्टी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 9,
+    "sourceCode": "20406"
+  },
+  {
+    "id": "lg-20407",
+    "name": "बलवा नगरपालिका",
+    "nameEnglish": "Balwa",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 11,
+    "sourceCode": "20407"
+  },
+  {
+    "id": "lg-20408",
+    "name": "राम गोपालपुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 9,
+    "sourceCode": "20408"
+  },
+  {
+    "id": "lg-20409",
+    "name": "साम्सी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 7,
+    "sourceCode": "20409"
+  },
+  {
+    "id": "lg-20410",
+    "name": "मनरा शिसवा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 10,
+    "sourceCode": "20410"
+  },
+  {
+    "id": "lg-20411",
+    "name": "एकडारा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 6,
+    "sourceCode": "20411"
+  },
+  {
+    "id": "lg-20412",
+    "name": "महोत्तरी गाउँपालिका",
+    "nameEnglish": "Mahottari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 6,
+    "sourceCode": "20412"
+  },
+  {
+    "id": "lg-20413",
+    "name": "पिपरा गाउँपालिका",
+    "nameEnglish": "Pipra",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 7,
+    "sourceCode": "20413"
+  },
+  {
+    "id": "lg-20414",
+    "name": "मटिहानी नगरपालिका",
+    "nameEnglish": "Matihani",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 9,
+    "sourceCode": "20414"
+  },
+  {
+    "id": "lg-20415",
+    "name": "जलेश्वर नगरपालिका",
+    "nameEnglish": "Jaleswor",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-mahottari",
+    "wardCount": 12,
+    "sourceCode": "20415"
+  },
+  {
+    "id": "lg-20501",
+    "name": "लालबन्दी नगरपालिका",
+    "nameEnglish": "Lalbandi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 17,
+    "sourceCode": "20501"
+  },
+  {
+    "id": "lg-20502",
+    "name": "हरिवन नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 11,
+    "sourceCode": "20502"
+  },
+  {
+    "id": "lg-20503",
+    "name": "बागमती नगरपालिका",
+    "nameEnglish": "Bagmati",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 12,
+    "sourceCode": "20503"
+  },
+  {
+    "id": "lg-20504",
+    "name": "बरहथवा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 18,
+    "sourceCode": "20504"
+  },
+  {
+    "id": "lg-20505",
+    "name": "हरिपुर नगरपालिका",
+    "nameEnglish": "Haripur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 9,
+    "sourceCode": "20505"
+  },
+  {
+    "id": "lg-20506",
+    "name": "ईश्वरपुर नगरपालिका",
+    "nameEnglish": "Ishworpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 15,
+    "sourceCode": "20506"
+  },
+  {
+    "id": "lg-20507",
+    "name": "हरिपुर्वा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 9,
+    "sourceCode": "20507"
+  },
+  {
+    "id": "lg-20508",
+    "name": "पर्सा गाउँपालिका",
+    "nameEnglish": "Parsa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 6,
+    "sourceCode": "20508"
+  },
+  {
+    "id": "lg-20509",
+    "name": "ब्रह्मपुरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 7,
+    "sourceCode": "20509"
+  },
+  {
+    "id": "lg-20510",
+    "name": "चन्द्रनगर गाउँपालिका",
+    "nameEnglish": "Chandranagar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 7,
+    "sourceCode": "20510"
+  },
+  {
+    "id": "lg-20511",
+    "name": "कविलासी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 10,
+    "sourceCode": "20511"
+  },
+  {
+    "id": "lg-20512",
+    "name": "चक्रघट्टा गाउँपालिका",
+    "nameEnglish": "Chakraghatta",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 9,
+    "sourceCode": "20512"
+  },
+  {
+    "id": "lg-20513",
+    "name": "बसबरिया गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 6,
+    "sourceCode": "20513"
+  },
+  {
+    "id": "lg-20514",
+    "name": "धनकौल गाउँपालिका",
+    "nameEnglish": "Dhankaul",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 7,
+    "sourceCode": "20514"
+  },
+  {
+    "id": "lg-20515",
+    "name": "रामनगर गाउँपालिका",
+    "nameEnglish": "Ramnagar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 7,
+    "sourceCode": "20515"
+  },
+  {
+    "id": "lg-20516",
+    "name": "बलरा नगरपालिका",
+    "nameEnglish": "Balara",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 11,
+    "sourceCode": "20516"
+  },
+  {
+    "id": "lg-20517",
+    "name": "गोडैटा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 12,
+    "sourceCode": "20517"
+  },
+  {
+    "id": "lg-20518",
+    "name": "विष्णु गाउँपालिका",
+    "nameEnglish": "Bishnu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 8,
+    "sourceCode": "20518"
+  },
+  {
+    "id": "lg-20519",
+    "name": "कौडेना गाउँपालिका",
+    "nameEnglish": "Kaudena",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 7,
+    "sourceCode": "20519"
+  },
+  {
+    "id": "lg-20520",
+    "name": "मलंगवा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-sarlahi",
+    "wardCount": 12,
+    "sourceCode": "20520"
+  },
+  {
+    "id": "lg-20601",
+    "name": "चन्द्रपुर नगरपालिका",
+    "nameEnglish": "Chandrapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 10,
+    "sourceCode": "20601"
+  },
+  {
+    "id": "lg-20602",
+    "name": "गुजरा नगरपालिका",
+    "nameEnglish": "Gujara",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20602"
+  },
+  {
+    "id": "lg-20603",
+    "name": "फतुवा बिजयपुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 11,
+    "sourceCode": "20603"
+  },
+  {
+    "id": "lg-20604",
+    "name": "कटहरिया नगरपालिका",
+    "nameEnglish": "Katahariya",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20604"
+  },
+  {
+    "id": "lg-20605",
+    "name": "बृन्दावन नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20605"
+  },
+  {
+    "id": "lg-20606",
+    "name": "गढीमाई नगरपालिका",
+    "nameEnglish": "Gadhimai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20606"
+  },
+  {
+    "id": "lg-20607",
+    "name": "माधव नारायण नगरपालिका",
+    "nameEnglish": "Madhav Narayan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20607"
+  },
+  {
+    "id": "lg-20608",
+    "name": "गरुडा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20608"
+  },
+  {
+    "id": "lg-20609",
+    "name": "देवाही गोनाही नगरपालिका",
+    "nameEnglish": "Dewahi Gonahi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20609"
+  },
+  {
+    "id": "lg-20610",
+    "name": "मौलापुर नगरपालिका",
+    "nameEnglish": "Maulapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20610"
+  },
+  {
+    "id": "lg-20611",
+    "name": "बौधीमाई नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20611"
+  },
+  {
+    "id": "lg-20612",
+    "name": "परोहा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20612"
+  },
+  {
+    "id": "lg-20613",
+    "name": "राजपुर नगरपालिका",
+    "nameEnglish": "Rajpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20613"
+  },
+  {
+    "id": "lg-20614",
+    "name": "यमुनामाई गाउँपालिका",
+    "nameEnglish": "Yemunamai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 5,
+    "sourceCode": "20614"
+  },
+  {
+    "id": "lg-20615",
+    "name": "दुर्गा भगवती गाउँपालिका",
+    "nameEnglish": "Durga Bhagwati",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 5,
+    "sourceCode": "20615"
+  },
+  {
+    "id": "lg-20616",
+    "name": "राजदेवी नगरपालिका",
+    "nameEnglish": "Rajdevi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20616"
+  },
+  {
+    "id": "lg-20617",
+    "name": "गौर नगरपालिका",
+    "nameEnglish": "Gaur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20617"
+  },
+  {
+    "id": "lg-20618",
+    "name": "ईशनाथ नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-rautahat",
+    "wardCount": 9,
+    "sourceCode": "20618"
+  },
+  {
+    "id": "lg-20701",
+    "name": "निजगढ नगरपालिका",
+    "nameEnglish": "Nijgadh",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 13,
+    "sourceCode": "20701"
+  },
+  {
+    "id": "lg-20702",
+    "name": "कोल्हवी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 11,
+    "sourceCode": "20702"
+  },
+  {
+    "id": "lg-20703",
+    "name": "जीतपुर सिमरा उपमहानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 24,
+    "sourceCode": "20703"
+  },
+  {
+    "id": "lg-20704",
+    "name": "परवानीपुर गाउँपालिका",
+    "nameEnglish": "Parwanipur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 5,
+    "sourceCode": "20704"
+  },
+  {
+    "id": "lg-20705",
+    "name": "प्रसौनी गाउँपालिका",
+    "nameEnglish": "Prasauni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 7,
+    "sourceCode": "20705"
+  },
+  {
+    "id": "lg-20706",
+    "name": "विश्रामपुर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 5,
+    "sourceCode": "20706"
+  },
+  {
+    "id": "lg-20707",
+    "name": "फेटा गाउँपालिका",
+    "nameEnglish": "Pheta",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 7,
+    "sourceCode": "20707"
+  },
+  {
+    "id": "lg-20708",
+    "name": "कलैया उपमहानगरपालिका",
+    "nameEnglish": "Kalaiya",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 27,
+    "sourceCode": "20708"
+  },
+  {
+    "id": "lg-20709",
+    "name": "करैयामाई गाउँपालिका",
+    "nameEnglish": "Karaiyamai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 8,
+    "sourceCode": "20709"
+  },
+  {
+    "id": "lg-20710",
+    "name": "बारागढी गाउँपालिका",
+    "nameEnglish": "Baragadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 6,
+    "sourceCode": "20710"
+  },
+  {
+    "id": "lg-20711",
+    "name": "आदर्श कोटवाल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 8,
+    "sourceCode": "20711"
+  },
+  {
+    "id": "lg-20712",
+    "name": "सिम्रौनगढ नगरपालिका",
+    "nameEnglish": "Simraungadh",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 11,
+    "sourceCode": "20712"
+  },
+  {
+    "id": "lg-20713",
+    "name": "पचरौता नगरपालिका",
+    "nameEnglish": "Pacharauta",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 9,
+    "sourceCode": "20713"
+  },
+  {
+    "id": "lg-20714",
+    "name": "महागढीमाई नगरपालिका",
+    "nameEnglish": "Mahagadhimai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 11,
+    "sourceCode": "20714"
+  },
+  {
+    "id": "lg-20715",
+    "name": "देवताल गाउँपालिका",
+    "nameEnglish": "Devtal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 7,
+    "sourceCode": "20715"
+  },
+  {
+    "id": "lg-20716",
+    "name": "सुवर्ण गाउँपालिका",
+    "nameEnglish": "Suwarna",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-bara",
+    "wardCount": 8,
+    "sourceCode": "20716"
+  },
+  {
+    "id": "lg-20801",
+    "name": "ठोरी (सुवर्णपुर) गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20801"
+  },
+  {
+    "id": "lg-20802",
+    "name": "जिराभवानी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20802"
+  },
+  {
+    "id": "lg-20803",
+    "name": "जगरनाथपुर गाउँपालिका",
+    "nameEnglish": "Jagarnathpur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 6,
+    "sourceCode": "20803"
+  },
+  {
+    "id": "lg-20804",
+    "name": "पटेर्वा सुगौली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20804"
+  },
+  {
+    "id": "lg-20805",
+    "name": "सखुवा प्रसौनी गाउँपालिका",
+    "nameEnglish": "Sakhuwa Prasauni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 6,
+    "sourceCode": "20805"
+  },
+  {
+    "id": "lg-20806",
+    "name": "पर्सागढी नगरपालिका",
+    "nameEnglish": "Parsagadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 9,
+    "sourceCode": "20806"
+  },
+  {
+    "id": "lg-20807",
+    "name": "बिरगन्ज महानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 32,
+    "sourceCode": "20807"
+  },
+  {
+    "id": "lg-20808",
+    "name": "बहुदरमाई नगरपालिका",
+    "nameEnglish": "Bahudaramai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 9,
+    "sourceCode": "20808"
+  },
+  {
+    "id": "lg-20809",
+    "name": "पोखरिया नगरपालिका",
+    "nameEnglish": "Pokhariya",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 10,
+    "sourceCode": "20809"
+  },
+  {
+    "id": "lg-20810",
+    "name": "कालिकामाई गाउँपालिका",
+    "nameEnglish": "Kalikamai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20810"
+  },
+  {
+    "id": "lg-20811",
+    "name": "धोबीनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20811"
+  },
+  {
+    "id": "lg-20812",
+    "name": "छिपहरमाई गाउँपालिका",
+    "nameEnglish": "Chhipaharmai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20812"
+  },
+  {
+    "id": "lg-20813",
+    "name": "पकाहा मैनपुर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20813"
+  },
+  {
+    "id": "lg-20814",
+    "name": "बिन्दबासिनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-madhesh-parsa",
+    "wardCount": 5,
+    "sourceCode": "20814"
+  },
+  {
+    "id": "lg-30101",
+    "name": "गौरिशंकर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 9,
+    "sourceCode": "30101"
+  },
+  {
+    "id": "lg-30102",
+    "name": "बिगु गाउँपालिका",
+    "nameEnglish": "Bigu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 8,
+    "sourceCode": "30102"
+  },
+  {
+    "id": "lg-30103",
+    "name": "कालिन्चोक गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 9,
+    "sourceCode": "30103"
+  },
+  {
+    "id": "lg-30104",
+    "name": "बैतेस्वर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 8,
+    "sourceCode": "30104"
+  },
+  {
+    "id": "lg-30105",
+    "name": "जिरी नगरपालिका",
+    "nameEnglish": "Jiri",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 9,
+    "sourceCode": "30105"
+  },
+  {
+    "id": "lg-30106",
+    "name": "तामाकोशी गाउँपालिका",
+    "nameEnglish": "Tamakoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 7,
+    "sourceCode": "30106"
+  },
+  {
+    "id": "lg-30107",
+    "name": "मेलुङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 7,
+    "sourceCode": "30107"
+  },
+  {
+    "id": "lg-30108",
+    "name": "शैलुङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 8,
+    "sourceCode": "30108"
+  },
+  {
+    "id": "lg-30109",
+    "name": "भिमेश्वर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dolakha",
+    "wardCount": 9,
+    "sourceCode": "30109"
+  },
+  {
+    "id": "lg-30201",
+    "name": "भोटेकोशी गाउँपालिका",
+    "nameEnglish": "Bhotekoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 5,
+    "sourceCode": "30201"
+  },
+  {
+    "id": "lg-30202",
+    "name": "जुगल गाउँपालिका",
+    "nameEnglish": "Jugal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 7,
+    "sourceCode": "30202"
+  },
+  {
+    "id": "lg-30203",
+    "name": "पाँचपोखरी थाङपाल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 8,
+    "sourceCode": "30203"
+  },
+  {
+    "id": "lg-30204",
+    "name": "हेलम्बु गाउँपालिका",
+    "nameEnglish": "Helambu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 7,
+    "sourceCode": "30204"
+  },
+  {
+    "id": "lg-30205",
+    "name": "मेलम्ची नगरपालिका",
+    "nameEnglish": "Melamchi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 13,
+    "sourceCode": "30205"
+  },
+  {
+    "id": "lg-30206",
+    "name": "ईन्द्रावती गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 12,
+    "sourceCode": "30206"
+  },
+  {
+    "id": "lg-30207",
+    "name": "चौतारा साँगाचोकगढी नगरपालिका",
+    "nameEnglish": "Chautara SangachokGadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 14,
+    "sourceCode": "30207"
+  },
+  {
+    "id": "lg-30208",
+    "name": "बलेफी गाउँपालिका",
+    "nameEnglish": "Balefi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 8,
+    "sourceCode": "30208"
+  },
+  {
+    "id": "lg-30209",
+    "name": "बाह्रबिसे नगरपालिका",
+    "nameEnglish": "Barhabise",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 9,
+    "sourceCode": "30209"
+  },
+  {
+    "id": "lg-30210",
+    "name": "त्रिपुरासुन्दरी गाउँपालिका",
+    "nameEnglish": "Tripurasundari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 6,
+    "sourceCode": "30210"
+  },
+  {
+    "id": "lg-30211",
+    "name": "लिसंखु पाखर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 7,
+    "sourceCode": "30211"
+  },
+  {
+    "id": "lg-30212",
+    "name": "सुनकोशी गाउँपालिका",
+    "nameEnglish": "Sunkoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhupalchok",
+    "wardCount": 7,
+    "sourceCode": "30212"
+  },
+  {
+    "id": "lg-30301",
+    "name": "गोसाईकुण्ड गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-rasuwa",
+    "wardCount": 6,
+    "sourceCode": "30301"
+  },
+  {
+    "id": "lg-30302",
+    "name": "आमाछोदिङमो गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-rasuwa",
+    "wardCount": 5,
+    "sourceCode": "30302"
+  },
+  {
+    "id": "lg-30303",
+    "name": "उत्तरगया गाउँपालिका",
+    "nameEnglish": "Uttargaya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-rasuwa",
+    "wardCount": 5,
+    "sourceCode": "30303"
+  },
+  {
+    "id": "lg-30304",
+    "name": "कालिका गाउँपालिका",
+    "nameEnglish": "Kalika",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-rasuwa",
+    "wardCount": 5,
+    "sourceCode": "30304"
+  },
+  {
+    "id": "lg-30305",
+    "name": "नौकुण्ड गाउँपालिका",
+    "nameEnglish": "Naukunda",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-rasuwa",
+    "wardCount": 6,
+    "sourceCode": "30305"
+  },
+  {
+    "id": "lg-30401",
+    "name": "रुबी भ्याली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 6,
+    "sourceCode": "30401"
+  },
+  {
+    "id": "lg-30402",
+    "name": "खनियाबास गाउँपालिका",
+    "nameEnglish": "Khaniyabash",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 5,
+    "sourceCode": "30402"
+  },
+  {
+    "id": "lg-30403",
+    "name": "गंङ्गा जमुना गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 7,
+    "sourceCode": "30403"
+  },
+  {
+    "id": "lg-30404",
+    "name": "त्रिपुरासुन्दरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 7,
+    "sourceCode": "30404"
+  },
+  {
+    "id": "lg-30405",
+    "name": "नेत्रावती डबजोङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 5,
+    "sourceCode": "30405"
+  },
+  {
+    "id": "lg-30406",
+    "name": "नीलकण्ठ नगरपालिका",
+    "nameEnglish": "Nilakantha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 14,
+    "sourceCode": "30406"
+  },
+  {
+    "id": "lg-30407",
+    "name": "ज्वालामुखी गाउँपालिका",
+    "nameEnglish": "Jwalamukhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 7,
+    "sourceCode": "30407"
+  },
+  {
+    "id": "lg-30408",
+    "name": "सिद्धलेक गाउँपालिका",
+    "nameEnglish": "Siddhalek",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 7,
+    "sourceCode": "30408"
+  },
+  {
+    "id": "lg-30409",
+    "name": "बेनीघाट रोराङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 10,
+    "sourceCode": "30409"
+  },
+  {
+    "id": "lg-30410",
+    "name": "गजुरी गाउँपालिका",
+    "nameEnglish": "Gajuri",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 8,
+    "sourceCode": "30410"
+  },
+  {
+    "id": "lg-30411",
+    "name": "गल्छी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 8,
+    "sourceCode": "30411"
+  },
+  {
+    "id": "lg-30412",
+    "name": "थाक्रे गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 11,
+    "sourceCode": "30412"
+  },
+  {
+    "id": "lg-30413",
+    "name": "धुनीबेंशी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-dhading",
+    "wardCount": 9,
+    "sourceCode": "30413"
+  },
+  {
+    "id": "lg-30501",
+    "name": "दुप्चेश्वर गाउँपालिका",
+    "nameEnglish": "Dupcheshwar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 7,
+    "sourceCode": "30501"
+  },
+  {
+    "id": "lg-30502",
+    "name": "तादी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 6,
+    "sourceCode": "30502"
+  },
+  {
+    "id": "lg-30503",
+    "name": "सुर्यगढी गाउँपालिका",
+    "nameEnglish": "Suryagadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 5,
+    "sourceCode": "30503"
+  },
+  {
+    "id": "lg-30504",
+    "name": "बिदुर नगरपालिका",
+    "nameEnglish": "Bidur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 13,
+    "sourceCode": "30504"
+  },
+  {
+    "id": "lg-30505",
+    "name": "किस्पाङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 5,
+    "sourceCode": "30505"
+  },
+  {
+    "id": "lg-30506",
+    "name": "म्यगङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 6,
+    "sourceCode": "30506"
+  },
+  {
+    "id": "lg-30507",
+    "name": "तारकेश्वर गाउँपालिका",
+    "nameEnglish": "Tarkeshwar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 6,
+    "sourceCode": "30507"
+  },
+  {
+    "id": "lg-30508",
+    "name": "बेलकोटगढी नगरपालिका",
+    "nameEnglish": "Belkotgadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 13,
+    "sourceCode": "30508"
+  },
+  {
+    "id": "lg-30509",
+    "name": "लिखु गाउँपालिका",
+    "nameEnglish": "Likhu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 6,
+    "sourceCode": "30509"
+  },
+  {
+    "id": "lg-30510",
+    "name": "पन्चकन्या गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 5,
+    "sourceCode": "30510"
+  },
+  {
+    "id": "lg-30511",
+    "name": "शिवपुरी गाउँपालिका",
+    "nameEnglish": "Shivapuri",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 8,
+    "sourceCode": "30511"
+  },
+  {
+    "id": "lg-30512",
+    "name": "ककनी गाउँपालिका",
+    "nameEnglish": "Kakani",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-nuwakot",
+    "wardCount": 8,
+    "sourceCode": "30512"
+  },
+  {
+    "id": "lg-30601",
+    "name": "शंङ्खरापुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 9,
+    "sourceCode": "30601"
+  },
+  {
+    "id": "lg-30602",
+    "name": "कागेश्वरी मनहरा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 9,
+    "sourceCode": "30602"
+  },
+  {
+    "id": "lg-30603",
+    "name": "गोकर्णेश्वर नगरपालिका",
+    "nameEnglish": "Gokarneshwor",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 9,
+    "sourceCode": "30603"
+  },
+  {
+    "id": "lg-30604",
+    "name": "बुढानिलकण्ठ नगरपालिका",
+    "nameEnglish": "Budhanilakantha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 13,
+    "sourceCode": "30604"
+  },
+  {
+    "id": "lg-30605",
+    "name": "टोखा नगरपालिका",
+    "nameEnglish": "Tokha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 11,
+    "sourceCode": "30605"
+  },
+  {
+    "id": "lg-30606",
+    "name": "तारकेश्वर नगरपालिका",
+    "nameEnglish": "Tarakeshwor",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 11,
+    "sourceCode": "30606"
+  },
+  {
+    "id": "lg-30607",
+    "name": "नागार्जुन नगरपालिका",
+    "nameEnglish": "Nagarjun",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 10,
+    "sourceCode": "30607"
+  },
+  {
+    "id": "lg-30608",
+    "name": "काठमाण्डौ महानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 32,
+    "sourceCode": "30608"
+  },
+  {
+    "id": "lg-30609",
+    "name": "किर्तिपुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 10,
+    "sourceCode": "30609"
+  },
+  {
+    "id": "lg-30610",
+    "name": "चन्द्रागिरी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 15,
+    "sourceCode": "30610"
+  },
+  {
+    "id": "lg-30611",
+    "name": "दक्षिणकाली नगरपालिका",
+    "nameEnglish": "Dakshinkali",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kathmandu",
+    "wardCount": 9,
+    "sourceCode": "30611"
+  },
+  {
+    "id": "lg-30701",
+    "name": "चाँगुनारायण नगरपालिका",
+    "nameEnglish": "Changunarayan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-bhaktapur",
+    "wardCount": 9,
+    "sourceCode": "30701"
+  },
+  {
+    "id": "lg-30702",
+    "name": "भक्तपुर नगरपालिका",
+    "nameEnglish": "Bhaktapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-bhaktapur",
+    "wardCount": 10,
+    "sourceCode": "30702"
+  },
+  {
+    "id": "lg-30703",
+    "name": "मध्यपुर थिमी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-bhaktapur",
+    "wardCount": 9,
+    "sourceCode": "30703"
+  },
+  {
+    "id": "lg-30704",
+    "name": "सूर्यविनायक नगरपालिका",
+    "nameEnglish": "Suryabinayak",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-bhaktapur",
+    "wardCount": 10,
+    "sourceCode": "30704"
+  },
+  {
+    "id": "lg-30801",
+    "name": "महालक्ष्मी नगरपालिका",
+    "nameEnglish": "Mahalaxmi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 10,
+    "sourceCode": "30801"
+  },
+  {
+    "id": "lg-30802",
+    "name": "ललितपुर महानगरपालिका",
+    "nameEnglish": "Lalitpur",
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 29,
+    "sourceCode": "30802"
+  },
+  {
+    "id": "lg-30803",
+    "name": "गोदावरी नगरपालिका",
+    "nameEnglish": "Godawari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 14,
+    "sourceCode": "30803"
+  },
+  {
+    "id": "lg-30804",
+    "name": "कोन्ज्योसोम गाउँपालिका",
+    "nameEnglish": "Konjyosom",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 5,
+    "sourceCode": "30804"
+  },
+  {
+    "id": "lg-30805",
+    "name": "महाङ्काल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 6,
+    "sourceCode": "30805"
+  },
+  {
+    "id": "lg-30806",
+    "name": "बाग्मती गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-lalitpur",
+    "wardCount": 7,
+    "sourceCode": "30806"
+  },
+  {
+    "id": "lg-30901",
+    "name": "चौरीदेउराली गाउँपालिका",
+    "nameEnglish": "Chaurideurali",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 9,
+    "sourceCode": "30901"
+  },
+  {
+    "id": "lg-30902",
+    "name": "भुम्लु गाउँपालिका",
+    "nameEnglish": "Bhumlu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 10,
+    "sourceCode": "30902"
+  },
+  {
+    "id": "lg-30903",
+    "name": "मण्डन देउपुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 12,
+    "sourceCode": "30903"
+  },
+  {
+    "id": "lg-30904",
+    "name": "बनेपा नगरपालिका",
+    "nameEnglish": "Banepa",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 14,
+    "sourceCode": "30904"
+  },
+  {
+    "id": "lg-30905",
+    "name": "धुलिखेल नगरपालिका",
+    "nameEnglish": "Dhulikhel",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 12,
+    "sourceCode": "30905"
+  },
+  {
+    "id": "lg-30906",
+    "name": "पाँचखाल नगरपालिका",
+    "nameEnglish": "Panchkhal",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 13,
+    "sourceCode": "30906"
+  },
+  {
+    "id": "lg-30907",
+    "name": "तेमाल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 9,
+    "sourceCode": "30907"
+  },
+  {
+    "id": "lg-30908",
+    "name": "नमोबुद्ध नगरपालिका",
+    "nameEnglish": "Namobuddha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 11,
+    "sourceCode": "30908"
+  },
+  {
+    "id": "lg-30909",
+    "name": "पनौती नगरपालिका",
+    "nameEnglish": "Panauti",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 12,
+    "sourceCode": "30909"
+  },
+  {
+    "id": "lg-30910",
+    "name": "बेथानचोक गाउँपालिका",
+    "nameEnglish": "Bethanchowk",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 6,
+    "sourceCode": "30910"
+  },
+  {
+    "id": "lg-30911",
+    "name": "रोशी गाउँपालिका",
+    "nameEnglish": "Roshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 12,
+    "sourceCode": "30911"
+  },
+  {
+    "id": "lg-30912",
+    "name": "महाभारत गाउँपालिका",
+    "nameEnglish": "Mahabharat",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 8,
+    "sourceCode": "30912"
+  },
+  {
+    "id": "lg-30913",
+    "name": "खानीखोला गाउँपालिका",
+    "nameEnglish": "Khanikhola",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-kavrepalanchok",
+    "wardCount": 7,
+    "sourceCode": "30913"
+  },
+  {
+    "id": "lg-31001",
+    "name": "उमाकुण्ड गाउँपालिका",
+    "nameEnglish": "Umakunda",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 7,
+    "sourceCode": "31001"
+  },
+  {
+    "id": "lg-31002",
+    "name": "गोकुलगङ्गा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 6,
+    "sourceCode": "31002"
+  },
+  {
+    "id": "lg-31003",
+    "name": "लिखु तामाकोसी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 7,
+    "sourceCode": "31003"
+  },
+  {
+    "id": "lg-31004",
+    "name": "रामेछाप नगरपालिका",
+    "nameEnglish": "Ramechhap",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 9,
+    "sourceCode": "31004"
+  },
+  {
+    "id": "lg-31005",
+    "name": "मन्थली नगरपालिका",
+    "nameEnglish": "Manthali",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 14,
+    "sourceCode": "31005"
+  },
+  {
+    "id": "lg-31006",
+    "name": "खाँडादेवी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 9,
+    "sourceCode": "31006"
+  },
+  {
+    "id": "lg-31007",
+    "name": "दोरम्बा गाउँपालिका",
+    "nameEnglish": "Doramba",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 7,
+    "sourceCode": "31007"
+  },
+  {
+    "id": "lg-31008",
+    "name": "सुनापती गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-ramechhap",
+    "wardCount": 5,
+    "sourceCode": "31008"
+  },
+  {
+    "id": "lg-31101",
+    "name": "दुधौली नगरपालिका",
+    "nameEnglish": "Dudhouli",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 14,
+    "sourceCode": "31101"
+  },
+  {
+    "id": "lg-31102",
+    "name": "फिक्कल गाउँपालिका",
+    "nameEnglish": "Phikkal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 6,
+    "sourceCode": "31102"
+  },
+  {
+    "id": "lg-31103",
+    "name": "तीनपाटन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 11,
+    "sourceCode": "31103"
+  },
+  {
+    "id": "lg-31104",
+    "name": "गोलन्जोर गाउँपालिका",
+    "nameEnglish": "Golanjor",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 7,
+    "sourceCode": "31104"
+  },
+  {
+    "id": "lg-31105",
+    "name": "कमलामाई नगरपालिका",
+    "nameEnglish": "Kamalamai",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 14,
+    "sourceCode": "31105"
+  },
+  {
+    "id": "lg-31106",
+    "name": "सुनकोशी गाउँपालिका",
+    "nameEnglish": "Sunkoshi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 7,
+    "sourceCode": "31106"
+  },
+  {
+    "id": "lg-31107",
+    "name": "ध्याङलेख गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 5,
+    "sourceCode": "31107"
+  },
+  {
+    "id": "lg-31108",
+    "name": "मरिण गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 7,
+    "sourceCode": "31108"
+  },
+  {
+    "id": "lg-31109",
+    "name": "हरिहरपुरगढी गाउँपालिका",
+    "nameEnglish": "Hariharpurgadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-sindhuli",
+    "wardCount": 8,
+    "sourceCode": "31109"
+  },
+  {
+    "id": "lg-31201",
+    "name": "ईन्द्रसरोवर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 5,
+    "sourceCode": "31201"
+  },
+  {
+    "id": "lg-31202",
+    "name": "थाहा नगरपालिका",
+    "nameEnglish": "Thaha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 12,
+    "sourceCode": "31202"
+  },
+  {
+    "id": "lg-31203",
+    "name": "कैलाश गाउँपालिका",
+    "nameEnglish": "Kailash",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 10,
+    "sourceCode": "31203"
+  },
+  {
+    "id": "lg-31204",
+    "name": "राक्सिराङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 9,
+    "sourceCode": "31204"
+  },
+  {
+    "id": "lg-31205",
+    "name": "मनहरी गाउँपालिका",
+    "nameEnglish": "Manahari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 9,
+    "sourceCode": "31205"
+  },
+  {
+    "id": "lg-31206",
+    "name": "हेटौडा उपमहानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 19,
+    "sourceCode": "31206"
+  },
+  {
+    "id": "lg-31207",
+    "name": "भिमफेदी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 9,
+    "sourceCode": "31207"
+  },
+  {
+    "id": "lg-31208",
+    "name": "मकवानपुरगढी गाउँपालिका",
+    "nameEnglish": "Makawanpurgadhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 8,
+    "sourceCode": "31208"
+  },
+  {
+    "id": "lg-31209",
+    "name": "बकैया गाउँपालिका",
+    "nameEnglish": "Bakaiya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 12,
+    "sourceCode": "31209"
+  },
+  {
+    "id": "lg-31210",
+    "name": "बाग्मती गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-makwanpur",
+    "wardCount": 9,
+    "sourceCode": "31210"
+  },
+  {
+    "id": "lg-31301",
+    "name": "राप्ती नगरपालिका",
+    "nameEnglish": "Rapti",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 13,
+    "sourceCode": "31301"
+  },
+  {
+    "id": "lg-31302",
+    "name": "कालिका नगरपालिका",
+    "nameEnglish": "Kalika",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 11,
+    "sourceCode": "31302"
+  },
+  {
+    "id": "lg-31303",
+    "name": "इच्छाकामना गाउँपालिका",
+    "nameEnglish": "Ichchhyakamana",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 7,
+    "sourceCode": "31303"
+  },
+  {
+    "id": "lg-31304",
+    "name": "भरतपुर महानगरपालिका",
+    "nameEnglish": "Bharatpur",
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 29,
+    "sourceCode": "31304"
+  },
+  {
+    "id": "lg-31305",
+    "name": "रत्ननगर नगरपालिका",
+    "nameEnglish": "Ratnanagar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 16,
+    "sourceCode": "31305"
+  },
+  {
+    "id": "lg-31306",
+    "name": "खैरहनी नगरपालिका",
+    "nameEnglish": "Khairahani",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 13,
+    "sourceCode": "31306"
+  },
+  {
+    "id": "lg-31307",
+    "name": "माडी नगरपालिका",
+    "nameEnglish": "Madi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-bagmati-chitwan",
+    "wardCount": 9,
+    "sourceCode": "31307"
+  },
+  {
+    "id": "lg-40101",
+    "name": "चुमनुब्री गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 7,
+    "sourceCode": "40101"
+  },
+  {
+    "id": "lg-40102",
+    "name": "अजिरकोट गाउँपालिका",
+    "nameEnglish": "Ajirkot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 5,
+    "sourceCode": "40102"
+  },
+  {
+    "id": "lg-40103",
+    "name": "बारपाक सुलिकोट गाउँपालिका",
+    "nameEnglish": "Barpak Sulikot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 8,
+    "sourceCode": "40103"
+  },
+  {
+    "id": "lg-40104",
+    "name": "धार्चे गाउँपालिका",
+    "nameEnglish": "Dharche",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 7,
+    "sourceCode": "40104"
+  },
+  {
+    "id": "lg-40105",
+    "name": "आरुघाट गाउँपालिका",
+    "nameEnglish": "Aarughat",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 10,
+    "sourceCode": "40105"
+  },
+  {
+    "id": "lg-40106",
+    "name": "भिमसेनथापा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 8,
+    "sourceCode": "40106"
+  },
+  {
+    "id": "lg-40107",
+    "name": "सिरानचोक गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 8,
+    "sourceCode": "40107"
+  },
+  {
+    "id": "lg-40108",
+    "name": "पालुङ्गटार नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 10,
+    "sourceCode": "40108"
+  },
+  {
+    "id": "lg-40109",
+    "name": "गोरखा नगरपालिका",
+    "nameEnglish": "Gorkha",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 14,
+    "sourceCode": "40109"
+  },
+  {
+    "id": "lg-40110",
+    "name": "शहीद लखन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 9,
+    "sourceCode": "40110"
+  },
+  {
+    "id": "lg-40111",
+    "name": "गण्डकी गाउँपालिका",
+    "nameEnglish": "Gandaki",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-gorkha",
+    "wardCount": 8,
+    "sourceCode": "40111"
+  },
+  {
+    "id": "lg-40201",
+    "name": "नार्पा भूमि गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-manang",
+    "wardCount": 5,
+    "sourceCode": "40201"
+  },
+  {
+    "id": "lg-40202",
+    "name": "मनाङ ङिस्याङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-manang",
+    "wardCount": 9,
+    "sourceCode": "40202"
+  },
+  {
+    "id": "lg-40203",
+    "name": "चामे गाउँपालिका",
+    "nameEnglish": "Chame",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-manang",
+    "wardCount": 5,
+    "sourceCode": "40203"
+  },
+  {
+    "id": "lg-40204",
+    "name": "नासों गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-manang",
+    "wardCount": 9,
+    "sourceCode": "40204"
+  },
+  {
+    "id": "lg-40301",
+    "name": "लो घेकर दामोदरकुण्ड गाउँपालिका",
+    "nameEnglish": "Lo-Ghekar Damodarkunda",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-mustang",
+    "wardCount": 5,
+    "sourceCode": "40301"
+  },
+  {
+    "id": "lg-40302",
+    "name": "घरपझोङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-mustang",
+    "wardCount": 5,
+    "sourceCode": "40302"
+  },
+  {
+    "id": "lg-40303",
+    "name": "वारागुङ मुक्तिक्षेत्र गाउँपालिका",
+    "nameEnglish": "Waragung Muktikhsetra",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-mustang",
+    "wardCount": 5,
+    "sourceCode": "40303"
+  },
+  {
+    "id": "lg-40304",
+    "name": "लोमन्थाङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-mustang",
+    "wardCount": 5,
+    "sourceCode": "40304"
+  },
+  {
+    "id": "lg-40305",
+    "name": "थासाङ गाउँपालिका",
+    "nameEnglish": "Thasang",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-mustang",
+    "wardCount": 5,
+    "sourceCode": "40305"
+  },
+  {
+    "id": "lg-40401",
+    "name": "अन्नपूर्ण गाउँपालिका",
+    "nameEnglish": "Annapurna",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 8,
+    "sourceCode": "40401"
+  },
+  {
+    "id": "lg-40402",
+    "name": "रघुगंगा गाउँपालिका",
+    "nameEnglish": "Raghuganga",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 8,
+    "sourceCode": "40402"
+  },
+  {
+    "id": "lg-40403",
+    "name": "धवलागिरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 7,
+    "sourceCode": "40403"
+  },
+  {
+    "id": "lg-40404",
+    "name": "मालिका गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 7,
+    "sourceCode": "40404"
+  },
+  {
+    "id": "lg-40405",
+    "name": "मंगला गाउँपालिका",
+    "nameEnglish": "Mangala",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 5,
+    "sourceCode": "40405"
+  },
+  {
+    "id": "lg-40406",
+    "name": "बेनी नगरपालिका",
+    "nameEnglish": "Beni",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-myagdi",
+    "wardCount": 10,
+    "sourceCode": "40406"
+  },
+  {
+    "id": "lg-40501",
+    "name": "मादी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-kaski",
+    "wardCount": 12,
+    "sourceCode": "40501"
+  },
+  {
+    "id": "lg-40502",
+    "name": "माछापुच्छ्रे गाउँपालिका",
+    "nameEnglish": "Machhapuchchhre",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-kaski",
+    "wardCount": 9,
+    "sourceCode": "40502"
+  },
+  {
+    "id": "lg-40503",
+    "name": "अन्नपूर्ण गाउँपालिका",
+    "nameEnglish": "Annapurna",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-kaski",
+    "wardCount": 11,
+    "sourceCode": "40503"
+  },
+  {
+    "id": "lg-40504",
+    "name": "पोखरा महानगरपालिका",
+    "nameEnglish": "Pokhara",
+    "localGovernmentType": "METROPOLITAN_CITY",
+    "parentLocationId": "district-gandaki-kaski",
+    "wardCount": 33,
+    "sourceCode": "40504"
+  },
+  {
+    "id": "lg-40505",
+    "name": "रूपा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-kaski",
+    "wardCount": 7,
+    "sourceCode": "40505"
+  },
+  {
+    "id": "lg-40601",
+    "name": "दोर्दी गाउँपालिका",
+    "nameEnglish": "Dordi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 9,
+    "sourceCode": "40601"
+  },
+  {
+    "id": "lg-40602",
+    "name": "मस्र्याङ्गदी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 9,
+    "sourceCode": "40602"
+  },
+  {
+    "id": "lg-40603",
+    "name": "क्ब्होलासोथार गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 9,
+    "sourceCode": "40603"
+  },
+  {
+    "id": "lg-40604",
+    "name": "मध्यनेपाल नगरपालिका",
+    "nameEnglish": "MadhyaNepal",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 10,
+    "sourceCode": "40604"
+  },
+  {
+    "id": "lg-40605",
+    "name": "बेंसीशहर नगरापालिका",
+    "nameEnglish": null,
+    "localGovernmentType": null,
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 11,
+    "sourceCode": "40605"
+  },
+  {
+    "id": "lg-40606",
+    "name": "सुन्दरबजार नगरपालिका",
+    "nameEnglish": "Sundarbazar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 11,
+    "sourceCode": "40606"
+  },
+  {
+    "id": "lg-40607",
+    "name": "राईनास नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 10,
+    "sourceCode": "40607"
+  },
+  {
+    "id": "lg-40608",
+    "name": "दुधपोखरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-lamjung",
+    "wardCount": 6,
+    "sourceCode": "40608"
+  },
+  {
+    "id": "lg-40701",
+    "name": "भानु नगरपालिका",
+    "nameEnglish": "Bhanu",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 13,
+    "sourceCode": "40701"
+  },
+  {
+    "id": "lg-40702",
+    "name": "ब्यास नगरपालिका",
+    "nameEnglish": "Byas",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 14,
+    "sourceCode": "40702"
+  },
+  {
+    "id": "lg-40703",
+    "name": "म्याग्दे गाउँपालिका",
+    "nameEnglish": "Myagde",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 7,
+    "sourceCode": "40703"
+  },
+  {
+    "id": "lg-40704",
+    "name": "शुक्लागण्डकी नगरपालिका",
+    "nameEnglish": "Shuklagandaki",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 12,
+    "sourceCode": "40704"
+  },
+  {
+    "id": "lg-40705",
+    "name": "भिमाद नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 9,
+    "sourceCode": "40705"
+  },
+  {
+    "id": "lg-40706",
+    "name": "घिरिङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 5,
+    "sourceCode": "40706"
+  },
+  {
+    "id": "lg-40707",
+    "name": "ऋषिङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 8,
+    "sourceCode": "40707"
+  },
+  {
+    "id": "lg-40708",
+    "name": "देवघाट गाउँपालिका",
+    "nameEnglish": "Devghat",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 5,
+    "sourceCode": "40708"
+  },
+  {
+    "id": "lg-40709",
+    "name": "बन्दिपुर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 6,
+    "sourceCode": "40709"
+  },
+  {
+    "id": "lg-40710",
+    "name": "आँबुखैरेनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-tanahu",
+    "wardCount": 6,
+    "sourceCode": "40710"
+  },
+  {
+    "id": "lg-40801",
+    "name": "गैडाकोट नगरपालिका",
+    "nameEnglish": "Gaidakot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 18,
+    "sourceCode": "40801"
+  },
+  {
+    "id": "lg-40802",
+    "name": "बुलिङ्गटार गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 6,
+    "sourceCode": "40802"
+  },
+  {
+    "id": "lg-40803",
+    "name": "बौदीकाली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 6,
+    "sourceCode": "40803"
+  },
+  {
+    "id": "lg-40804",
+    "name": "हुप्सेकोट गाउँपालिका",
+    "nameEnglish": "Hupsekot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 6,
+    "sourceCode": "40804"
+  },
+  {
+    "id": "lg-40805",
+    "name": "देवचुली नगरपालिका",
+    "nameEnglish": "Devchuli",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 17,
+    "sourceCode": "40805"
+  },
+  {
+    "id": "lg-40806",
+    "name": "कावासोती नगरपालिका",
+    "nameEnglish": "Kawasoti",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 17,
+    "sourceCode": "40806"
+  },
+  {
+    "id": "lg-40807",
+    "name": "मध्यबिन्दु नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 15,
+    "sourceCode": "40807"
+  },
+  {
+    "id": "lg-40808",
+    "name": "बिनयी त्रिवेणी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-nawalparari-east",
+    "wardCount": 7,
+    "sourceCode": "40808"
+  },
+  {
+    "id": "lg-40901",
+    "name": "पुतलीबजार नगरपालिका",
+    "nameEnglish": "Putalibazar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 14,
+    "sourceCode": "40901"
+  },
+  {
+    "id": "lg-40902",
+    "name": "फेदीखोला गाउँपालिका",
+    "nameEnglish": "Phedikhola",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 5,
+    "sourceCode": "40902"
+  },
+  {
+    "id": "lg-40903",
+    "name": "आँधिखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 6,
+    "sourceCode": "40903"
+  },
+  {
+    "id": "lg-40904",
+    "name": "अर्जुनचौपारी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 6,
+    "sourceCode": "40904"
+  },
+  {
+    "id": "lg-40905",
+    "name": "भीरकोट नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 9,
+    "sourceCode": "40905"
+  },
+  {
+    "id": "lg-40906",
+    "name": "बिरुवा गाउँपालिका",
+    "nameEnglish": "Biruwa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 8,
+    "sourceCode": "40906"
+  },
+  {
+    "id": "lg-40907",
+    "name": "हरिनास गाउँपालिका",
+    "nameEnglish": "Harinas",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 7,
+    "sourceCode": "40907"
+  },
+  {
+    "id": "lg-40908",
+    "name": "चापाकोट नगरपालिका",
+    "nameEnglish": "Chapakot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 10,
+    "sourceCode": "40908"
+  },
+  {
+    "id": "lg-40909",
+    "name": "वालिङ्ग नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 14,
+    "sourceCode": "40909"
+  },
+  {
+    "id": "lg-40910",
+    "name": "गल्याङ नगरपालिका",
+    "nameEnglish": "Galyang",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 11,
+    "sourceCode": "40910"
+  },
+  {
+    "id": "lg-40911",
+    "name": "कालीगण्डकी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-syangja",
+    "wardCount": 7,
+    "sourceCode": "40911"
+  },
+  {
+    "id": "lg-41001",
+    "name": "मोदी गाउँपालिका",
+    "nameEnglish": "Modi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 8,
+    "sourceCode": "41001"
+  },
+  {
+    "id": "lg-41002",
+    "name": "जलजला गाउँपालिका",
+    "nameEnglish": "Jaljala",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 9,
+    "sourceCode": "41002"
+  },
+  {
+    "id": "lg-41003",
+    "name": "कुश्मा नगरपालिका",
+    "nameEnglish": "Kushma",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 14,
+    "sourceCode": "41003"
+  },
+  {
+    "id": "lg-41004",
+    "name": "फलेबास नगरपालिका",
+    "nameEnglish": "Phalebas",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 11,
+    "sourceCode": "41004"
+  },
+  {
+    "id": "lg-41005",
+    "name": "महाशिला गाउँपालिका",
+    "nameEnglish": "Mahashila",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 6,
+    "sourceCode": "41005"
+  },
+  {
+    "id": "lg-41006",
+    "name": "बिहादी गाउँपालिका",
+    "nameEnglish": "Bihadi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 6,
+    "sourceCode": "41006"
+  },
+  {
+    "id": "lg-41007",
+    "name": "पैयुं गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-parbat",
+    "wardCount": 7,
+    "sourceCode": "41007"
+  },
+  {
+    "id": "lg-41101",
+    "name": "बाग्लुङ्ग नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 14,
+    "sourceCode": "41101"
+  },
+  {
+    "id": "lg-41102",
+    "name": "काठेखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 8,
+    "sourceCode": "41102"
+  },
+  {
+    "id": "lg-41103",
+    "name": "ताराखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 5,
+    "sourceCode": "41103"
+  },
+  {
+    "id": "lg-41104",
+    "name": "तमानखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 6,
+    "sourceCode": "41104"
+  },
+  {
+    "id": "lg-41105",
+    "name": "ढोरपाटन नगरपालिका",
+    "nameEnglish": "Dhorpatan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 9,
+    "sourceCode": "41105"
+  },
+  {
+    "id": "lg-41106",
+    "name": "निसीखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 7,
+    "sourceCode": "41106"
+  },
+  {
+    "id": "lg-41107",
+    "name": "बडिगाड गाउँपालिका",
+    "nameEnglish": "Badigad",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 10,
+    "sourceCode": "41107"
+  },
+  {
+    "id": "lg-41108",
+    "name": "गल्कोट नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 11,
+    "sourceCode": "41108"
+  },
+  {
+    "id": "lg-41109",
+    "name": "बरेङ गाउँपालिका",
+    "nameEnglish": "Bareng",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 5,
+    "sourceCode": "41109"
+  },
+  {
+    "id": "lg-41110",
+    "name": "जैमिनी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-gandaki-baglung",
+    "wardCount": 10,
+    "sourceCode": "41110"
+  },
+  {
+    "id": "lg-50101",
+    "name": "पुथा उत्तरगंगा गाउँपालिका",
+    "nameEnglish": "Putha Uttarganga",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rukum-east",
+    "wardCount": 14,
+    "sourceCode": "50101"
+  },
+  {
+    "id": "lg-50102",
+    "name": "सिस्ने गाउँपालिका",
+    "nameEnglish": "Sisne",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rukum-east",
+    "wardCount": 8,
+    "sourceCode": "50102"
+  },
+  {
+    "id": "lg-50103",
+    "name": "भूमे गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rukum-east",
+    "wardCount": 9,
+    "sourceCode": "50103"
+  },
+  {
+    "id": "lg-50201",
+    "name": "सुनछहरी गाउँपालिका",
+    "nameEnglish": "Sunchhahari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 7,
+    "sourceCode": "50201"
+  },
+  {
+    "id": "lg-50202",
+    "name": "थबाङ्ग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 5,
+    "sourceCode": "50202"
+  },
+  {
+    "id": "lg-50203",
+    "name": "परिवर्तन गाउँपालिका",
+    "nameEnglish": "Pariwartan",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 6,
+    "sourceCode": "50203"
+  },
+  {
+    "id": "lg-50204",
+    "name": "ग&zwnj;गादेव गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 7,
+    "sourceCode": "50204"
+  },
+  {
+    "id": "lg-50205",
+    "name": "माडी गाउँपालिका",
+    "nameEnglish": "Madi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 6,
+    "sourceCode": "50205"
+  },
+  {
+    "id": "lg-50206",
+    "name": "त्रिवेणी गाउँपालिका",
+    "nameEnglish": "Tribeni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 7,
+    "sourceCode": "50206"
+  },
+  {
+    "id": "lg-50207",
+    "name": "रोल्पा नगरपालिका",
+    "nameEnglish": "Rolpa",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 10,
+    "sourceCode": "50207"
+  },
+  {
+    "id": "lg-50208",
+    "name": "रुन्टीगढी गाउँपालिका",
+    "nameEnglish": "Runtigadi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 9,
+    "sourceCode": "50208"
+  },
+  {
+    "id": "lg-50209",
+    "name": "सुनिल स्मृति गाउँपालिका",
+    "nameEnglish": "Sunil Smriti",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 8,
+    "sourceCode": "50209"
+  },
+  {
+    "id": "lg-50210",
+    "name": "लुङ्ग्री गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rolpa",
+    "wardCount": 7,
+    "sourceCode": "50210"
+  },
+  {
+    "id": "lg-50301",
+    "name": "गौमुखी गाउँपालिका",
+    "nameEnglish": "Gaumukhi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 7,
+    "sourceCode": "50301"
+  },
+  {
+    "id": "lg-50302",
+    "name": "नौबहिनी गाउँपालिका",
+    "nameEnglish": "Naubahini",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 8,
+    "sourceCode": "50302"
+  },
+  {
+    "id": "lg-50303",
+    "name": "झिमरुक गाउँपालिका",
+    "nameEnglish": "Jhimruk",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 8,
+    "sourceCode": "50303"
+  },
+  {
+    "id": "lg-50304",
+    "name": "प्यूठान नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 10,
+    "sourceCode": "50304"
+  },
+  {
+    "id": "lg-50305",
+    "name": "स्वर्गद्धारी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 9,
+    "sourceCode": "50305"
+  },
+  {
+    "id": "lg-50306",
+    "name": "माण्डवी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 5,
+    "sourceCode": "50306"
+  },
+  {
+    "id": "lg-50307",
+    "name": "मल्लरानी गाउँपालिका",
+    "nameEnglish": "Mallarani",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 5,
+    "sourceCode": "50307"
+  },
+  {
+    "id": "lg-50308",
+    "name": "ऐरावती गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 6,
+    "sourceCode": "50308"
+  },
+  {
+    "id": "lg-50309",
+    "name": "सरुमारानी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-pyuthan",
+    "wardCount": 6,
+    "sourceCode": "50309"
+  },
+  {
+    "id": "lg-50401",
+    "name": "कालिगण्डकी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 7,
+    "sourceCode": "50401"
+  },
+  {
+    "id": "lg-50402",
+    "name": "सत्यवती गाउँपालिका",
+    "nameEnglish": "Satyawati",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 8,
+    "sourceCode": "50402"
+  },
+  {
+    "id": "lg-50403",
+    "name": "चन्द्रकोट गाउँपालिका",
+    "nameEnglish": "Chandrakot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 8,
+    "sourceCode": "50403"
+  },
+  {
+    "id": "lg-50404",
+    "name": "मुसिकोट नगरपालिका",
+    "nameEnglish": "Musikot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 9,
+    "sourceCode": "50404"
+  },
+  {
+    "id": "lg-50405",
+    "name": "ईस्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 6,
+    "sourceCode": "50405"
+  },
+  {
+    "id": "lg-50406",
+    "name": "मालिका गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 8,
+    "sourceCode": "50406"
+  },
+  {
+    "id": "lg-50407",
+    "name": "मदाने गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 7,
+    "sourceCode": "50407"
+  },
+  {
+    "id": "lg-50408",
+    "name": "धुर्कोट गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 7,
+    "sourceCode": "50408"
+  },
+  {
+    "id": "lg-50409",
+    "name": "रेसुङ्गा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 14,
+    "sourceCode": "50409"
+  },
+  {
+    "id": "lg-50410",
+    "name": "गुल्मी दरबार गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 7,
+    "sourceCode": "50410"
+  },
+  {
+    "id": "lg-50411",
+    "name": "छत्रकोट गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 6,
+    "sourceCode": "50411"
+  },
+  {
+    "id": "lg-50412",
+    "name": "रूरू क्षेत्र गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-gulmi",
+    "wardCount": 6,
+    "sourceCode": "50412"
+  },
+  {
+    "id": "lg-50501",
+    "name": "छत्रदेव गाउँपालिका",
+    "nameEnglish": "Chhatradev",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 8,
+    "sourceCode": "50501"
+  },
+  {
+    "id": "lg-50502",
+    "name": "मालारानी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 9,
+    "sourceCode": "50502"
+  },
+  {
+    "id": "lg-50503",
+    "name": "भुमिकास्थान नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 10,
+    "sourceCode": "50503"
+  },
+  {
+    "id": "lg-50504",
+    "name": "सन्धिखर्क नगरपालिका",
+    "nameEnglish": "Sandhikharka",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 12,
+    "sourceCode": "50504"
+  },
+  {
+    "id": "lg-50505",
+    "name": "पाणिनी गाउँपालिका",
+    "nameEnglish": "Panini",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 8,
+    "sourceCode": "50505"
+  },
+  {
+    "id": "lg-50506",
+    "name": "शितगंगा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-arghakhanchi",
+    "wardCount": 14,
+    "sourceCode": "50506"
+  },
+  {
+    "id": "lg-50601",
+    "name": "रामपुर नगरपालिका",
+    "nameEnglish": "Rampur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 10,
+    "sourceCode": "50601"
+  },
+  {
+    "id": "lg-50602",
+    "name": "पुर्वखोला गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 6,
+    "sourceCode": "50602"
+  },
+  {
+    "id": "lg-50603",
+    "name": "रम्भा गाउँपालिका",
+    "nameEnglish": "Rambha",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 5,
+    "sourceCode": "50603"
+  },
+  {
+    "id": "lg-50604",
+    "name": "बगनासकाली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 9,
+    "sourceCode": "50604"
+  },
+  {
+    "id": "lg-50605",
+    "name": "तानसेन नगरपालिका",
+    "nameEnglish": "Tansen",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 14,
+    "sourceCode": "50605"
+  },
+  {
+    "id": "lg-50606",
+    "name": "रिब्दीकोट गाउँपालिका",
+    "nameEnglish": "Ribdikot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 8,
+    "sourceCode": "50606"
+  },
+  {
+    "id": "lg-50607",
+    "name": "रैनादेवी छहरा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 8,
+    "sourceCode": "50607"
+  },
+  {
+    "id": "lg-50608",
+    "name": "तिनाउ गाउँपालिका",
+    "nameEnglish": "Tinau",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 6,
+    "sourceCode": "50608"
+  },
+  {
+    "id": "lg-50609",
+    "name": "माथागढी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 8,
+    "sourceCode": "50609"
+  },
+  {
+    "id": "lg-50610",
+    "name": "निस्दी गाउँपालिका",
+    "nameEnglish": "Nisdi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-palpa",
+    "wardCount": 7,
+    "sourceCode": "50610"
+  },
+  {
+    "id": "lg-50701",
+    "name": "बर्दघाट नगरपालिका",
+    "nameEnglish": "Bardaghat",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 16,
+    "sourceCode": "50701"
+  },
+  {
+    "id": "lg-50702",
+    "name": "सुनवल नगरपालिका",
+    "nameEnglish": "Sunwal",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 13,
+    "sourceCode": "50702"
+  },
+  {
+    "id": "lg-50703",
+    "name": "रामग्राम नगरपालिका",
+    "nameEnglish": "Ramgram",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 18,
+    "sourceCode": "50703"
+  },
+  {
+    "id": "lg-50704",
+    "name": "पाल्हीनन्दन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 6,
+    "sourceCode": "50704"
+  },
+  {
+    "id": "lg-50705",
+    "name": "सरावल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 7,
+    "sourceCode": "50705"
+  },
+  {
+    "id": "lg-50706",
+    "name": "प्रतापपुर गाउँपालिका",
+    "nameEnglish": "Pratappur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 9,
+    "sourceCode": "50706"
+  },
+  {
+    "id": "lg-50707",
+    "name": "सुस्ता गाउँपालिका",
+    "nameEnglish": "Susta",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-nawalparasi-west",
+    "wardCount": 5,
+    "sourceCode": "50707"
+  },
+  {
+    "id": "lg-50801",
+    "name": "देबदह नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 12,
+    "sourceCode": "50801"
+  },
+  {
+    "id": "lg-50802",
+    "name": "बुटवल उपमहानगरपालिका",
+    "nameEnglish": "Butwal",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 19,
+    "sourceCode": "50802"
+  },
+  {
+    "id": "lg-50803",
+    "name": "सैनामैना नगरपालिका",
+    "nameEnglish": "Sainamaina",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 11,
+    "sourceCode": "50803"
+  },
+  {
+    "id": "lg-50804",
+    "name": "कन्चन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 5,
+    "sourceCode": "50804"
+  },
+  {
+    "id": "lg-50805",
+    "name": "गैडहवा गाउँपालिका",
+    "nameEnglish": "Gaidahawa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 9,
+    "sourceCode": "50805"
+  },
+  {
+    "id": "lg-50806",
+    "name": "सुद्धोधन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50806"
+  },
+  {
+    "id": "lg-50807",
+    "name": "सियारी गाउँपालिका",
+    "nameEnglish": "Siyari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50807"
+  },
+  {
+    "id": "lg-50808",
+    "name": "तिलोत्तमा नगरापालिका",
+    "nameEnglish": null,
+    "localGovernmentType": null,
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 17,
+    "sourceCode": "50808"
+  },
+  {
+    "id": "lg-50809",
+    "name": "ओमसतिया गाउँपालिका",
+    "nameEnglish": "Omsatiya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 6,
+    "sourceCode": "50809"
+  },
+  {
+    "id": "lg-50810",
+    "name": "रोहिणी गाउँपालिका",
+    "nameEnglish": "Rohini",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50810"
+  },
+  {
+    "id": "lg-50811",
+    "name": "सिद्धार्थनगर नगरपालिका",
+    "nameEnglish": "Siddharthanagar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 13,
+    "sourceCode": "50811"
+  },
+  {
+    "id": "lg-50812",
+    "name": "मायादेवी गाउँपालिका",
+    "nameEnglish": "Mayadevi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 8,
+    "sourceCode": "50812"
+  },
+  {
+    "id": "lg-50813",
+    "name": "लुम्बिनी साँस्कृतिक नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 13,
+    "sourceCode": "50813"
+  },
+  {
+    "id": "lg-50814",
+    "name": "कोटहीमाई गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50814"
+  },
+  {
+    "id": "lg-50815",
+    "name": "सम्मरीमाई गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50815"
+  },
+  {
+    "id": "lg-50816",
+    "name": "मर्चवारी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-rupandehi",
+    "wardCount": 7,
+    "sourceCode": "50816"
+  },
+  {
+    "id": "lg-50901",
+    "name": "बाणगंगा नगरपालिका",
+    "nameEnglish": "Banganga",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 11,
+    "sourceCode": "50901"
+  },
+  {
+    "id": "lg-50902",
+    "name": "बुद्धभूमी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 10,
+    "sourceCode": "50902"
+  },
+  {
+    "id": "lg-50903",
+    "name": "शिवराज नगरपालिका",
+    "nameEnglish": "Shivaraj",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 11,
+    "sourceCode": "50903"
+  },
+  {
+    "id": "lg-50904",
+    "name": "बिजयनगर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 7,
+    "sourceCode": "50904"
+  },
+  {
+    "id": "lg-50905",
+    "name": "कृष्णनगर नगरपालिका",
+    "nameEnglish": "Krishnanagar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 12,
+    "sourceCode": "50905"
+  },
+  {
+    "id": "lg-50906",
+    "name": "महाराजगन्ज नगरपालिका",
+    "nameEnglish": "Maharajgunj",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 11,
+    "sourceCode": "50906"
+  },
+  {
+    "id": "lg-50907",
+    "name": "कपिलबस्तु नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 12,
+    "sourceCode": "50907"
+  },
+  {
+    "id": "lg-50908",
+    "name": "यसोधरा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 8,
+    "sourceCode": "50908"
+  },
+  {
+    "id": "lg-50909",
+    "name": "मायादेवी गाउँपालिका",
+    "nameEnglish": "Mayadevi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 8,
+    "sourceCode": "50909"
+  },
+  {
+    "id": "lg-50910",
+    "name": "शुद्धोधन गाउँपालिका",
+    "nameEnglish": "Suddhodhan",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-kapilbastu",
+    "wardCount": 6,
+    "sourceCode": "50910"
+  },
+  {
+    "id": "lg-51001",
+    "name": "बंगलाचुली गाउँपालिका",
+    "nameEnglish": "Banglachuli",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 8,
+    "sourceCode": "51001"
+  },
+  {
+    "id": "lg-51002",
+    "name": "घोराही उपमहानगरपालिका",
+    "nameEnglish": "Ghorahi",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 19,
+    "sourceCode": "51002"
+  },
+  {
+    "id": "lg-51003",
+    "name": "तुल्सीपुर उपमहानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 19,
+    "sourceCode": "51003"
+  },
+  {
+    "id": "lg-51004",
+    "name": "शान्तिनगर गाउँपालिका",
+    "nameEnglish": "Shantinagar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 7,
+    "sourceCode": "51004"
+  },
+  {
+    "id": "lg-51005",
+    "name": "बबई गाउँपालिका",
+    "nameEnglish": "Babai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 7,
+    "sourceCode": "51005"
+  },
+  {
+    "id": "lg-51006",
+    "name": "दंगीशरण गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 7,
+    "sourceCode": "51006"
+  },
+  {
+    "id": "lg-51007",
+    "name": "लमही नगरपालिका",
+    "nameEnglish": "Lamahi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 9,
+    "sourceCode": "51007"
+  },
+  {
+    "id": "lg-51008",
+    "name": "राप्ती गाउँपालिका",
+    "nameEnglish": "Rapti",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 9,
+    "sourceCode": "51008"
+  },
+  {
+    "id": "lg-51009",
+    "name": "गढवा गाउँपालिका",
+    "nameEnglish": "Gadhawa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 8,
+    "sourceCode": "51009"
+  },
+  {
+    "id": "lg-51010",
+    "name": "राजपुर गाउँपालिका",
+    "nameEnglish": "Rajpur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-dang",
+    "wardCount": 7,
+    "sourceCode": "51010"
+  },
+  {
+    "id": "lg-51101",
+    "name": "राप्ती सोनारी गाउँपालिका",
+    "nameEnglish": "Rapti Sonari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 9,
+    "sourceCode": "51101"
+  },
+  {
+    "id": "lg-51102",
+    "name": "कोहलपुर नगरपालिका",
+    "nameEnglish": "Kohalpur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 15,
+    "sourceCode": "51102"
+  },
+  {
+    "id": "lg-51103",
+    "name": "बैजनाथ गाउँपालिका",
+    "nameEnglish": "Baijanath",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 8,
+    "sourceCode": "51103"
+  },
+  {
+    "id": "lg-51104",
+    "name": "खजुरा गाउँपालिका",
+    "nameEnglish": "Khajura",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 8,
+    "sourceCode": "51104"
+  },
+  {
+    "id": "lg-51105",
+    "name": "जानकी गाउँपालिका",
+    "nameEnglish": "Janki",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 6,
+    "sourceCode": "51105"
+  },
+  {
+    "id": "lg-51106",
+    "name": "नेपालगञ्ज उपमहानगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 23,
+    "sourceCode": "51106"
+  },
+  {
+    "id": "lg-51107",
+    "name": "डुडुवा गाउँपालिका",
+    "nameEnglish": "Duduwa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 6,
+    "sourceCode": "51107"
+  },
+  {
+    "id": "lg-51108",
+    "name": "नरैनापुर गाउँपालिका",
+    "nameEnglish": "Narainapur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-banke",
+    "wardCount": 6,
+    "sourceCode": "51108"
+  },
+  {
+    "id": "lg-51201",
+    "name": "बाँसगढी नगरपालिका",
+    "nameEnglish": "Bansagadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 9,
+    "sourceCode": "51201"
+  },
+  {
+    "id": "lg-51202",
+    "name": "बारबर्दिया नगरपालिका",
+    "nameEnglish": "Barbardiya",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 11,
+    "sourceCode": "51202"
+  },
+  {
+    "id": "lg-51203",
+    "name": "ठाकुरबाबा नगरपालिका",
+    "nameEnglish": "Thakurbaba",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 9,
+    "sourceCode": "51203"
+  },
+  {
+    "id": "lg-51204",
+    "name": "गेरुवा गाउँपालिका",
+    "nameEnglish": "Geruwa",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 6,
+    "sourceCode": "51204"
+  },
+  {
+    "id": "lg-51205",
+    "name": "राजापुर नगरपालिका",
+    "nameEnglish": "Rajapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 10,
+    "sourceCode": "51205"
+  },
+  {
+    "id": "lg-51206",
+    "name": "मधुवन नगरपालिका",
+    "nameEnglish": "Madhuwan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 9,
+    "sourceCode": "51206"
+  },
+  {
+    "id": "lg-51207",
+    "name": "गुलरीया नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 12,
+    "sourceCode": "51207"
+  },
+  {
+    "id": "lg-51208",
+    "name": "बढैयाताल गाउँपालिका",
+    "nameEnglish": "Badhaiyatal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-lumbini-bardiya",
+    "wardCount": 9,
+    "sourceCode": "51208"
+  },
+  {
+    "id": "lg-60101",
+    "name": "डोल्पो बुद्ध गाउँपालिका",
+    "nameEnglish": "Dolpo Buddha",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 6,
+    "sourceCode": "60101"
+  },
+  {
+    "id": "lg-60102",
+    "name": "शे फोक्सुण्डो गाउँपालिका",
+    "nameEnglish": "Shey Phoksundo",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 9,
+    "sourceCode": "60102"
+  },
+  {
+    "id": "lg-60103",
+    "name": "जगदुल्ला गाउँपालिका",
+    "nameEnglish": "Jagadulla",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 6,
+    "sourceCode": "60103"
+  },
+  {
+    "id": "lg-60104",
+    "name": "मुड्केचुला गाउँपालिका",
+    "nameEnglish": "Mudkechula",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 9,
+    "sourceCode": "60104"
+  },
+  {
+    "id": "lg-60105",
+    "name": "त्रिपुरासुन्दरी नगरपालिका",
+    "nameEnglish": "Tripurasundari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 11,
+    "sourceCode": "60105"
+  },
+  {
+    "id": "lg-60106",
+    "name": "ठुलीभेरी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 11,
+    "sourceCode": "60106"
+  },
+  {
+    "id": "lg-60107",
+    "name": "काइके गाउँपालिका",
+    "nameEnglish": "Kaike",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 7,
+    "sourceCode": "60107"
+  },
+  {
+    "id": "lg-60108",
+    "name": "छार्का ताङसोङ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dolpa",
+    "wardCount": 6,
+    "sourceCode": "60108"
+  },
+  {
+    "id": "lg-60201",
+    "name": "मुगुमकार्मारोग गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-mugu",
+    "wardCount": 9,
+    "sourceCode": "60201"
+  },
+  {
+    "id": "lg-60202",
+    "name": "छायाँनाथ रारा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-mugu",
+    "wardCount": 14,
+    "sourceCode": "60202"
+  },
+  {
+    "id": "lg-60203",
+    "name": "सोरु गाउँपालिका",
+    "nameEnglish": "Soru",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-mugu",
+    "wardCount": 11,
+    "sourceCode": "60203"
+  },
+  {
+    "id": "lg-60204",
+    "name": "खत्याड गाउँपालिका",
+    "nameEnglish": "Khatyad",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-mugu",
+    "wardCount": 11,
+    "sourceCode": "60204"
+  },
+  {
+    "id": "lg-60301",
+    "name": "चंखेली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 6,
+    "sourceCode": "60301"
+  },
+  {
+    "id": "lg-60302",
+    "name": "खार्पुनाथ गाउँपालिका",
+    "nameEnglish": "Kharpunath",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 5,
+    "sourceCode": "60302"
+  },
+  {
+    "id": "lg-60303",
+    "name": "सिमकोट गाउँपालिका",
+    "nameEnglish": "Simkot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 8,
+    "sourceCode": "60303"
+  },
+  {
+    "id": "lg-60304",
+    "name": "नाम्खा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 6,
+    "sourceCode": "60304"
+  },
+  {
+    "id": "lg-60305",
+    "name": "सर्केगाड गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 8,
+    "sourceCode": "60305"
+  },
+  {
+    "id": "lg-60306",
+    "name": "अदानचुली गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 6,
+    "sourceCode": "60306"
+  },
+  {
+    "id": "lg-60307",
+    "name": "ताँजाकोट गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-humla",
+    "wardCount": 5,
+    "sourceCode": "60307"
+  },
+  {
+    "id": "lg-60401",
+    "name": "पातारासी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 7,
+    "sourceCode": "60401"
+  },
+  {
+    "id": "lg-60402",
+    "name": "कनका सुन्दरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 8,
+    "sourceCode": "60402"
+  },
+  {
+    "id": "lg-60403",
+    "name": "सिंजा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 6,
+    "sourceCode": "60403"
+  },
+  {
+    "id": "lg-60404",
+    "name": "चन्दननाथ नगरपालिका",
+    "nameEnglish": "Chandannath",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 10,
+    "sourceCode": "60404"
+  },
+  {
+    "id": "lg-60405",
+    "name": "गुठिचौर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 5,
+    "sourceCode": "60405"
+  },
+  {
+    "id": "lg-60406",
+    "name": "तातोपानी गाउँपालिका",
+    "nameEnglish": "Tatopani",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 8,
+    "sourceCode": "60406"
+  },
+  {
+    "id": "lg-60407",
+    "name": "तिला गाउँपालिका",
+    "nameEnglish": "Tila",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 9,
+    "sourceCode": "60407"
+  },
+  {
+    "id": "lg-60408",
+    "name": "हिमा गाउँपालिका",
+    "nameEnglish": "Hima",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jumla",
+    "wardCount": 7,
+    "sourceCode": "60408"
+  },
+  {
+    "id": "lg-60501",
+    "name": "पलाता गाउँपालिका",
+    "nameEnglish": "Palata",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 9,
+    "sourceCode": "60501"
+  },
+  {
+    "id": "lg-60502",
+    "name": "पचाल झरना गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 9,
+    "sourceCode": "60502"
+  },
+  {
+    "id": "lg-60503",
+    "name": "रास्कोट नगरपालिका",
+    "nameEnglish": "Raskot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 9,
+    "sourceCode": "60503"
+  },
+  {
+    "id": "lg-60504",
+    "name": "सान्नी त्रिवेणी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 9,
+    "sourceCode": "60504"
+  },
+  {
+    "id": "lg-60505",
+    "name": "नरहरिनाथ गाउँपालिका",
+    "nameEnglish": "Naraharinath",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 9,
+    "sourceCode": "60505"
+  },
+  {
+    "id": "lg-60506",
+    "name": "खाँडाचक्र नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 11,
+    "sourceCode": "60506"
+  },
+  {
+    "id": "lg-60507",
+    "name": "तिलागुफा नगरपालिका",
+    "nameEnglish": "Tilagufa",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 11,
+    "sourceCode": "60507"
+  },
+  {
+    "id": "lg-60508",
+    "name": "महावै गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 7,
+    "sourceCode": "60508"
+  },
+  {
+    "id": "lg-60509",
+    "name": "शुभ कालीका गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-kalikot",
+    "wardCount": 8,
+    "sourceCode": "60509"
+  },
+  {
+    "id": "lg-60601",
+    "name": "नौमुले गाउँपालिका",
+    "nameEnglish": "Naumule",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 8,
+    "sourceCode": "60601"
+  },
+  {
+    "id": "lg-60602",
+    "name": "महाबु गाउँपालिका",
+    "nameEnglish": "Mahabu",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 6,
+    "sourceCode": "60602"
+  },
+  {
+    "id": "lg-60603",
+    "name": "भैरवी गाउँपालिका",
+    "nameEnglish": "Bhairabi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 7,
+    "sourceCode": "60603"
+  },
+  {
+    "id": "lg-60604",
+    "name": "ठाँटीकाँध गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 6,
+    "sourceCode": "60604"
+  },
+  {
+    "id": "lg-60605",
+    "name": "आठबीस नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 9,
+    "sourceCode": "60605"
+  },
+  {
+    "id": "lg-60606",
+    "name": "चामुण्डा बिन्द्रासैनी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 9,
+    "sourceCode": "60606"
+  },
+  {
+    "id": "lg-60607",
+    "name": "दुल्लु नगरपालिका",
+    "nameEnglish": "Dullu",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 13,
+    "sourceCode": "60607"
+  },
+  {
+    "id": "lg-60608",
+    "name": "नारायण नगरपालिका",
+    "nameEnglish": "Narayan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 11,
+    "sourceCode": "60608"
+  },
+  {
+    "id": "lg-60609",
+    "name": "भगवतीमाई गाउँपालिका",
+    "nameEnglish": "Bhagawatimai",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 7,
+    "sourceCode": "60609"
+  },
+  {
+    "id": "lg-60610",
+    "name": "डुङ्गेश्वर गाउँपालिका",
+    "nameEnglish": "Dungeshwor",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 6,
+    "sourceCode": "60610"
+  },
+  {
+    "id": "lg-60611",
+    "name": "गुराँस गाउँपालिका",
+    "nameEnglish": "Gurans",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-dailekh",
+    "wardCount": 8,
+    "sourceCode": "60611"
+  },
+  {
+    "id": "lg-60701",
+    "name": "बारेकोट गाउँपालिका",
+    "nameEnglish": "Barekot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 9,
+    "sourceCode": "60701"
+  },
+  {
+    "id": "lg-60702",
+    "name": "कुसे गाउँपालिका",
+    "nameEnglish": "Kuse",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 9,
+    "sourceCode": "60702"
+  },
+  {
+    "id": "lg-60703",
+    "name": "जुनीचाँदे गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 11,
+    "sourceCode": "60703"
+  },
+  {
+    "id": "lg-60704",
+    "name": "छेडागाड नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 13,
+    "sourceCode": "60704"
+  },
+  {
+    "id": "lg-60705",
+    "name": "शिवालय गाउँपालिका",
+    "nameEnglish": "Shiwalaya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 9,
+    "sourceCode": "60705"
+  },
+  {
+    "id": "lg-60706",
+    "name": "भेरीमालिका नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 13,
+    "sourceCode": "60706"
+  },
+  {
+    "id": "lg-60707",
+    "name": "नलगाड नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-jajarkot",
+    "wardCount": 13,
+    "sourceCode": "60707"
+  },
+  {
+    "id": "lg-60801",
+    "name": "आठबिसकोट नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 14,
+    "sourceCode": "60801"
+  },
+  {
+    "id": "lg-60802",
+    "name": "सानीभेरी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 11,
+    "sourceCode": "60802"
+  },
+  {
+    "id": "lg-60803",
+    "name": "बाँफिकोट गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 10,
+    "sourceCode": "60803"
+  },
+  {
+    "id": "lg-60804",
+    "name": "मुसिकोट नगरपालिका",
+    "nameEnglish": "Musikot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 14,
+    "sourceCode": "60804"
+  },
+  {
+    "id": "lg-60805",
+    "name": "त्रिवेणी गाउँपालिका",
+    "nameEnglish": "Tribeni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 10,
+    "sourceCode": "60805"
+  },
+  {
+    "id": "lg-60806",
+    "name": "चौरजहारी नगरपालिका",
+    "nameEnglish": "Chaurjahari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-rukum-west",
+    "wardCount": 14,
+    "sourceCode": "60806"
+  },
+  {
+    "id": "lg-60901",
+    "name": "दार्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 6,
+    "sourceCode": "60901"
+  },
+  {
+    "id": "lg-60902",
+    "name": "कुमाख गाउँपालिका",
+    "nameEnglish": "Kumakh",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 7,
+    "sourceCode": "60902"
+  },
+  {
+    "id": "lg-60903",
+    "name": "बनगाड कुपिण्डे नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 12,
+    "sourceCode": "60903"
+  },
+  {
+    "id": "lg-60904",
+    "name": "सिद्धकुमाख गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 5,
+    "sourceCode": "60904"
+  },
+  {
+    "id": "lg-60905",
+    "name": "बागचौर नगरपालिका",
+    "nameEnglish": "Bagchaur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 12,
+    "sourceCode": "60905"
+  },
+  {
+    "id": "lg-60906",
+    "name": "छत्रेश्वरी गाउँपालिका",
+    "nameEnglish": "Chhatreshwori",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 7,
+    "sourceCode": "60906"
+  },
+  {
+    "id": "lg-60907",
+    "name": "शारदा नगरपालिका",
+    "nameEnglish": "Sharada",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 15,
+    "sourceCode": "60907"
+  },
+  {
+    "id": "lg-60908",
+    "name": "कालिमाटी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 7,
+    "sourceCode": "60908"
+  },
+  {
+    "id": "lg-60909",
+    "name": "त्रिवेणी गाउँपालिका",
+    "nameEnglish": "Tribeni",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 6,
+    "sourceCode": "60909"
+  },
+  {
+    "id": "lg-60910",
+    "name": "कपुरकोट गाउँपालिका",
+    "nameEnglish": "Kapurkot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-salyan",
+    "wardCount": 6,
+    "sourceCode": "60910"
+  },
+  {
+    "id": "lg-61001",
+    "name": "सिम्ता गाउँपालिका",
+    "nameEnglish": "Simta",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 9,
+    "sourceCode": "61001"
+  },
+  {
+    "id": "lg-61002",
+    "name": "चिङ्गगाड गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 6,
+    "sourceCode": "61002"
+  },
+  {
+    "id": "lg-61003",
+    "name": "लेकबेशी नगरपालिका",
+    "nameEnglish": "Lekbeshi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 10,
+    "sourceCode": "61003"
+  },
+  {
+    "id": "lg-61004",
+    "name": "गुर्भाकोट नगरपालिका",
+    "nameEnglish": "Gurbhakot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 14,
+    "sourceCode": "61004"
+  },
+  {
+    "id": "lg-61005",
+    "name": "भेरीगंगा नगरपालिका",
+    "nameEnglish": "Bheriganga",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 13,
+    "sourceCode": "61005"
+  },
+  {
+    "id": "lg-61006",
+    "name": "बीरेन्द्रनगर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 16,
+    "sourceCode": "61006"
+  },
+  {
+    "id": "lg-61007",
+    "name": "बराहताल गाउँपालिका",
+    "nameEnglish": "Barahtal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 10,
+    "sourceCode": "61007"
+  },
+  {
+    "id": "lg-61008",
+    "name": "पञ्चपुरी नगरपालिका",
+    "nameEnglish": "Panchpuri",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 11,
+    "sourceCode": "61008"
+  },
+  {
+    "id": "lg-61009",
+    "name": "चौकुने गाउँपालिका",
+    "nameEnglish": "Chaukune",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-karnali-surkhet",
+    "wardCount": 10,
+    "sourceCode": "61009"
+  },
+  {
+    "id": "lg-70101",
+    "name": "हिमाली गाउँपालिका",
+    "nameEnglish": "Himali",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 7,
+    "sourceCode": "70101"
+  },
+  {
+    "id": "lg-70102",
+    "name": "गौमुल गाउँपालिका",
+    "nameEnglish": "Gaumul",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 6,
+    "sourceCode": "70102"
+  },
+  {
+    "id": "lg-70103",
+    "name": "बुढीनन्दा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 10,
+    "sourceCode": "70103"
+  },
+  {
+    "id": "lg-70104",
+    "name": "स्वामीकार्तिक खापर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 5,
+    "sourceCode": "70104"
+  },
+  {
+    "id": "lg-70105",
+    "name": "जगन्नाथ गाउँपालिका",
+    "nameEnglish": "Jagannath",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 6,
+    "sourceCode": "70105"
+  },
+  {
+    "id": "lg-70106",
+    "name": "बडिमालिका नगरपालिका",
+    "nameEnglish": "Badimalika",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 9,
+    "sourceCode": "70106"
+  },
+  {
+    "id": "lg-70107",
+    "name": "खप्तड छेडेदह गाउँपालिका",
+    "nameEnglish": "Khaptad Chhededaha",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 7,
+    "sourceCode": "70107"
+  },
+  {
+    "id": "lg-70108",
+    "name": "बुढीगंगा नगरपालिका",
+    "nameEnglish": "Budhiganga",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 10,
+    "sourceCode": "70108"
+  },
+  {
+    "id": "lg-70109",
+    "name": "त्रिवेणी नगरपालिका",
+    "nameEnglish": "Tribeni",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajura",
+    "wardCount": 9,
+    "sourceCode": "70109"
+  },
+  {
+    "id": "lg-70201",
+    "name": "साइपाल गाउँपालिका",
+    "nameEnglish": "SaiPaal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 5,
+    "sourceCode": "70201"
+  },
+  {
+    "id": "lg-70202",
+    "name": "बुंगल नगरपालिका",
+    "nameEnglish": "Bungal",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 11,
+    "sourceCode": "70202"
+  },
+  {
+    "id": "lg-70203",
+    "name": "सूर्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 5,
+    "sourceCode": "70203"
+  },
+  {
+    "id": "lg-70204",
+    "name": "तालकोट गाउँपालिका",
+    "nameEnglish": "Talkot",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 7,
+    "sourceCode": "70204"
+  },
+  {
+    "id": "lg-70205",
+    "name": "मष्टा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 7,
+    "sourceCode": "70205"
+  },
+  {
+    "id": "lg-70206",
+    "name": "जयपृथ्वी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 11,
+    "sourceCode": "70206"
+  },
+  {
+    "id": "lg-70207",
+    "name": "छबिस पाथिभरा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 7,
+    "sourceCode": "70207"
+  },
+  {
+    "id": "lg-70208",
+    "name": "दुर्गाथली गाउँपालिका",
+    "nameEnglish": "Durgathali",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 7,
+    "sourceCode": "70208"
+  },
+  {
+    "id": "lg-70209",
+    "name": "केदारस्युँ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 9,
+    "sourceCode": "70209"
+  },
+  {
+    "id": "lg-70210",
+    "name": "बित्थडचिर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 9,
+    "sourceCode": "70210"
+  },
+  {
+    "id": "lg-70211",
+    "name": "थलारा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 9,
+    "sourceCode": "70211"
+  },
+  {
+    "id": "lg-70212",
+    "name": "खप्तडछान्ना गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-bajhang",
+    "wardCount": 7,
+    "sourceCode": "70212"
+  },
+  {
+    "id": "lg-70301",
+    "name": "ब्याँस गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 6,
+    "sourceCode": "70301"
+  },
+  {
+    "id": "lg-70302",
+    "name": "दुहुँ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 5,
+    "sourceCode": "70302"
+  },
+  {
+    "id": "lg-70303",
+    "name": "महाकाली नगरपालिका",
+    "nameEnglish": "Mahakali",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 9,
+    "sourceCode": "70303"
+  },
+  {
+    "id": "lg-70304",
+    "name": "नौगाड गाउँपालिका",
+    "nameEnglish": "Naugad",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 6,
+    "sourceCode": "70304"
+  },
+  {
+    "id": "lg-70305",
+    "name": "अपिहिमाल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 6,
+    "sourceCode": "70305"
+  },
+  {
+    "id": "lg-70306",
+    "name": "मार्मा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 6,
+    "sourceCode": "70306"
+  },
+  {
+    "id": "lg-70307",
+    "name": "शैल्यशिखर नगरपालिका",
+    "nameEnglish": "Shailyashikhar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 9,
+    "sourceCode": "70307"
+  },
+  {
+    "id": "lg-70308",
+    "name": "मालिकार्जुन गाउँपालिका",
+    "nameEnglish": "Malikaarjun",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 8,
+    "sourceCode": "70308"
+  },
+  {
+    "id": "lg-70309",
+    "name": "लेकम गाउँपालिका",
+    "nameEnglish": "Lekam",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-darchula",
+    "wardCount": 6,
+    "sourceCode": "70309"
+  },
+  {
+    "id": "lg-70401",
+    "name": "डीलासैनी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 7,
+    "sourceCode": "70401"
+  },
+  {
+    "id": "lg-70402",
+    "name": "दोगडाकेदार गाउँपालिका",
+    "nameEnglish": "Dogadakedar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 8,
+    "sourceCode": "70402"
+  },
+  {
+    "id": "lg-70403",
+    "name": "पुचौंडी नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 10,
+    "sourceCode": "70403"
+  },
+  {
+    "id": "lg-70404",
+    "name": "सुर्नया गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 8,
+    "sourceCode": "70404"
+  },
+  {
+    "id": "lg-70405",
+    "name": "दशरथचन्द नगरपालिका",
+    "nameEnglish": "Dasharathchanda",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 11,
+    "sourceCode": "70405"
+  },
+  {
+    "id": "lg-70406",
+    "name": "पन्चेश्वर गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 6,
+    "sourceCode": "70406"
+  },
+  {
+    "id": "lg-70407",
+    "name": "शिवनाथ गाउँपालिका",
+    "nameEnglish": "Shivanath",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 6,
+    "sourceCode": "70407"
+  },
+  {
+    "id": "lg-70408",
+    "name": "मेलौली नगरपालिका",
+    "nameEnglish": "Melauli",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 9,
+    "sourceCode": "70408"
+  },
+  {
+    "id": "lg-70409",
+    "name": "पाटन नगरपालिका",
+    "nameEnglish": "Patan",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 10,
+    "sourceCode": "70409"
+  },
+  {
+    "id": "lg-70410",
+    "name": "सिगास गाउँपालिका",
+    "nameEnglish": "Sigas",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-baitadi",
+    "wardCount": 9,
+    "sourceCode": "70410"
+  },
+  {
+    "id": "lg-70501",
+    "name": "नवदुर्गा गाउँपालिका",
+    "nameEnglish": "Nawadurga",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 5,
+    "sourceCode": "70501"
+  },
+  {
+    "id": "lg-70502",
+    "name": "अमरगढी नगरपालिका",
+    "nameEnglish": "Amargadhi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 11,
+    "sourceCode": "70502"
+  },
+  {
+    "id": "lg-70503",
+    "name": "अजयमेरु गाउँपालिका",
+    "nameEnglish": "Ajaymeru",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 6,
+    "sourceCode": "70503"
+  },
+  {
+    "id": "lg-70504",
+    "name": "भागेश्वर गाउँपालिका",
+    "nameEnglish": "Bhageshwar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 5,
+    "sourceCode": "70504"
+  },
+  {
+    "id": "lg-70505",
+    "name": "परशुराम नगरपालिका",
+    "nameEnglish": "Parashuram",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 12,
+    "sourceCode": "70505"
+  },
+  {
+    "id": "lg-70506",
+    "name": "आलिताल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 8,
+    "sourceCode": "70506"
+  },
+  {
+    "id": "lg-70507",
+    "name": "गन्यापधुरा गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-dadeldhura",
+    "wardCount": 5,
+    "sourceCode": "70507"
+  },
+  {
+    "id": "lg-70601",
+    "name": "पुर्विचौकी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 7,
+    "sourceCode": "70601"
+  },
+  {
+    "id": "lg-70602",
+    "name": "सायल गाउँपालिका",
+    "nameEnglish": "Sayal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 6,
+    "sourceCode": "70602"
+  },
+  {
+    "id": "lg-70603",
+    "name": "आदर्श गाउँपालिका",
+    "nameEnglish": "Adharsha",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 7,
+    "sourceCode": "70603"
+  },
+  {
+    "id": "lg-70604",
+    "name": "शिखर नगरपालिका",
+    "nameEnglish": "Shikhar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 11,
+    "sourceCode": "70604"
+  },
+  {
+    "id": "lg-70605",
+    "name": "दिपायल सिलगढी नगरपालिका",
+    "nameEnglish": "Dipayal Silgadi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 9,
+    "sourceCode": "70605"
+  },
+  {
+    "id": "lg-70606",
+    "name": "के.आई.सिं. गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 7,
+    "sourceCode": "70606"
+  },
+  {
+    "id": "lg-70607",
+    "name": "बोगटान फुड्सिल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 7,
+    "sourceCode": "70607"
+  },
+  {
+    "id": "lg-70608",
+    "name": "बडीकेदार गाउँपालिका",
+    "nameEnglish": "Badikedar",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 5,
+    "sourceCode": "70608"
+  },
+  {
+    "id": "lg-70609",
+    "name": "जोरायल गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-doti",
+    "wardCount": 6,
+    "sourceCode": "70609"
+  },
+  {
+    "id": "lg-70701",
+    "name": "पंचदेवल बिनायक नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 9,
+    "sourceCode": "70701"
+  },
+  {
+    "id": "lg-70702",
+    "name": "रामारोशन गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 7,
+    "sourceCode": "70702"
+  },
+  {
+    "id": "lg-70703",
+    "name": "मेल्लेख गाउँपालिका",
+    "nameEnglish": "Mellekh",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 8,
+    "sourceCode": "70703"
+  },
+  {
+    "id": "lg-70704",
+    "name": "साँफेबगर नगरपालिका",
+    "nameEnglish": "Sanphebagar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 14,
+    "sourceCode": "70704"
+  },
+  {
+    "id": "lg-70705",
+    "name": "चौरपाटी गाउँपालिका",
+    "nameEnglish": "Chaurpati",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 7,
+    "sourceCode": "70705"
+  },
+  {
+    "id": "lg-70706",
+    "name": "मंगलसेन नगरपालिका",
+    "nameEnglish": "Mangalsen",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 14,
+    "sourceCode": "70706"
+  },
+  {
+    "id": "lg-70707",
+    "name": "बान्नीगढी जयगढ गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 6,
+    "sourceCode": "70707"
+  },
+  {
+    "id": "lg-70708",
+    "name": "कमलबजार नगरपालिका",
+    "nameEnglish": "Kamalbazar",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 10,
+    "sourceCode": "70708"
+  },
+  {
+    "id": "lg-70709",
+    "name": "ढकारी गाउँपालिका",
+    "nameEnglish": "Dhakari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 8,
+    "sourceCode": "70709"
+  },
+  {
+    "id": "lg-70710",
+    "name": "तुर्माखाँद गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-achham",
+    "wardCount": 8,
+    "sourceCode": "70710"
+  },
+  {
+    "id": "lg-70801",
+    "name": "मोहन्याल गाउँपालिका",
+    "nameEnglish": "Mohanyal",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 7,
+    "sourceCode": "70801"
+  },
+  {
+    "id": "lg-70802",
+    "name": "चुरे गाउँपालिका",
+    "nameEnglish": "Chure",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 6,
+    "sourceCode": "70802"
+  },
+  {
+    "id": "lg-70803",
+    "name": "गोदावरी नगरपालिका",
+    "nameEnglish": "Godawari",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 12,
+    "sourceCode": "70803"
+  },
+  {
+    "id": "lg-70804",
+    "name": "गौरीगंगा नगरपालिका",
+    "nameEnglish": "Gauriganga",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 11,
+    "sourceCode": "70804"
+  },
+  {
+    "id": "lg-70805",
+    "name": "घोडाघोडी नगरपालिका",
+    "nameEnglish": "Ghodaghodi",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 12,
+    "sourceCode": "70805"
+  },
+  {
+    "id": "lg-70806",
+    "name": "बर्दगोरिया गाउँपालिका",
+    "nameEnglish": "Bardagoriya",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 6,
+    "sourceCode": "70806"
+  },
+  {
+    "id": "lg-70807",
+    "name": "लम्कि चुहा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 10,
+    "sourceCode": "70807"
+  },
+  {
+    "id": "lg-70808",
+    "name": "जानकी गाउँपालिका",
+    "nameEnglish": "Janaki",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 9,
+    "sourceCode": "70808"
+  },
+  {
+    "id": "lg-70809",
+    "name": "जोशीपुर गाउँपालिका",
+    "nameEnglish": "Joshipur",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 7,
+    "sourceCode": "70809"
+  },
+  {
+    "id": "lg-70810",
+    "name": "टिकापुर नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 9,
+    "sourceCode": "70810"
+  },
+  {
+    "id": "lg-70811",
+    "name": "भजनी नगरपालिका",
+    "nameEnglish": "Bhajani",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 9,
+    "sourceCode": "70811"
+  },
+  {
+    "id": "lg-70812",
+    "name": "कैलारी गाउँपालिका",
+    "nameEnglish": "Kailari",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 9,
+    "sourceCode": "70812"
+  },
+  {
+    "id": "lg-70813",
+    "name": "धनगढी उपमहानगरपालिका",
+    "nameEnglish": "Dhangadhi",
+    "localGovernmentType": "SUB_METROPOLITAN_CITY",
+    "parentLocationId": "district-sudurpashchim-kailali",
+    "wardCount": 19,
+    "sourceCode": "70813"
+  },
+  {
+    "id": "lg-70901",
+    "name": "कृष्णपुर नगरपालिका",
+    "nameEnglish": "Krishnapur",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 9,
+    "sourceCode": "70901"
+  },
+  {
+    "id": "lg-70902",
+    "name": "शुक्लाफाँटा नगरपालिका",
+    "nameEnglish": "Shuklaphanta",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 12,
+    "sourceCode": "70902"
+  },
+  {
+    "id": "lg-70903",
+    "name": "बेदकोट नगरपालिका",
+    "nameEnglish": "Bedkot",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 10,
+    "sourceCode": "70903"
+  },
+  {
+    "id": "lg-70904",
+    "name": "भिमदत्त नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 19,
+    "sourceCode": "70904"
+  },
+  {
+    "id": "lg-70905",
+    "name": "चाँदनी-दोधारा नगरपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 10,
+    "sourceCode": "70905"
+  },
+  {
+    "id": "lg-70906",
+    "name": "लालझाडी गाउँपालिका",
+    "nameEnglish": null,
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 6,
+    "sourceCode": "70906"
+  },
+  {
+    "id": "lg-70907",
+    "name": "पुनर्वास नगरपालिका",
+    "nameEnglish": "Punarbas",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 11,
+    "sourceCode": "70907"
+  },
+  {
+    "id": "lg-70908",
+    "name": "बेलौरी नगरपालिका",
+    "nameEnglish": "Belauri",
+    "localGovernmentType": "MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 10,
+    "sourceCode": "70908"
+  },
+  {
+    "id": "lg-70909",
+    "name": "बेलडाँडी गाउँपालिका",
+    "nameEnglish": "Beldandi",
+    "localGovernmentType": "RURAL_MUNICIPALITY",
+    "parentLocationId": "district-sudurpashchim-kanchanpur",
+    "wardCount": 5,
+    "sourceCode": "70909"
+  }
+]

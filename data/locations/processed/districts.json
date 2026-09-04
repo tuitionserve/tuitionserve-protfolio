@@ -1,0 +1,541 @@
+[
+  {
+    "id": "district-gandaki-kaski",
+    "name": "कास्की",
+    "nameEnglish": "Kaski",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 1
+  },
+  {
+    "id": "district-bagmati-chitwan",
+    "name": "चितवन",
+    "nameEnglish": "Chitwan",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 2
+  },
+  {
+    "id": "district-madhesh-parsa",
+    "name": "पर्सा",
+    "nameEnglish": "Parsa",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 3
+  },
+  {
+    "id": "district-koshi-morang",
+    "name": "मोरङ",
+    "nameEnglish": "Morang",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 4
+  },
+  {
+    "id": "district-bagmati-kathmandu",
+    "name": "काठमाडौं",
+    "nameEnglish": "Kathmandu",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 5
+  },
+  {
+    "id": "district-bagmati-lalitpur",
+    "name": "ललितपुर",
+    "nameEnglish": "Lalitpur",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 6
+  },
+  {
+    "id": "district-lumbini-dang",
+    "name": "दाङ",
+    "nameEnglish": "Dang",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 7
+  },
+  {
+    "id": "district-madhesh-bara",
+    "name": "बारा",
+    "nameEnglish": "Bara",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 8
+  },
+  {
+    "id": "district-sudurpashchim-kailali",
+    "name": "कैलाली",
+    "nameEnglish": "Kailali",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 9
+  },
+  {
+    "id": "district-bagmati-makwanpur",
+    "name": "मकवानपुर",
+    "nameEnglish": "Makwanpur",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 10
+  },
+  {
+    "id": "district-koshi-sunsari",
+    "name": "सुनसरी",
+    "nameEnglish": "Sunsari",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 11
+  },
+  {
+    "id": "district-lumbini-rupandehi",
+    "name": "रुपन्देही",
+    "nameEnglish": "Rupandehi",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 12
+  },
+  {
+    "id": "district-karnali-humla",
+    "name": "हुम्ला",
+    "nameEnglish": "Humla",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 13
+  },
+  {
+    "id": "district-lumbini-banke",
+    "name": "बाँके",
+    "nameEnglish": "Banke",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 14
+  },
+  {
+    "id": "district-koshi-taplejung",
+    "name": "ताप्लेजुङ",
+    "nameEnglish": "Taplejung",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 15
+  },
+  {
+    "id": "district-koshi-sankhuwasabha",
+    "name": "संखुवासभा",
+    "nameEnglish": "Sankhuwasabha",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 16
+  },
+  {
+    "id": "district-koshi-solukhumbu",
+    "name": "सोलुखुम्बु",
+    "nameEnglish": "Solukhumbu",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 17
+  },
+  {
+    "id": "district-koshi-okhaldhunga",
+    "name": "ओखलढुङ्गा",
+    "nameEnglish": "Okhaldhunga",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 18
+  },
+  {
+    "id": "district-koshi-khotang",
+    "name": "खोटाङ",
+    "nameEnglish": "Khotang",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 19
+  },
+  {
+    "id": "district-koshi-bhojpur",
+    "name": "भोजपुर",
+    "nameEnglish": "Bhojpur",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 20
+  },
+  {
+    "id": "district-koshi-dhankuta",
+    "name": "धनकुटा",
+    "nameEnglish": "Dhankuta",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 21
+  },
+  {
+    "id": "district-koshi-terhathum",
+    "name": "तेह्रथुम",
+    "nameEnglish": "Terhathum",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 22
+  },
+  {
+    "id": "district-koshi-pachthar",
+    "name": "पाँचथर",
+    "nameEnglish": "Pachthar",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 23
+  },
+  {
+    "id": "district-koshi-ilam",
+    "name": "इलाम",
+    "nameEnglish": "Ilam",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 24
+  },
+  {
+    "id": "district-koshi-jhapa",
+    "name": "झापा",
+    "nameEnglish": "Jhapa",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 25
+  },
+  {
+    "id": "district-koshi-udayapur",
+    "name": "उदयपुर",
+    "nameEnglish": "Udayapur",
+    "parentLocationId": "province-koshi",
+    "sourceCode": 26
+  },
+  {
+    "id": "district-madhesh-saptari",
+    "name": "सप्तरी",
+    "nameEnglish": "Saptari",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 27
+  },
+  {
+    "id": "district-madhesh-siraha",
+    "name": "सिराहा",
+    "nameEnglish": "Siraha",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 28
+  },
+  {
+    "id": "district-madhesh-dhanusha",
+    "name": "धनुषा",
+    "nameEnglish": "Dhanusha",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 29
+  },
+  {
+    "id": "district-madhesh-mahottari",
+    "name": "महोत्तरी",
+    "nameEnglish": "Mahottari",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 30
+  },
+  {
+    "id": "district-madhesh-sarlahi",
+    "name": "सर्लाही",
+    "nameEnglish": "Sarlahi",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 31
+  },
+  {
+    "id": "district-madhesh-rautahat",
+    "name": "रौतहट",
+    "nameEnglish": "Rautahat",
+    "parentLocationId": "province-madhesh",
+    "sourceCode": 32
+  },
+  {
+    "id": "district-bagmati-dolakha",
+    "name": "दोलखा",
+    "nameEnglish": "Dolakha",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 33
+  },
+  {
+    "id": "district-bagmati-sindhupalchok",
+    "name": "सिन्धुपाल्चोक",
+    "nameEnglish": "Sindhupalchok",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 34
+  },
+  {
+    "id": "district-bagmati-dhading",
+    "name": "धादिङ",
+    "nameEnglish": "Dhading",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 35
+  },
+  {
+    "id": "district-bagmati-nuwakot",
+    "name": "नुवाकोट",
+    "nameEnglish": "Nuwakot",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 36
+  },
+  {
+    "id": "district-bagmati-bhaktapur",
+    "name": "भक्तपुर",
+    "nameEnglish": "Bhaktapur",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 37
+  },
+  {
+    "id": "district-bagmati-kavrepalanchok",
+    "name": "काभ्रेपलाञ्चोक",
+    "nameEnglish": "Kavrepalanchok",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 38
+  },
+  {
+    "id": "district-bagmati-ramechhap",
+    "name": "रामेछाप",
+    "nameEnglish": "Ramechhap",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 39
+  },
+  {
+    "id": "district-bagmati-sindhuli",
+    "name": "सिन्धुली",
+    "nameEnglish": "Sindhuli",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 40
+  },
+  {
+    "id": "district-gandaki-gorkha",
+    "name": "गोरखा",
+    "nameEnglish": "Gorkha",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 41
+  },
+  {
+    "id": "district-gandaki-myagdi",
+    "name": "म्याग्दी",
+    "nameEnglish": "Myagdi",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 42
+  },
+  {
+    "id": "district-gandaki-lamjung",
+    "name": "लमजुङ",
+    "nameEnglish": "Lamjung",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 43
+  },
+  {
+    "id": "district-gandaki-tanahu",
+    "name": "तनहुँ",
+    "nameEnglish": "Tanahu",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 44
+  },
+  {
+    "id": "district-gandaki-nawalparari-east",
+    "name": "नवलपरासी पूर्व",
+    "nameEnglish": "Nawalparari East",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 45
+  },
+  {
+    "id": "district-gandaki-syangja",
+    "name": "स्याङ्जा",
+    "nameEnglish": "Syangja",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 46
+  },
+  {
+    "id": "district-gandaki-parbat",
+    "name": "पर्वत",
+    "nameEnglish": "Parbat",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 47
+  },
+  {
+    "id": "district-gandaki-baglung",
+    "name": "बागलुङ",
+    "nameEnglish": "Baglung",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 48
+  },
+  {
+    "id": "district-lumbini-rolpa",
+    "name": "रोल्पा",
+    "nameEnglish": "Rolpa",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 49
+  },
+  {
+    "id": "district-lumbini-pyuthan",
+    "name": "प्युठान",
+    "nameEnglish": "Pyuthan",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 50
+  },
+  {
+    "id": "district-lumbini-gulmi",
+    "name": "गुल्मी",
+    "nameEnglish": "Gulmi",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 51
+  },
+  {
+    "id": "district-lumbini-arghakhanchi",
+    "name": "अर्घाखाँची",
+    "nameEnglish": "Arghakhanchi",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 52
+  },
+  {
+    "id": "district-lumbini-palpa",
+    "name": "पाल्पा",
+    "nameEnglish": "Palpa",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 53
+  },
+  {
+    "id": "district-lumbini-nawalparasi-west",
+    "name": "नवलपरासी पश्चिम",
+    "nameEnglish": "Nawalparasi West",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 54
+  },
+  {
+    "id": "district-lumbini-kapilbastu",
+    "name": "कपिलवस्तु",
+    "nameEnglish": "Kapilbastu",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 55
+  },
+  {
+    "id": "district-lumbini-bardiya",
+    "name": "बर्दिया",
+    "nameEnglish": "Bardiya",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 56
+  },
+  {
+    "id": "district-karnali-dolpa",
+    "name": "डोल्पा",
+    "nameEnglish": "Dolpa",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 57
+  },
+  {
+    "id": "district-karnali-mugu",
+    "name": "मुगु",
+    "nameEnglish": "Mugu",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 58
+  },
+  {
+    "id": "district-karnali-jumla",
+    "name": "जुम्ला",
+    "nameEnglish": "Jumla",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 59
+  },
+  {
+    "id": "district-karnali-kalikot",
+    "name": "कालिकोट",
+    "nameEnglish": "Kalikot",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 60
+  },
+  {
+    "id": "district-karnali-dailekh",
+    "name": "दैलेख",
+    "nameEnglish": "Dailekh",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 61
+  },
+  {
+    "id": "district-karnali-jajarkot",
+    "name": "जाजरकोट",
+    "nameEnglish": "Jajarkot",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 62
+  },
+  {
+    "id": "district-karnali-rukum-west",
+    "name": "रुकुम पश्चिम",
+    "nameEnglish": "Rukum West",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 63
+  },
+  {
+    "id": "district-karnali-salyan",
+    "name": "सल्यान",
+    "nameEnglish": "Salyan",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 64
+  },
+  {
+    "id": "district-karnali-surkhet",
+    "name": "सुर्खेत",
+    "nameEnglish": "Surkhet",
+    "parentLocationId": "province-karnali",
+    "sourceCode": 65
+  },
+  {
+    "id": "district-sudurpashchim-bajura",
+    "name": "बाजुरा",
+    "nameEnglish": "Bajura",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 66
+  },
+  {
+    "id": "district-sudurpashchim-bajhang",
+    "name": "बझाङ",
+    "nameEnglish": "Bajhang",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 67
+  },
+  {
+    "id": "district-sudurpashchim-darchula",
+    "name": "दार्चुला",
+    "nameEnglish": "Darchula",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 68
+  },
+  {
+    "id": "district-sudurpashchim-baitadi",
+    "name": "बैतडी",
+    "nameEnglish": "Baitadi",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 69
+  },
+  {
+    "id": "district-sudurpashchim-dadeldhura",
+    "name": "डडेलधुरा",
+    "nameEnglish": "Dadeldhura",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 70
+  },
+  {
+    "id": "district-sudurpashchim-doti",
+    "name": "डोटी",
+    "nameEnglish": "Doti",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 71
+  },
+  {
+    "id": "district-sudurpashchim-achham",
+    "name": "अछाम",
+    "nameEnglish": "Achham",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 72
+  },
+  {
+    "id": "district-sudurpashchim-kanchanpur",
+    "name": "कञ्चनपुर",
+    "nameEnglish": "Kanchanpur",
+    "parentLocationId": "province-sudurpashchim",
+    "sourceCode": 73
+  },
+  {
+    "id": "district-bagmati-rasuwa",
+    "name": "रसुवा",
+    "nameEnglish": "Rasuwa",
+    "parentLocationId": "province-bagmati",
+    "sourceCode": 74
+  },
+  {
+    "id": "district-gandaki-manang",
+    "name": "मनाङ",
+    "nameEnglish": "Manang",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 75
+  },
+  {
+    "id": "district-gandaki-mustang",
+    "name": "मुस्ताङ",
+    "nameEnglish": "Mustang",
+    "parentLocationId": "province-gandaki",
+    "sourceCode": 76
+  },
+  {
+    "id": "district-lumbini-rukum-east",
+    "name": "रुकुम पूर्व",
+    "nameEnglish": "Rukum East",
+    "parentLocationId": "province-lumbini",
+    "sourceCode": 77
+  }
+]

@@ -120,18 +120,48 @@ export interface TutorDocument {
 }
 
 /**
- * Provisional/starter geographic reference data (province + major city
- * level only). This is NOT the authoritative Nepal location dataset —
- * that is a dedicated data-engineering milestone (implementation plan M6)
- * sourced from reliable external geographic data. Do not add
- * ward/postal-code/coordinate precision here without real sourcing
- * (location-data-engineering skill).
+ * Nepal administrative hierarchy: Province -> District -> Local
+ * Government -> Ward. Sourced from the Government of Nepal General Post
+ * Office's 2025 postal code table (authoritative for name, type, ward
+ * count, and postal code) cross-referenced against an open dataset for
+ * English names where a clean match exists. See
+ * `data/locations/SOURCES.md` for full provenance, licensing, and the
+ * exact normalization/matching methodology (implementation plan M6).
+ *
+ * "CITY" is the M3-era provisional level (~20 hand-picked cities,
+ * `src/server/domain/location-seed-data.ts`) — kept until every
+ * consumer has migrated to LOCAL_GOVERNMENT and the provisional docs
+ * are removed; do not write new "CITY" records.
+ *
+ * `name` is always the authoritative Nepali name (100% complete).
+ * `nameEnglish` is a cross-referenced convenience value — present for
+ * provinces/districts (100%) and 445/753 local governments (59%); the
+ * UI must fall back to `name` when null, never fabricate one.
  */
 export interface GeographicLocation {
   id: string;
-  level: "PROVINCE" | "CITY";
+  level: "PROVINCE" | "CITY" | "DISTRICT" | "LOCAL_GOVERNMENT" | "WARD";
   name: string;
-  parentLocationId: string | null; // CITY -> PROVINCE id; PROVINCE -> null.
+  nameEnglish: string | null;
+  parentLocationId: string | null; // WARD -> LOCAL_GOVERNMENT -> DISTRICT -> PROVINCE -> null.
+
+  // LOCAL_GOVERNMENT only:
+  localGovernmentType:
+    | "METROPOLITAN_CITY"
+    | "SUB_METROPOLITAN_CITY"
+    | "MUNICIPALITY"
+    | "RURAL_MUNICIPALITY"
+    | null;
+  wardCount: number | null;
+
+  // WARD only:
+  wardNumber: number | null;
+  // Official 2025 GPO postal code for this ward
+  // ({localGovernmentCode}{wardNumber, 2 digits}). Null at every other
+  // level, and never populated by guessing (location-privacy /
+  // location-data-engineering skills) — GPO's table is the only postal
+  // code source used.
+  postalCode: string | null;
 }
 
 /**

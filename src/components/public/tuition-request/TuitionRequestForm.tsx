@@ -6,7 +6,7 @@ import { DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
 import { submitTuitionRequest } from "@/server/actions/parent-request";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } from "./formStyles";
-import type { LocationOption } from "@/server/queries/locations";
+import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
 
 interface Slot {
   dayOfWeek: string;
@@ -17,15 +17,13 @@ interface Slot {
 const EMPTY_SLOT: Slot = { dayOfWeek: "SUN", startTime: "17:00", endTime: "19:00" };
 
 export function TuitionRequestForm({
-  locationOptions,
+  provinces,
   initialGradeId,
   initialSubjectId,
-  initialLocationId,
 }: {
-  locationOptions: LocationOption[];
+  provinces: LocationNodeLite[];
   initialGradeId: string;
   initialSubjectId: string;
-  initialLocationId: string;
 }) {
   const [parentFullName, setParentFullName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
@@ -34,9 +32,7 @@ export function TuitionRequestForm({
   const [gradeId, setGradeId] = useState(initialGradeId);
   const [schoolName, setSchoolName] = useState("");
   const [subjectId, setSubjectId] = useState(initialSubjectId);
-  const [locationId, setLocationId] = useState(
-    locationOptions.some((l) => l.id === initialLocationId) ? initialLocationId : "",
-  );
+  const [locationId, setLocationId] = useState<string | null>(null);
   const [tutorVisibleLocality, setTutorVisibleLocality] = useState("");
   const [exactAddress, setExactAddress] = useState("");
   const [slots, setSlots] = useState<Slot[]>([EMPTY_SLOT]);
@@ -55,6 +51,11 @@ export function TuitionRequestForm({
     e.preventDefault();
     setError(null);
     setFieldErrors({});
+
+    if (!locationId) {
+      setError("Select your province, district, municipality, and ward.");
+      return;
+    }
 
     const formData = new FormData();
     formData.set("parentFullName", parentFullName);
@@ -168,19 +169,8 @@ export function TuitionRequestForm({
           Your exact address is kept private and only shared with our admin team — tutors only
           ever see the area/locality below.
         </p>
-        <div className={fieldWrapClass}>
-          <label className={labelClass} htmlFor="locationId">City</label>
-          <select id="locationId" className={inputClass} value={locationId} onChange={(e) => setLocationId(e.target.value)} required>
-            <option value="" disabled>Select city</option>
-            {locationOptions.map((loc) => (
-              <option key={loc.id} value={loc.id}>
-                {loc.name}
-                {loc.provinceName ? ` (${loc.provinceName})` : ""}
-              </option>
-            ))}
-          </select>
-          {fieldErrors.locationId && <p className={errorTextClass}>{fieldErrors.locationId}</p>}
-        </div>
+        <LocationCascadeSelect provinces={provinces} onChange={(id) => setLocationId(id)} />
+        {fieldErrors.locationId && <p className={errorTextClass}>{fieldErrors.locationId}</p>}
         <div className={fieldWrapClass}>
           <label className={labelClass} htmlFor="tutorVisibleLocality">Area / locality</label>
           <input
@@ -191,6 +181,10 @@ export function TuitionRequestForm({
             placeholder="e.g. Devichowk"
             required
           />
+          <p className="font-body-sm text-body-sm text-on-surface-variant">
+            No official directory of neighborhood names exists below ward level — enter the area
+            name tutors would recognize.
+          </p>
           {fieldErrors.tutorVisibleLocality && <p className={errorTextClass}>{fieldErrors.tutorVisibleLocality}</p>}
         </div>
         <div className={fieldWrapClass}>

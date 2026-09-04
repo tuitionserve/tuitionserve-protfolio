@@ -1,6 +1,6 @@
 import { PublicHeader } from "@/components/public/PublicHeader";
 import { PublicFooter } from "@/components/public/PublicFooter";
-import { getCityLocationOptions } from "@/server/queries/locations";
+import { getProvinces } from "@/server/queries/location-hierarchy";
 import { TuitionRequestForm } from "@/components/public/tuition-request/TuitionRequestForm";
 
 const GRADE_ID_FROM_WIDGET: Record<string, string> = {
@@ -16,11 +16,10 @@ export default async function RequestTutorPage({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const params = await searchParams;
-  const locationOptions = await getCityLocationOptions();
+  const provinces = await getProvinces();
 
   const gradeParam = typeof params.grade === "string" ? params.grade : undefined;
   const subjectParam = typeof params.subject === "string" ? params.subject : undefined;
-  const cityParam = typeof params.city === "string" ? params.city : undefined;
 
   return (
     <>
@@ -33,10 +32,9 @@ export default async function RequestTutorPage({
             you with a verified tutor.
           </p>
           <TuitionRequestForm
-            locationOptions={locationOptions}
+            provinces={provinces}
             initialGradeId={gradeParam ? (GRADE_ID_FROM_WIDGET[gradeParam] ?? "") : ""}
             initialSubjectId={subjectParam ?? ""}
-            initialLocationId={cityParam ? `city-${cityParam}` : ""}
           />
         </div>
       </main>

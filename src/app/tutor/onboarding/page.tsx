@@ -1,8 +1,14 @@
 import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { tutorProfilesCollection } from "@/server/domain/collections";
-import { getCityLocationOptions } from "@/server/queries/locations";
+import {
+  getDistrictsForProvince,
+  getLocalGovernmentsForDistrict,
+  getLocationAncestry,
+  getProvinces,
+} from "@/server/queries/location-hierarchy";
 import { OnboardingWizard } from "@/components/tutor/onboarding/OnboardingWizard";
+import type { CascadeResumeState } from "@/components/tutor/onboarding/types";
 
 export default async function TutorOnboardingPage() {
   const session = await requireActiveTutor();
@@ -12,11 +18,31 @@ export default async function TutorOnboardingPage() {
     redirect("/tutor/dashboard");
   }
 
-  const [profileSnap, locationOptions] = await Promise.all([
+  const [profileSnap, provinces] = await Promise.all([
     tutorProfilesCollection().doc(session.uid).get(),
-    getCityLocationOptions(),
+    getProvinces(),
   ]);
   const profile = profileSnap.exists ? profileSnap.data()! : null;
+
+  let initialCascade: CascadeResumeState | undefined;
+  if (profile?.preferredLocationId) {
+    const ancestry = await getLocationAncestry(profile.preferredLocationId); // [ward, localGovernment, district, province]
+    const [ward, localGovernment, district, province] = ancestry;
+    if (ward?.level === "WARD" && localGovernment && district && province) {
+      const [districts, localGovernments] = await Promise.all([
+        getDistrictsForProvince(province.id),
+        getLocalGovernmentsForDistrict(district.id),
+      ]);
+      initialCascade = {
+        provinceId: province.id,
+        districtId: district.id,
+        localGovernmentId: localGovernment.id,
+        wardNumber: ward.wardNumber ?? undefined,
+        districts,
+        localGovernments,
+      };
+    }
+  }
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -53,13 +79,15 @@ export default async function TutorOnboardingPage() {
                 teachingExperienceSummary: profile.teachingExperienceSummary,
                 expectedMonthlyFee: profile.expectedMonthlyFee,
                 preferredLocationId: profile.preferredLocationId,
+                preferredLocationLabel: null,
                 preferredLocality: profile.preferredLocality,
                 availability: profile.availability,
                 hasCv: Boolean(profile.cvDocumentId),
               }
             : null
         }
-        locationOptions={locationOptions}
+        provinces={provinces}
+        initialCascade={initialCascade}
       />
     </div>
   );

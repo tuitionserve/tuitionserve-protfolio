@@ -143,8 +143,8 @@ export async function saveTutorLocationStep(formData: FormData): Promise<ActionR
   }
 
   const locationSnap = await geographicLocationsCollection().doc(parsed.data.preferredLocationId).get();
-  if (!locationSnap.exists || locationSnap.data()?.level !== "CITY") {
-    return { ok: false, error: "Select a valid city.", fieldErrors: { preferredLocationId: "Select a valid city." } };
+  if (!locationSnap.exists || locationSnap.data()?.level !== "WARD") {
+    return { ok: false, error: "Select your full location down to ward.", fieldErrors: { preferredLocationId: "Select your full location down to ward." } };
   }
 
   await mergeProfile(session.uid, parsed.data);

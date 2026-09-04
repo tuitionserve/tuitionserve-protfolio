@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { submitTutorProfileForReview } from "@/server/actions/onboarding";
 import { errorTextClass } from "../formStyles";
-import type { LocationOption, WizardProfileState } from "../types";
+import type { WizardProfileState } from "../types";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -18,18 +18,14 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export function ReviewStep({
   profile,
-  locationOptions,
   onBack,
 }: {
   profile: WizardProfileState;
-  locationOptions: LocationOption[];
   onBack: () => void;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
-
-  const cityName = locationOptions.find((l) => l.id === profile.preferredLocationId)?.name ?? "";
 
   function handleSubmit() {
     setError(null);
@@ -61,7 +57,10 @@ export function ReviewStep({
         <Row label="Subjects" value={profile.subjects.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
         <Row label="Grades" value={profile.grades.map((g) => catalogLabel(GRADES, g)).join(", ")} />
         <Row label="Expected monthly fee" value={profile.expectedMonthlyFee ? `NPR ${profile.expectedMonthlyFee}` : ""} />
-        <Row label="Preferred location" value={[cityName, profile.preferredLocality].filter(Boolean).join(", ")} />
+        <Row
+          label="Preferred location"
+          value={[profile.preferredLocationLabel, profile.preferredLocality].filter(Boolean).join(", ")}
+        />
         <Row
           label="Availability"
           value={profile.availability

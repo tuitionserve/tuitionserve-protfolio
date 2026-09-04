@@ -20,6 +20,7 @@ export interface WizardProfileState {
   teachingExperienceSummary: string | null;
   expectedMonthlyFee: number | null;
   preferredLocationId: string | null;
+  preferredLocationLabel: string | null;
   preferredLocality: string | null;
   availability: AvailabilitySlotState[];
   hasCv: boolean;
@@ -41,13 +42,17 @@ export const EMPTY_WIZARD_PROFILE: WizardProfileState = {
   teachingExperienceSummary: null,
   expectedMonthlyFee: null,
   preferredLocationId: null,
+  preferredLocationLabel: null,
   preferredLocality: null,
   availability: [],
   hasCv: false,
 };
 
-export interface LocationOption {
-  id: string;
-  name: string;
-  provinceName: string | null;
+export interface CascadeResumeState {
+  provinceId?: string;
+  districtId?: string;
+  localGovernmentId?: string;
+  wardNumber?: number;
+  districts?: { id: string; name: string; nameEnglish: string | null; wardCount: number | null }[];
+  localGovernments?: { id: string; name: string; nameEnglish: string | null; wardCount: number | null }[];
 }

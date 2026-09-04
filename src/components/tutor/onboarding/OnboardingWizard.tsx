@@ -9,16 +9,19 @@ import { LocationStep } from "./steps/LocationStep";
 import { AvailabilityStep } from "./steps/AvailabilityStep";
 import { CvStep } from "./steps/CvStep";
 import { ReviewStep } from "./steps/ReviewStep";
-import { EMPTY_WIZARD_PROFILE, type LocationOption, type WizardProfileState } from "./types";
+import { EMPTY_WIZARD_PROFILE, type CascadeResumeState, type WizardProfileState } from "./types";
+import type { LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
 
 const STEPS = ["personal", "education", "teaching", "location", "availability", "cv", "review"] as const;
 
 export function OnboardingWizard({
   initialProfile,
-  locationOptions,
+  provinces,
+  initialCascade,
 }: {
   initialProfile: WizardProfileState | null;
-  locationOptions: LocationOption[];
+  provinces: LocationNodeLite[];
+  initialCascade?: CascadeResumeState;
 }) {
   const [stepIndex, setStepIndex] = useState(0);
   const [profile, setProfile] = useState<WizardProfileState>(initialProfile ?? EMPTY_WIZARD_PROFILE);
@@ -41,11 +44,17 @@ export function OnboardingWizard({
       {step === "education" && <EducationStep initial={profile} onSaved={goNext} onBack={goBack} />}
       {step === "teaching" && <TeachingStep initial={profile} onSaved={goNext} onBack={goBack} />}
       {step === "location" && (
-        <LocationStep initial={profile} locationOptions={locationOptions} onSaved={goNext} onBack={goBack} />
+        <LocationStep
+          initial={profile}
+          provinces={provinces}
+          initialCascade={initialCascade}
+          onSaved={goNext}
+          onBack={goBack}
+        />
       )}
       {step === "availability" && <AvailabilityStep initial={profile} onSaved={goNext} onBack={goBack} />}
       {step === "cv" && <CvStep initial={profile} onSaved={goNext} onBack={goBack} />}
-      {step === "review" && <ReviewStep profile={profile} locationOptions={locationOptions} onBack={goBack} />}
+      {step === "review" && <ReviewStep profile={profile} onBack={goBack} />}
     </div>
   );
 }

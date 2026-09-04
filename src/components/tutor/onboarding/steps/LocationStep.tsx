@@ -2,21 +2,32 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import { saveTutorLocationStep } from "@/server/actions/onboarding";
+import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass } from "../formStyles";
-import type { LocationOption, WizardProfileState } from "../types";
+import type { WizardProfileState } from "../types";
 
 export function LocationStep({
   initial,
-  locationOptions,
+  provinces,
+  initialCascade,
   onSaved,
   onBack,
 }: {
   initial: WizardProfileState;
-  locationOptions: LocationOption[];
+  provinces: LocationNodeLite[];
+  initialCascade?: {
+    provinceId?: string;
+    districtId?: string;
+    localGovernmentId?: string;
+    wardNumber?: number;
+    districts?: LocationNodeLite[];
+    localGovernments?: LocationNodeLite[];
+  };
   onSaved: (patch: Partial<WizardProfileState>) => void;
   onBack: () => void;
 }) {
-  const [preferredLocationId, setPreferredLocationId] = useState(initial.preferredLocationId ?? "");
+  const [wardId, setWardId] = useState<string | null>(initial.preferredLocationId);
+  const [wardLabel, setWardLabel] = useState<string | null>(initial.preferredLocationLabel);
   const [preferredLocality, setPreferredLocality] = useState(initial.preferredLocality ?? "");
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -27,14 +38,19 @@ export function LocationStep({
     setError(null);
     setFieldErrors({});
 
+    if (!wardId) {
+      setError("Select your province, district, municipality, and ward.");
+      return;
+    }
+
     const formData = new FormData();
-    formData.set("preferredLocationId", preferredLocationId);
+    formData.set("preferredLocationId", wardId);
     formData.set("preferredLocality", preferredLocality);
 
     startTransition(async () => {
       const result = await saveTutorLocationStep(formData);
       if (result.ok) {
-        onSaved({ preferredLocationId, preferredLocality });
+        onSaved({ preferredLocationId: wardId, preferredLocationLabel: wardLabel, preferredLocality });
       } else {
         setError(result.error);
         setFieldErrors(result.fieldErrors ?? {});
@@ -49,25 +65,20 @@ export function LocationStep({
         This guides which tuitions you&rsquo;ll see first — it won&rsquo;t limit you from browsing the wider area.
       </p>
 
-      <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="preferredLocationId">City</label>
-        <select
-          id="preferredLocationId"
-          className={inputClass}
-          value={preferredLocationId}
-          onChange={(e) => setPreferredLocationId(e.target.value)}
-          required
-        >
-          <option value="" disabled>Select city</option>
-          {locationOptions.map((loc) => (
-            <option key={loc.id} value={loc.id}>
-              {loc.name}
-              {loc.provinceName ? ` (${loc.provinceName})` : ""}
-            </option>
-          ))}
-        </select>
-        {fieldErrors.preferredLocationId && <p className={errorTextClass}>{fieldErrors.preferredLocationId}</p>}
-      </div>
+      <LocationCascadeSelect
+        provinces={provinces}
+        initialProvinceId={initialCascade?.provinceId}
+        initialDistrictId={initialCascade?.districtId}
+        initialLocalGovernmentId={initialCascade?.localGovernmentId}
+        initialWardNumber={initialCascade?.wardNumber}
+        initialDistricts={initialCascade?.districts}
+        initialLocalGovernments={initialCascade?.localGovernments}
+        onChange={(id, label) => {
+          setWardId(id);
+          setWardLabel(label);
+        }}
+      />
+      {fieldErrors.preferredLocationId && <p className={errorTextClass}>{fieldErrors.preferredLocationId}</p>}
 
       <div className={fieldWrapClass}>
         <label className={labelClass} htmlFor="preferredLocality">Preferred locality / area</label>
@@ -79,6 +90,10 @@ export function LocationStep({
           placeholder="e.g. Devichowk"
           required
         />
+        <p className="font-body-sm text-body-sm text-on-surface-variant">
+          No official directory of neighborhood names exists below ward level — enter the area
+          name you&rsquo;re known by locally.
+        </p>
         {fieldErrors.preferredLocality && <p className={errorTextClass}>{fieldErrors.preferredLocality}</p>}
       </div>
 

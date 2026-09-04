@@ -1,9 +1,16 @@
 /**
- * Seeds the provisional province/city location data (see
- * src/server/domain/location-seed-data.ts) into Firestore. Idempotent —
- * uses deterministic document IDs so re-running just overwrites the same
- * records. Run once against each environment (emulator/staging/prod)
- * before onboarding tutors.
+ * SUPERSEDED by `pnpm import-locations` (implementation plan M6) — see
+ * data/locations/SOURCES.md. That script imports the authoritative
+ * Province/District/Local Government/Ward hierarchy sourced from the
+ * Government of Nepal General Post Office.
+ *
+ * This script is kept, and its ~20 "CITY"-level provisional records are
+ * kept in Firestore (not deleted), only until the application has been
+ * fully validated against the M6 dataset — do not use it for new
+ * environments; use `pnpm import-locations` instead. Its 7 "PROVINCE"
+ * records share IDs with the M6 dataset's provinces and are harmlessly
+ * superseded (richer fields) when `pnpm import-locations` is run after
+ * this script.
  *
  * Usage: pnpm seed-locations
  */
@@ -24,7 +31,12 @@ async function main() {
       id,
       level: "PROVINCE",
       name: province.name,
+      nameEnglish: null,
       parentLocationId: null,
+      localGovernmentType: null,
+      wardCount: null,
+      wardNumber: null,
+      postalCode: null,
     });
   }
 
@@ -34,7 +46,12 @@ async function main() {
       id,
       level: "CITY",
       name: city.name,
+      nameEnglish: null,
       parentLocationId: provinceLocationId(city.province),
+      localGovernmentType: null,
+      wardCount: null,
+      wardNumber: null,
+      postalCode: null,
     });
   }
 
