@@ -3,6 +3,7 @@ import { requireActiveTutor } from "@/server/auth/guards";
 import { getMyApplications } from "@/server/queries/my-applications";
 import { catalogLabel, GRADES, SUBJECTS } from "@/lib/catalog";
 import { WithdrawApplicationButton } from "@/components/tutor/opportunities/WithdrawApplicationButton";
+import { RequestWithdrawalButton } from "@/components/tutor/opportunities/RequestWithdrawalButton";
 import type { TutorApplicationStatus } from "@/server/domain/types";
 import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
 import { PaginationBar } from "@/components/shared/PaginationBar";
@@ -52,7 +53,7 @@ export default async function MyApplicationsPage({
         </div>
       ) : (
         <div className="flex flex-col gap-3">
-          {rows.map(({ application, tuition }) => (
+          {rows.map(({ application, tuition, assignment }) => (
             <div
               key={application.id}
               className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex items-center justify-between gap-4"
@@ -69,14 +70,26 @@ export default async function MyApplicationsPage({
                 >
                   {STATUS_LABEL[application.status]}
                 </span>
-                {/* Read-only: post-assignment withdrawal requests are a separate milestone (M11). */}
-                {application.status === "SELECTED" && (
+                {application.status === "SELECTED" && assignment?.status === "ACTIVE" && assignment.hasPendingWithdrawal && (
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                    Withdrawal requested — pending admin review.
+                  </p>
+                )}
+                {application.status === "SELECTED" && assignment?.status === "RELEASED" && (
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                    Withdrawal approved — this assignment has ended.
+                  </p>
+                )}
+                {application.status === "SELECTED" && !assignment && (
                   <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
                     You&rsquo;ve been assigned to this tuition. An admin will contact you with further details.
                   </p>
                 )}
               </div>
               {application.status === "APPLIED" && <WithdrawApplicationButton applicationId={application.id} />}
+              {application.status === "SELECTED" && assignment?.status === "ACTIVE" && !assignment.hasPendingWithdrawal && (
+                <RequestWithdrawalButton assignmentId={assignment.id} />
+              )}
             </div>
           ))}
         </div>

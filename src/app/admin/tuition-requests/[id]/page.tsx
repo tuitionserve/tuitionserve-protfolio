@@ -4,7 +4,9 @@ import { parentsCollection, studentsCollection, tuitionRequestsCollection } from
 import { catalogLabel, DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
 import { TuitionRequestReviewActions } from "@/components/admin/tuition-requests/TuitionRequestReviewActions";
 import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsList";
+import { AssignmentReviewPanel } from "@/components/admin/tuition-requests/AssignmentReviewPanel";
 import { getApplicantsForTuition } from "@/server/queries/admin-applicants";
+import { getLatestAssignmentForTuition } from "@/server/queries/admin-assignment";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -33,10 +35,11 @@ export default async function AdminTuitionRequestDetailPage({
     notFound();
   }
 
-  const [parentSnap, studentSnap, applicants] = await Promise.all([
+  const [parentSnap, studentSnap, applicants, assignment] = await Promise.all([
     parentsCollection().doc(request.parentId).get(),
     studentsCollection().doc(request.studentId).get(),
     request.status === "NEW" ? Promise.resolve([]) : getApplicantsForTuition(id),
+    request.status === "ASSIGNED" ? getLatestAssignmentForTuition(id) : Promise.resolve(null),
   ]);
   const parent = parentSnap.data() ?? null;
   const student = studentSnap.data() ?? null;
@@ -80,6 +83,8 @@ export default async function AdminTuitionRequestDetailPage({
 
       {request.status === "NEW" ? (
         <TuitionRequestReviewActions requestId={id} />
+      ) : request.status === "ASSIGNED" && assignment ? (
+        <AssignmentReviewPanel assignment={assignment} tuitionId={id} />
       ) : (
         <ApplicantsList
           applicants={applicants}

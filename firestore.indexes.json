@@ -66,6 +66,14 @@
         { "fieldPath": "branchId", "order": "ASCENDING" },
         { "fieldPath": "lastMessageAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "tuitionAssignments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "tuitionId", "order": "ASCENDING" },
+        { "fieldPath": "assignedAt", "order": "DESCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []
