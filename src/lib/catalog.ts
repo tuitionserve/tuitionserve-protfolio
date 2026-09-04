@@ -40,8 +40,6 @@ export const QUALIFICATIONS = [
 export const GENDERS = [
   { id: "MALE", label: "Male" },
   { id: "FEMALE", label: "Female" },
-  { id: "OTHER", label: "Other" },
-  { id: "PREFER_NOT_TO_SAY", label: "Prefer not to say" },
 ] as const;
 
 export const DAYS_OF_WEEK = [

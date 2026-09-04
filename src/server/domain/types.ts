@@ -55,7 +55,7 @@ export interface Tutor {
   updatedAt: FirebaseFirestore.Timestamp;
 }
 
-export type Gender = "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY";
+export type Gender = "MALE" | "FEMALE";
 
 export type HighestQualification =
   | "SEE_SLC"

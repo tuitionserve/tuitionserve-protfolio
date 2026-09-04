@@ -8,6 +8,30 @@ import type {
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 
 /**
+ * Tutor-safe projection of a TuitionRequest — structurally excludes
+ * exactAddress (and every other admin-only field) so the type system,
+ * not developer discipline, keeps it out of tutor-facing views. Same
+ * reasoning as TutorOpportunityView.
+ */
+export interface MyApplicationTuitionView {
+  id: string;
+  tuitionUid: string;
+  subjectId: string;
+  gradeId: string;
+  tutorVisibleLocality: string;
+}
+
+function toTutorTuitionView(r: TuitionRequest): MyApplicationTuitionView {
+  return {
+    id: r.id,
+    tuitionUid: r.tuitionUid,
+    subjectId: r.subjectId,
+    gradeId: r.gradeId,
+    tutorVisibleLocality: r.tutorVisibleLocality,
+  };
+}
+
+/**
  * Client-safe assignment summary for a SELECTED application (no
  * Firestore Timestamp fields — same reasoning as AdminApplicantView).
  * `hasPendingWithdrawal` is true only while the assignment is still
@@ -22,7 +46,7 @@ export interface MyAssignmentSummary {
 
 export interface MyApplicationRow {
   application: TutorApplication;
-  tuition: TuitionRequest | null; // tutor-safe fields are read from here by the page, never exactAddress
+  tuition: MyApplicationTuitionView | null;
   /** Only populated for a SELECTED application — a tutor only has an assignment once selected. */
   assignment: MyAssignmentSummary | null;
 }
@@ -44,7 +68,7 @@ async function withTuitionsAndAssignments(applications: TutorApplication[]): Pro
     const assignmentDoc = assignmentSnap && !assignmentSnap.empty ? assignmentSnap.docs[0]!.data() : null;
     return {
       application,
-      tuition: tuitionSnaps[i]?.exists ? tuitionSnaps[i]!.data()! : null,
+      tuition: tuitionSnaps[i]?.exists ? toTutorTuitionView(tuitionSnaps[i]!.data()!) : null,
       assignment: assignmentDoc
         ? {
             id: assignmentDoc.id,
