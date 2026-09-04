@@ -2,7 +2,9 @@ import { adminFirestore } from "@/lib/firebase/admin";
 import type {
   AuditEvent,
   Branch,
+  Conversation,
   GeographicLocation,
+  Message,
   Notification,
   Parent,
   Student,
@@ -10,6 +12,7 @@ import type {
   TutorApplication,
   TutorDocument,
   TutorProfile,
+  TuitionAssignment,
   TuitionRequest,
   UserAccount,
 } from "./types";
@@ -31,5 +34,8 @@ export const parentsCollection = () => typedCollection<Parent>("parents");
 export const studentsCollection = () => typedCollection<Student>("students");
 export const tuitionRequestsCollection = () => typedCollection<TuitionRequest>("tuitionRequests");
 export const tutorApplicationsCollection = () => typedCollection<TutorApplication>("tutorApplications");
+export const tuitionAssignmentsCollection = () => typedCollection<TuitionAssignment>("tuitionAssignments");
+export const conversationsCollection = () => typedCollection<Conversation>("conversations");
+export const messagesCollection = () => typedCollection<Message>("messages");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");

@@ -285,6 +285,66 @@ export interface TutorApplicationSnapshot {
   capturedAt: FirebaseFirestore.Timestamp;
 }
 
+export type TuitionAssignmentStatus = "ACTIVE" | "RELEASED";
+
+/**
+ * A structured record that a tutor is assigned to a tuition (domain
+ * model section 15, PRD section 17). Messaging does NOT equal
+ * assignment (tuition-workflow skill) — this is the actual business
+ * relationship. At most one ACTIVE assignment may exist per tuition
+ * (enforced transactionally by the M10 assignTutor action); a tuition
+ * may have multiple historical (RELEASED) assignments after a
+ * withdrawal + reopen cycle (M11) — never delete a released assignment.
+ */
+export interface TuitionAssignment {
+  id: string;
+  assignmentUid: string; // TS-ASG-######
+  tuitionId: string;
+  tutorId: string;
+  applicationId: string; // the TutorApplication this assignment was created from.
+  assignedByUserId: string;
+  assignedAt: FirebaseFirestore.Timestamp;
+  status: TuitionAssignmentStatus;
+  withdrawalRequestedAt: FirebaseFirestore.Timestamp | null;
+  withdrawalReason: string | null;
+  withdrawalReviewedBy: string | null;
+  withdrawalReviewedAt: FirebaseFirestore.Timestamp | null;
+  endedAt: FirebaseFirestore.Timestamp | null;
+  endReason: string | null;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
+/**
+ * Admin <-> Tutor conversation (PRD section 19 / messaging-engineering
+ * skill: keep it simple, no group chat, no parent participant).
+ * `tuitionId` is optional context, not a requirement — a conversation
+ * can exist before/without an assignment.
+ */
+export interface Conversation {
+  id: string;
+  conversationUid: string; // TS-CONV-######
+  tutorId: string;
+  adminUserId: string; // the specific admin who started it; either role can reply within branch/participant scope.
+  branchId: string | null;
+  tuitionId: string | null;
+  lastMessageAt: FirebaseFirestore.Timestamp;
+  lastMessagePreview: string;
+  tutorUnreadCount: number;
+  adminUnreadCount: number;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
+export interface Message {
+  id: string;
+  conversationId: string;
+  senderUserId: string;
+  senderRole: Role;
+  body: string;
+  sentAt: FirebaseFirestore.Timestamp;
+}
+
 export interface AuditEvent {
   id: string;
   action: string;
