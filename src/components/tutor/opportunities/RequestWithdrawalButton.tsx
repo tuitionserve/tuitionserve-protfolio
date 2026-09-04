@@ -42,7 +42,7 @@ export function RequestWithdrawalButton({ assignmentId }: { assignmentId: string
   }
 
   return (
-    <div className="flex flex-col gap-2 border border-outline-variant rounded-lg p-3 bg-surface-container max-w-sm">
+    <div className="flex flex-col gap-2 border border-outline-variant rounded-lg p-3 bg-surface-container max-w-[24rem]">
       <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`withdrawal-reason-${assignmentId}`}>
         Reason (required)
       </label>

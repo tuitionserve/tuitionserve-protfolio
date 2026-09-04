@@ -61,7 +61,7 @@ export default function RegisterPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-margin-mobile py-xl">
-        <div className="w-full max-w-md bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
+        <div className="w-full max-w-[28rem] bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
           <h1 className="font-headline-lg text-headline-lg text-on-surface mb-2">Become a Tutor</h1>
           <p className="font-body-sm text-body-sm text-on-surface-variant mb-6">
             Create your tutor account to start your profile and get verified.

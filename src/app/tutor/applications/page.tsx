@@ -71,17 +71,17 @@ export default async function MyApplicationsPage({
                   {STATUS_LABEL[application.status]}
                 </span>
                 {application.status === "SELECTED" && assignment?.status === "ACTIVE" && assignment.hasPendingWithdrawal && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
                     Withdrawal requested — pending admin review.
                   </p>
                 )}
                 {application.status === "SELECTED" && assignment?.status === "RELEASED" && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
                     Withdrawal approved — this assignment has ended.
                   </p>
                 )}
                 {application.status === "SELECTED" && !assignment && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
                     You&rsquo;ve been assigned to this tuition. An admin will contact you with further details.
                   </p>
                 )}

@@ -63,7 +63,7 @@ export default function LoginPage() {
       </header>
 
       <main className="flex-1 flex items-center justify-center px-margin-mobile py-xl">
-        <div className="w-full max-w-md bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
+        <div className="w-full max-w-[28rem] bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
           <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">Log In</h1>
 
           <div className="flex mb-6 border border-outline-variant rounded-lg overflow-hidden">

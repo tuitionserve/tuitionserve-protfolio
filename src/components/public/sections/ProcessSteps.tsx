@@ -40,7 +40,7 @@ export function ProcessSteps() {
                 <span className="material-symbols-outlined text-4xl text-primary-container">{step.icon}</span>
               </div>
               <h3 className="font-headline-md text-headline-md text-on-surface mb-2">{step.title}</h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-xs">{step.description}</p>
+              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-[20rem]">{step.description}</p>
             </div>
           ))}
         </div>

@@ -128,7 +128,7 @@ export function ApplicantsList({
               {canAssign && application.status === "APPLIED" && (
                 <div className="flex flex-col items-end gap-1">
                   {confirmingId === application.id ? (
-                    <div className="flex flex-col items-end gap-2 border border-outline-variant rounded-lg p-3 bg-surface-container max-w-xs">
+                    <div className="flex flex-col items-end gap-2 border border-outline-variant rounded-lg p-3 bg-surface-container max-w-[20rem]">
                       <p className="font-body-sm text-body-sm text-on-surface text-right">
                         Assign {application.snapshot.tutorUid} to {tuitionUid}? This closes the opportunity to new
                         applications.

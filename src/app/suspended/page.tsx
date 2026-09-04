@@ -12,7 +12,7 @@ export default async function SuspendedPage() {
   return (
     <div className="min-h-full flex flex-col">
       <main className="flex-1 flex items-center justify-center px-margin-mobile py-xl">
-        <div className="w-full max-w-md bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg text-center">
+        <div className="w-full max-w-[28rem] bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg text-center">
           <h1 className="font-headline-lg text-headline-lg text-error mb-4">Account Suspended</h1>
           <p className="font-body-md text-body-md text-on-surface-variant mb-2">
             Your tutor account is currently suspended.

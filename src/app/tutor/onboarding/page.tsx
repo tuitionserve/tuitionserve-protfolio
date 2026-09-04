@@ -74,14 +74,20 @@ export default async function TutorOnboardingPage() {
                 institution: profile.institution,
                 graduationYear: profile.graduationYear,
                 majorSubject: profile.majorSubject,
-                subjects: profile.subjects,
-                grades: profile.grades,
+                // A profile whose Teaching/Availability steps were never
+                // (successfully) saved has these fields entirely absent
+                // in Firestore, not `[]` — default them here so a
+                // returning tutor resuming mid-onboarding doesn't crash
+                // the wizard (see the matching guard in
+                // submitTutorProfileForReview).
+                subjects: profile.subjects ?? [],
+                grades: profile.grades ?? [],
                 teachingExperienceSummary: profile.teachingExperienceSummary,
                 expectedMonthlyFee: profile.expectedMonthlyFee,
                 preferredLocationId: profile.preferredLocationId,
                 preferredLocationLabel: null,
                 preferredLocality: profile.preferredLocality,
-                availability: profile.availability,
+                availability: profile.availability ?? [],
                 hasCv: Boolean(profile.cvDocumentId),
               }
             : null
