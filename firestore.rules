@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// All Firestore reads/writes for this application go through trusted
+// Next.js server code using the Firebase Admin SDK, which bypasses these
+// rules entirely. Direct client SDK access to Firestore is intentionally
+// disabled so that every authorization, branch-scope, and lifecycle-state
+// check happens on the server (see role-authorization / security-audit
+// skills). Do not weaken this to add client-side Firestore reads/writes.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

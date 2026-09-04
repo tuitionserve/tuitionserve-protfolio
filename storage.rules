@@ -1,0 +1,13 @@
+rules_version = '2';
+
+// CVs and profile photos are private documents (document-file-security
+// skill). All uploads/downloads are brokered by trusted server code via
+// the Admin SDK (short-lived signed URLs); direct client access is
+// disabled here so storage-path ownership is always checked server-side.
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
