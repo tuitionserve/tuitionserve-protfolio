@@ -12,6 +12,7 @@ import { resolveBranchIdForLocation } from "@/server/domain/branch-routing";
 import { notifyAdminsForBranch } from "@/server/domain/notifications";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { tuitionRequestSchema } from "@/server/domain/parent-request-schema";
+import { getLocationAncestry } from "@/server/queries/location-hierarchy";
 
 export type ActionResult =
   | { ok: true; tuitionUid: string }
@@ -109,6 +110,14 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
   });
 
   const branchId = await resolveBranchIdForLocation(data.locationId);
+
+  // Denormalize district/local-government ancestors so M7's opportunity
+  // browser can filter "Janakpur-wide" without an ancestry walk per
+  // candidate tuition (see TuitionRequest doc comment in types.ts).
+  const ancestry = await getLocationAncestry(data.locationId); // [ward, localGovernment, district, province]
+  const localGovernmentId = ancestry.find((l) => l.level === "LOCAL_GOVERNMENT")?.id ?? null;
+  const districtId = ancestry.find((l) => l.level === "DISTRICT")?.id ?? null;
+
   const tuitionUid = await generateSequentialUid("tuition");
   const requestRef = tuitionRequestsCollection().doc();
   await requestRef.set({
@@ -122,6 +131,8 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
     gradeId: data.gradeId,
     exactAddress: data.exactAddress,
     locationId: data.locationId,
+    districtId,
+    localGovernmentId,
     tutorVisibleLocality: data.tutorVisibleLocality,
     availability: data.slots,
     notes: data.notes || null,
@@ -129,6 +140,7 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
     confirmedAt: null,
     rejectedAt: null,
     reviewedBy: null,
+    assignedApplicationId: null,
     createdAt: now,
     updatedAt: now,
   });

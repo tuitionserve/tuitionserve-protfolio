@@ -2,14 +2,14 @@ import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
 import { getTutorReviewQueue } from "@/server/queries/tutor-review";
-import { getTuitionRequestQueue } from "@/server/queries/tuition-requests";
+import { getOpenTuitionsQueue, getTuitionRequestQueue } from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
   // same note in tutor/dashboard/page.tsx.
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [branchName, tutorReviewQueue, tuitionRequestQueue] = await Promise.all([
+  const [branchName, tutorReviewQueue, tuitionRequestQueue, openTuitionsQueue] = await Promise.all([
     session.branchId
       ? branchesCollection()
           .doc(session.branchId)
@@ -18,6 +18,7 @@ export default async function AdminDashboardPage() {
       : Promise.resolve("All Branches"),
     getTutorReviewQueue(session),
     getTuitionRequestQueue(session),
+    getOpenTuitionsQueue(session),
   ]);
 
   const attentionItems = tutorReviewQueue.length + tuitionRequestQueue.length;
@@ -34,7 +35,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-md">
         <QueueTile label="New Requests" value={tuitionRequestQueue.length} href="/admin/tuition-requests" />
         <QueueTile label="Tutor Reviews" value={tutorReviewQueue.length} href="/admin/tutors" />
-        <QueueTile label="Open Tuitions" value={0} />
+        <QueueTile label="Open Tuitions" value={openTuitionsQueue.length} href="/admin/tuition-requests" />
         <QueueTile label="Selections" value={0} />
       </div>
 

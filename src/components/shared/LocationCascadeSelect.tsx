@@ -33,6 +33,7 @@ export function LocationCascadeSelect({
   initialWardNumber,
   initialDistricts,
   initialLocalGovernments,
+  requireWard = true,
   onChange,
 }: {
   provinces: LocationNodeLite[];
@@ -42,7 +43,9 @@ export function LocationCascadeSelect({
   initialWardNumber?: number;
   initialDistricts?: LocationNodeLite[];
   initialLocalGovernments?: LocationNodeLite[];
-  onChange: (wardId: string | null, label: string | null) => void;
+  /** When false, stops at Local Government (no ward select) and fires onChange with the local government's id — for broad filtering, not precise address capture. Fields also become optional. */
+  requireWard?: boolean;
+  onChange: (locationId: string | null, label: string | null) => void;
 }) {
   const [provinceId, setProvinceId] = useState(initialProvinceId ?? "");
   const [districtId, setDistrictId] = useState(initialDistrictId ?? "");
@@ -94,6 +97,17 @@ export function LocationCascadeSelect({
   function handleLocalGovernmentChange(next: string) {
     setLocalGovernmentId(next);
     setWardNumber("");
+    if (!requireWard) {
+      const lg = localGovernments.find((l) => l.id === next);
+      const district = districts.find((d) => d.id === districtId);
+      if (!next || !lg) {
+        onChange(null, null);
+        return;
+      }
+      const label = [locationLabel(lg), district ? locationLabel(district) : null].filter(Boolean).join(", ");
+      onChange(next, label);
+      return;
+    }
     onChange(null, null);
   }
 
@@ -129,8 +143,8 @@ export function LocationCascadeSelect({
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div className="flex flex-col gap-2">
         <label className="font-label-md text-label-md text-on-surface-variant">Province</label>
-        <select className={selectClass} value={provinceId} onChange={(e) => handleProvinceChange(e.target.value)} required>
-          <option value="" disabled>Select province</option>
+        <select className={selectClass} value={provinceId} onChange={(e) => handleProvinceChange(e.target.value)} required={requireWard}>
+          <option value="">{requireWard ? "Select province" : "Any province"}</option>
           {provinces.map((p) => (
             <option key={p.id} value={p.id}>{locationLabel(p)}</option>
           ))}
@@ -144,9 +158,9 @@ export function LocationCascadeSelect({
           value={districtId}
           onChange={(e) => handleDistrictChange(e.target.value)}
           disabled={!provinceId || loadingDistricts}
-          required
+          required={requireWard}
         >
-          <option value="" disabled>{loadingDistricts ? "Loading..." : "Select district"}</option>
+          <option value="">{loadingDistricts ? "Loading..." : requireWard ? "Select district" : "Any district"}</option>
           {districts.map((d) => (
             <option key={d.id} value={d.id}>{locationLabel(d)}</option>
           ))}
@@ -160,30 +174,32 @@ export function LocationCascadeSelect({
           value={localGovernmentId}
           onChange={(e) => handleLocalGovernmentChange(e.target.value)}
           disabled={!districtId || loadingLocalGovernments}
-          required
+          required={requireWard}
         >
-          <option value="" disabled>{loadingLocalGovernments ? "Loading..." : "Select municipality"}</option>
+          <option value="">{loadingLocalGovernments ? "Loading..." : requireWard ? "Select municipality" : "Any municipality"}</option>
           {localGovernments.map((l) => (
             <option key={l.id} value={l.id}>{locationLabel(l)}</option>
           ))}
         </select>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label className="font-label-md text-label-md text-on-surface-variant">Ward</label>
-        <select
-          className={selectClass}
-          value={wardNumber}
-          onChange={(e) => handleWardChange(e.target.value)}
-          disabled={!localGovernmentId}
-          required
-        >
-          <option value="" disabled>Select ward</option>
-          {wardOptions.map((w) => (
-            <option key={w.id} value={w.wardNumber}>Ward {w.wardNumber}</option>
-          ))}
-        </select>
-      </div>
+      {requireWard && (
+        <div className="flex flex-col gap-2">
+          <label className="font-label-md text-label-md text-on-surface-variant">Ward</label>
+          <select
+            className={selectClass}
+            value={wardNumber}
+            onChange={(e) => handleWardChange(e.target.value)}
+            disabled={!localGovernmentId}
+            required
+          >
+            <option value="" disabled>Select ward</option>
+            {wardOptions.map((w) => (
+              <option key={w.id} value={w.wardNumber}>Ward {w.wardNumber}</option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 }

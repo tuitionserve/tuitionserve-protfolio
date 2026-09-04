@@ -3,6 +3,8 @@ import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { parentsCollection, studentsCollection, tuitionRequestsCollection } from "@/server/domain/collections";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
 import { TuitionRequestReviewActions } from "@/components/admin/tuition-requests/TuitionRequestReviewActions";
+import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsList";
+import { getApplicantsForTuition } from "@/server/queries/admin-applicants";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -31,9 +33,10 @@ export default async function AdminTuitionRequestDetailPage({
     notFound();
   }
 
-  const [parentSnap, studentSnap] = await Promise.all([
+  const [parentSnap, studentSnap, applicants] = await Promise.all([
     parentsCollection().doc(request.parentId).get(),
     studentsCollection().doc(request.studentId).get(),
+    request.status === "NEW" ? Promise.resolve([]) : getApplicantsForTuition(id),
   ]);
   const parent = parentSnap.data() ?? null;
   const student = studentSnap.data() ?? null;
@@ -75,7 +78,11 @@ export default async function AdminTuitionRequestDetailPage({
         <Row label="Exact address" value={request.exactAddress} />
       </div>
 
-      <TuitionRequestReviewActions requestId={id} />
+      {request.status === "NEW" ? (
+        <TuitionRequestReviewActions requestId={id} />
+      ) : (
+        <ApplicantsList applicants={applicants} />
+      )}
     </div>
   );
 }

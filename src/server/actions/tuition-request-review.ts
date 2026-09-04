@@ -25,6 +25,15 @@ async function loadRequestForAdminReview(requestId: string) {
   return { session, ref };
 }
 
+/**
+ * Confirms a NEW request, transitioning it directly to OPEN — a
+ * confirmed request *is* the open opportunity (implementation plan
+ * Phase 7 acceptance: "Confirm transitions request to open"; domain
+ * model: "A confirmed TuitionRequest becomes an opportunity through its
+ * lifecycle rather than requiring a duplicate opportunity table"). The
+ * CONFIRMED status value stays declared on TuitionRequestStatus for
+ * schema completeness but is not used as a resting state here.
+ */
 export async function confirmTuitionRequest(requestId: string): Promise<ActionResult> {
   const { session, ref } = await loadRequestForAdminReview(requestId);
 
@@ -33,7 +42,7 @@ export async function confirmTuitionRequest(requestId: string): Promise<ActionRe
     const request = snap.data();
     if (!request || request.status !== "NEW") return { ok: false as const };
     tx.update(ref, {
-      status: "CONFIRMED",
+      status: "OPEN",
       confirmedAt: FieldValue.serverTimestamp(),
       reviewedBy: session.uid,
       rejectionReason: null,

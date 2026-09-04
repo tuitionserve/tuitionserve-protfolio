@@ -121,7 +121,15 @@ commit log for what has landed:
   of Nepal's 2025 postal code table, with a Province → District → Local
   Government → Ward cascading selector replacing the M3 flat city
   picker everywhere. See `data/locations/SOURCES.md`.
+- **M7 Opportunities** — confirming a request now transitions it
+  straight to OPEN (the confirmed request *is* the opportunity); tutor
+  Available Tuitions browser with subject/grade/day/location filters
+  (never a hard location wall) and a detail page that never exposes the
+  exact address.
+- **M8 Applications** — apply/withdraw, duplicate-active-application
+  prevention, a frozen profile+CV snapshot per application (verified:
+  later profile edits do not retroactively change it), My Applications,
+  and an admin applicant list with per-applicant CV access.
 
-Later milestones (opportunities, applications, messaging, assignment,
-withdrawal/reopen, external notification delivery, bilingual
-English/Nepali UI) are not yet built.
+Later milestones (messaging, assignment, withdrawal/reopen, external
+notification delivery, bilingual English/Nepali UI) are not yet built.

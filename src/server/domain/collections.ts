@@ -7,6 +7,7 @@ import type {
   Parent,
   Student,
   Tutor,
+  TutorApplication,
   TutorDocument,
   TutorProfile,
   TuitionRequest,
@@ -29,5 +30,6 @@ export const notificationsCollection = () => typedCollection<Notification>("noti
 export const parentsCollection = () => typedCollection<Parent>("parents");
 export const studentsCollection = () => typedCollection<Student>("students");
 export const tuitionRequestsCollection = () => typedCollection<TuitionRequest>("tuitionRequests");
+export const tutorApplicationsCollection = () => typedCollection<TutorApplication>("tutorApplications");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");

@@ -9,9 +9,22 @@ export default async function TutorLayout({ children }: { children: React.ReactN
     <div className="min-h-full flex flex-col">
       <header className="bg-surface-container-lowest border-b border-surface-variant">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
-          <Link href="/tutor/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
-            Tuition Serve
-          </Link>
+          <div className="flex items-center gap-xl">
+            <Link href="/tutor/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
+              Tuition Serve
+            </Link>
+            <nav className="hidden md:flex gap-gutter items-center">
+              <Link href="/tutor/dashboard" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Dashboard
+              </Link>
+              <Link href="/tutor/opportunities" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Available Tuitions
+              </Link>
+              <Link href="/tutor/applications" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                My Applications
+              </Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-md">
             <span className="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">
               {session.tutor?.tutorUid}

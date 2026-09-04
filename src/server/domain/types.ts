@@ -205,11 +205,19 @@ export type TuitionRequestStatus =
 /**
  * A parent's home-tuition request. Location privacy (location-privacy
  * skill) is structural, not just a UI concern: `exactAddress` is the
- * private street address (admin-only — no tutor-facing surface reads this
- * collection yet, but when one exists it must never select this field);
- * `locationId` is the structured city-level reference used for branch
+ * private street address (admin-only — every tutor-facing query/type
+ * must omit this field, never just hide it in the UI);
+ * `locationId` is the structured ward-level reference used for branch
  * routing; `tutorVisibleLocality` is the free-text area name a tutor
- * would eventually see. Keep these three separate — do not collapse them.
+ * sees. Keep these three separate — do not collapse them.
+ *
+ * `districtId`/`localGovernmentId` are denormalized from `locationId`'s
+ * ancestry at submission time (see server/domain/branch-routing.ts's
+ * getLocationAncestry) purely so the M7 opportunity browser can filter
+ * "Janakpur-wide" without an ancestry walk per candidate tuition
+ * (performance-engineering skill) — they are a query-efficiency
+ * convenience, not a second source of truth; `locationId` stays
+ * authoritative.
  */
 export interface TuitionRequest {
   id: string;
@@ -221,7 +229,9 @@ export interface TuitionRequest {
   subjectId: string; // catalog id
   gradeId: string; // catalog id, snapshot of Student.gradeId at request time
   exactAddress: string; // PRIVATE — admin-only, never for a tutor-facing response
-  locationId: string; // -> geographicLocations (city-level)
+  locationId: string; // -> geographicLocations (ward-level)
+  districtId: string | null; // denormalized ancestor of locationId, for filtering
+  localGovernmentId: string | null; // denormalized ancestor of locationId, for filtering
   tutorVisibleLocality: string; // free-text area, e.g. "Devichowk"
   availability: AvailabilitySlot[];
   notes: string | null;
@@ -229,8 +239,50 @@ export interface TuitionRequest {
   confirmedAt: FirebaseFirestore.Timestamp | null;
   rejectedAt: FirebaseFirestore.Timestamp | null;
   reviewedBy: string | null;
+  assignedApplicationId: string | null; // -> TutorApplication, set once ASSIGNED (M10)
   createdAt: FirebaseFirestore.Timestamp;
   updatedAt: FirebaseFirestore.Timestamp;
+}
+
+export type TutorApplicationStatus = "APPLIED" | "WITHDRAWN" | "SELECTED" | "REJECTED";
+
+/**
+ * A tutor's application to one open tuition (PRD section 16, domain
+ * model section 13). `snapshot` freezes the tutor-facing profile facts
+ * an admin evaluated at application time — later profile edits (direct
+ * or advanced-edit-approved) must NEVER retroactively change what an
+ * already-submitted application shows (domain-data-integrity /
+ * tutor-lifecycle skills: "snapshot principle").
+ */
+export interface TutorApplication {
+  id: string;
+  applicationUid: string; // TS-APP-######
+  tuitionId: string;
+  tutorId: string;
+  status: TutorApplicationStatus;
+  appliedAt: FirebaseFirestore.Timestamp;
+  withdrawnAt: FirebaseFirestore.Timestamp | null;
+  withdrawalReason: string | null;
+  selectedAt: FirebaseFirestore.Timestamp | null;
+  cvDocumentId: string | null; // the CV on file *at application time* — never repointed by a later re-upload.
+  snapshot: TutorApplicationSnapshot;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
+}
+
+export interface TutorApplicationSnapshot {
+  tutorUid: string;
+  fullName: string | null;
+  highestQualification: HighestQualification | null;
+  institution: string | null;
+  majorSubject: string | null;
+  subjects: string[];
+  grades: string[];
+  teachingExperienceSummary: string | null;
+  preferredLocality: string | null;
+  availability: AvailabilitySlot[];
+  expectedMonthlyFee: number | null;
+  capturedAt: FirebaseFirestore.Timestamp;
 }
 
 export interface AuditEvent {

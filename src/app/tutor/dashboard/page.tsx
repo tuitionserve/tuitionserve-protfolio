@@ -2,6 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
+import { getOpenOpportunities } from "@/server/queries/opportunities";
+import { getMyApplications } from "@/server/queries/my-applications";
 import type { TutorVerificationStatus } from "@/server/domain/types";
 
 const STATUS_LABEL: Record<TutorVerificationStatus, string> = {
@@ -32,6 +34,13 @@ export default async function TutorDashboardPage() {
   const session = await requireActiveTutor();
   if (!session.tutor) redirect("/login");
   const tutor = session.tutor;
+
+  const [openOpportunities, myApplications] = await Promise.all([
+    getOpenOpportunities({}),
+    getMyApplications(session.uid),
+  ]);
+  const activeApplications = myApplications.filter((a) => a.application.status === "APPLIED");
+  const assigned = myApplications.find((a) => a.application.status === "SELECTED");
 
   return (
     <div className="flex flex-col gap-lg">
@@ -88,9 +97,9 @@ export default async function TutorDashboardPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-md">
-        <SummaryTile label="Available Tuitions" value="—" />
-        <SummaryTile label="My Applications" value="—" />
-        <SummaryTile label="Assigned Tuition" value="—" />
+        <SummaryTile label="Available Tuitions" value={String(openOpportunities.length)} href="/tutor/opportunities" />
+        <SummaryTile label="My Applications" value={String(activeApplications.length)} href="/tutor/applications" />
+        <SummaryTile label="Assigned Tuition" value={assigned ? "1" : "0"} href={assigned ? "/tutor/applications" : undefined} />
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -101,11 +110,18 @@ export default async function TutorDashboardPage() {
   );
 }
 
-function SummaryTile({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg text-center">
+function SummaryTile({ label, value, href }: { label: string; value: string; href?: string }) {
+  const content = (
+    <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg text-center h-full">
       <p className="font-display-lg text-headline-lg text-on-surface">{value}</p>
       <p className="font-label-md text-label-md text-on-surface-variant mt-1">{label}</p>
     </div>
+  );
+  return href ? (
+    <Link href={href} className="hover:shadow-md transition-all rounded-xl block">
+      {content}
+    </Link>
+  ) : (
+    content
   );
 }
