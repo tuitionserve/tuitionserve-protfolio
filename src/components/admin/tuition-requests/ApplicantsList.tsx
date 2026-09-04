@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { getApplicationCvUrl } from "@/server/actions/applications";
 import { assignTutor } from "@/server/actions/assignment";
+import { startConversationWithTutorUid } from "@/server/actions/messaging";
 import type { TutorApplicationStatus } from "@/server/domain/types";
 import type { AdminApplicantView } from "@/server/queries/admin-applicants";
 
@@ -33,6 +34,25 @@ export function ApplicantsList({
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [assignError, setAssignError] = useState<string | null>(null);
   const [assignPending, startAssignTransition] = useTransition();
+  const [messageErrors, setMessageErrors] = useState<Record<string, string>>({});
+  const [messageLoading, setMessageLoading] = useState<string | null>(null);
+
+  async function handleMessage(applicationId: string, tutorUid: string) {
+    setMessageErrors((prev) => ({ ...prev, [applicationId]: "" }));
+    setMessageLoading(applicationId);
+    try {
+      const result = await startConversationWithTutorUid(tutorUid, tuitionId);
+      if (result.ok) {
+        router.push(`/admin/messages/${result.conversationId}`);
+      } else {
+        setMessageErrors((prev) => ({ ...prev, [applicationId]: result.error }));
+        setMessageLoading(null);
+      }
+    } catch {
+      setMessageErrors((prev) => ({ ...prev, [applicationId]: "Could not start conversation." }));
+      setMessageLoading(null);
+    }
+  }
 
   async function handleViewCv(applicationId: string) {
     setCvErrors((prev) => ({ ...prev, [applicationId]: "" }));
@@ -111,7 +131,7 @@ export function ApplicantsList({
               Expected fee: {application.snapshot.expectedMonthlyFee ? `NPR ${application.snapshot.expectedMonthlyFee}` : "—"}
             </p>
             <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
+              <div className="flex flex-wrap gap-2">
                 <button
                   type="button"
                   onClick={() => handleViewCv(application.id)}
@@ -120,8 +140,19 @@ export function ApplicantsList({
                 >
                   {cvLoading === application.id ? "Loading CV..." : "View CV"}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => handleMessage(application.id, application.snapshot.tutorUid)}
+                  disabled={messageLoading === application.id}
+                  className="border border-secondary text-secondary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container transition-all disabled:opacity-50"
+                >
+                  {messageLoading === application.id ? "Opening..." : "Message"}
+                </button>
                 {cvErrors[application.id] && (
-                  <p className="font-body-sm text-body-sm text-error mt-1">{cvErrors[application.id]}</p>
+                  <p className="font-body-sm text-body-sm text-error mt-1 w-full">{cvErrors[application.id]}</p>
+                )}
+                {messageErrors[application.id] && (
+                  <p className="font-body-sm text-body-sm text-error mt-1 w-full">{messageErrors[application.id]}</p>
                 )}
               </div>
 

@@ -19,6 +19,26 @@ const LIMITS: Record<DocumentType, { mimeTypes: string[]; maxBytes: number }> = 
   },
 };
 
+/**
+ * Magic-byte signature check per MIME type — the browser-reported
+ * `File.type` (what LIMITS.mimeTypes validates above) is client-supplied
+ * and trivially spoofable (e.g. a shell script renamed with a `.pdf`
+ * extension and an overridden type). CVs in particular are a known
+ * malware-delivery vector against people who review them, so we verify
+ * the actual file content matches the claimed type before accepting it.
+ */
+const MAGIC_BYTES: Record<string, (buf: Buffer) => boolean> = {
+  "application/pdf": (buf) => buf.subarray(0, 5).toString("latin1") === "%PDF-",
+  "image/jpeg": (buf) => buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff,
+  "image/png": (buf) =>
+    buf.length >= 8 &&
+    buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])),
+  "image/webp": (buf) =>
+    buf.length >= 12 &&
+    buf.subarray(0, 4).toString("latin1") === "RIFF" &&
+    buf.subarray(8, 12).toString("latin1") === "WEBP",
+};
+
 export class InvalidDocumentError extends Error {
   constructor(message: string) {
     super(message);
@@ -53,6 +73,11 @@ export async function uploadTutorDocument(params: {
   if (buffer.byteLength > limits.maxBytes) {
     throw new InvalidDocumentError(
       `File exceeds the ${Math.floor(limits.maxBytes / (1024 * 1024))}MB limit.`,
+    );
+  }
+  if (!MAGIC_BYTES[mimeType]!(buffer)) {
+    throw new InvalidDocumentError(
+      "The file's contents don't match its type. It may be corrupted or mislabeled.",
     );
   }
 
