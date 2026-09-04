@@ -2,14 +2,22 @@ import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { countUnreadNotifications } from "@/server/queries/my-notifications";
+import { BottomTabBar } from "@/components/shared/BottomTabBar";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
   const unreadCount = await countUnreadNotifications(session.uid);
+  const tabLinks = [
+    { label: "Home", href: "/admin/dashboard", icon: "home" },
+    { label: "Tutors", href: "/admin/tutors", icon: "group" },
+    { label: "Requests", href: "/admin/tuition-requests", icon: "fact_check" },
+    { label: "Messages", href: "/admin/messages", icon: "chat" },
+    { label: "Alerts", href: "/admin/notifications", icon: "notifications", badge: unreadCount },
+  ];
 
   return (
     <div className="min-h-full flex flex-col">
-      <header className="bg-surface-container-lowest border-b border-surface-variant">
+      <header className="bg-surface-container-lowest border-b border-surface-variant relative">
         <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
           <div className="flex items-center gap-xl">
             <Link href="/admin/dashboard" className="font-headline-md text-headline-md font-bold text-primary">
@@ -46,9 +54,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </div>
       </header>
-      <main className="flex-1 w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl">
+      <main className="flex-1 w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
         {children}
       </main>
+      <BottomTabBar links={tabLinks} />
     </div>
   );
 }

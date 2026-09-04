@@ -8,6 +8,7 @@ import { ProcessSteps } from "@/components/public/sections/ProcessSteps";
 import { StatsStrip } from "@/components/public/sections/StatsStrip";
 import { Testimonials } from "@/components/public/sections/Testimonials";
 import { Faq } from "@/components/public/sections/Faq";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 export default function HomePage() {
   return (
@@ -15,13 +16,27 @@ export default function HomePage() {
       <PublicHeader active="Home" />
       <main>
         <Hero />
-        <TrustStrip />
-        <AudienceCards />
-        <RequestTutorSearch />
-        <ProcessSteps />
-        <StatsStrip />
-        <Testimonials />
-        <Faq />
+        <FadeIn>
+          <TrustStrip />
+        </FadeIn>
+        <FadeIn>
+          <AudienceCards />
+        </FadeIn>
+        <FadeIn>
+          <RequestTutorSearch />
+        </FadeIn>
+        <FadeIn>
+          <ProcessSteps />
+        </FadeIn>
+        <FadeIn>
+          <StatsStrip />
+        </FadeIn>
+        <FadeIn>
+          <Testimonials />
+        </FadeIn>
+        <FadeIn>
+          <Faq />
+        </FadeIn>
       </main>
       <PublicFooter />
     </>

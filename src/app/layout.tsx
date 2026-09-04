@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { MotionProvider } from "@/components/ui/MotionProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -12,6 +13,17 @@ export const metadata: Metadata = {
   title: "Tuition Serve - Find the Right Tutor",
   description:
     "Tuition Serve connects parents with verified home tutors. Submit your requirements and get matched by our admin team.",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Tuition Serve",
+  },
+};
+
+export const viewport = {
+  themeColor: "#006c49",
+  viewportFit: "cover" as const,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -28,7 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="min-h-full flex flex-col bg-surface text-on-surface font-body-md">
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

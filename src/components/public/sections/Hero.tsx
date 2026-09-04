@@ -1,11 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
+import { FadeIn } from "@/components/ui/FadeIn";
 
 export function Hero() {
   return (
     <section className="w-full px-margin-mobile md:px-margin-desktop py-xxl max-w-max-width mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
-        <div className="md:col-span-6 flex flex-col gap-lg z-10">
+        <FadeIn className="md:col-span-6 flex flex-col gap-lg z-10" direction="left" mode="mount">
           <h1 className="hidden md:block font-display-lg text-display-lg text-on-surface">
             Find the Right Tutor for Your Learning Journey
           </h1>
@@ -31,16 +33,19 @@ export function Hero() {
               Become a Tutor
             </Link>
           </div>
-        </div>
-        <div className="md:col-span-6 relative">
+        </FadeIn>
+        <FadeIn className="md:col-span-6 relative" direction="right" delay={0.15} mode="mount">
           <div className="absolute inset-0 bg-primary-container/10 rounded-full blur-3xl -z-10 transform scale-90 translate-x-10 translate-y-10" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             alt="A teacher and student engaged in a home tuition session"
             className="w-full h-auto object-cover rounded-xl shadow-md border border-surface-variant"
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuAN8RX5vMPsbD82PxMq7K8gsWLNXwrAiQfs3jwL_Z9aRFrPS5s10VjWHC7j8_I1OLyiTw6VOfyzd4NFHiuEwRdxHlVD3wUD5LZRfnUDhO3Ijxe06kRk7UlKy3e_ishmKtZxst0bWO7lOES_kQueNzpcwvnIsOxonN8yvo4X7A30sXFpb0CPd9E7wVhabNUbYCv2DeJ1gZ3Ai3rVMQNfOgDUQHyk6zDI2kk6XHSk1JKIs4_ao6-uWoj9bg"
+            width={800}
+            height={600}
+            priority
+            sizes="(min-width: 768px) 50vw, 100vw"
           />
-        </div>
+        </FadeIn>
       </div>
     </section>
   );

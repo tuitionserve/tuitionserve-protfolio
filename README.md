@@ -150,8 +150,22 @@ commit log for what has landed:
   collections — 20 per page, cursor-based, "Showing X-Y of Z" + Previous/
   Next.
 
-Remaining: **M13 (Security/QA)** — an audit/adversarial-testing pass over
-everything above, not new features — and **M14 (Production)**, which is
-mostly configuration and needs real credentials (Firebase service
-account, Storage Blaze upgrade, Vercel deploy) rather than more code.
-Bilingual English/Nepali UI is queued as its own follow-up pass.
+- **M13 Security/QA** — static review of every server action for
+  auth/branch/ownership checks, plus live adversarial testing against the
+  Emulator Suite: cross-branch and cross-tutor ID substitution on every
+  mutating action and detail page, suspended-tutor gating enforced both
+  server-side (in the action) and at the page level, session-cookie
+  tampering fails closed, and `TuitionRequest.exactAddress` hardened
+  into a type-excluded tutor-facing view (`MyApplicationTuitionView`),
+  matching the pattern already used for opportunities/applicants.
+- `robots.txt` / `sitemap.xml` added (public routes only — `/tutor` and
+  `/admin` are disallowed); `ads.txt` is a placeholder pending the
+  client's AdSense publisher ID; gender is Male/Female only per the
+  client's request for a local-market platform.
+
+Remaining: **M14 (Mobile/Performance/Motion)** — full mobile-responsive
+pass, performance optimization, and Apple-style motion/animation on the
+public homepage — and **M15 (Production)**, which is mostly configuration
+and needs real credentials (Firebase service account, Storage Blaze
+upgrade, Vercel deploy) rather than more code. Bilingual English/Nepali
+UI is queued as its own follow-up pass.

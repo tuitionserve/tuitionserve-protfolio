@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileNav } from "./MobileNav";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -11,7 +12,7 @@ const NAV_LINKS = [
 
 export function PublicHeader({ active = "Home" }: { active?: string }) {
   return (
-    <header className="bg-surface-container-lowest shadow-sm sticky top-0 z-50 transition-colors duration-200">
+    <header className="bg-surface-container-lowest shadow-sm sticky top-0 z-50 transition-colors duration-200 relative">
       <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
         <Link href="/" className="font-headline-md text-headline-md font-bold text-primary">
           Tuition Serve
@@ -33,7 +34,7 @@ export function PublicHeader({ active = "Home" }: { active?: string }) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-md">
+        <div className="hidden md:flex items-center gap-md">
           <Link
             href="/login"
             className="font-label-md text-label-md text-secondary border border-secondary px-4 py-2 rounded-lg hover:bg-surface-container-lowest transition-colors min-h-[44px] flex items-center"
@@ -47,6 +48,8 @@ export function PublicHeader({ active = "Home" }: { active?: string }) {
             Signup
           </Link>
         </div>
+
+        <MobileNav active={active} />
       </div>
     </header>
   );
