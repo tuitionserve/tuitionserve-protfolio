@@ -81,7 +81,12 @@ export default async function AdminTuitionRequestDetailPage({
       {request.status === "NEW" ? (
         <TuitionRequestReviewActions requestId={id} />
       ) : (
-        <ApplicantsList applicants={applicants} />
+        <ApplicantsList
+          applicants={applicants}
+          tuitionId={id}
+          tuitionUid={request.tuitionUid}
+          canAssign={request.status === "OPEN"}
+        />
       )}
     </div>
   );

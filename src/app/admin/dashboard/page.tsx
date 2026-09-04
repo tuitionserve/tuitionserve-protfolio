@@ -2,24 +2,26 @@ import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
 import { getTutorReviewQueue } from "@/server/queries/tutor-review";
-import { getOpenTuitionsQueue, getTuitionRequestQueue } from "@/server/queries/tuition-requests";
+import { getOpenTuitionsQueue, getSelectionsReadyQueue, getTuitionRequestQueue } from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
   // same note in tutor/dashboard/page.tsx.
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [branchName, tutorReviewQueue, tuitionRequestQueue, openTuitionsQueue] = await Promise.all([
-    session.branchId
-      ? branchesCollection()
-          .doc(session.branchId)
-          .get()
-          .then((snap) => snap.data()?.name ?? "Unknown branch")
-      : Promise.resolve("All Branches"),
-    getTutorReviewQueue(session),
-    getTuitionRequestQueue(session),
-    getOpenTuitionsQueue(session),
-  ]);
+  const [branchName, tutorReviewQueue, tuitionRequestQueue, openTuitionsQueue, selectionsReadyQueue] =
+    await Promise.all([
+      session.branchId
+        ? branchesCollection()
+            .doc(session.branchId)
+            .get()
+            .then((snap) => snap.data()?.name ?? "Unknown branch")
+        : Promise.resolve("All Branches"),
+      getTutorReviewQueue(session),
+      getTuitionRequestQueue(session),
+      getOpenTuitionsQueue(session),
+      getSelectionsReadyQueue(session),
+    ]);
 
   const attentionItems = tutorReviewQueue.length + tuitionRequestQueue.length;
 
@@ -36,7 +38,9 @@ export default async function AdminDashboardPage() {
         <QueueTile label="New Requests" value={tuitionRequestQueue.length} href="/admin/tuition-requests" />
         <QueueTile label="Tutor Reviews" value={tutorReviewQueue.length} href="/admin/tutors" />
         <QueueTile label="Open Tuitions" value={openTuitionsQueue.length} href="/admin/tuition-requests" />
-        <QueueTile label="Selections" value={0} />
+        {/* "Ready for selection" = OPEN tuitions that already have >=1 applicant, i.e. an
+            admin can act on them right now (see getSelectionsReadyQueue doc comment). */}
+        <QueueTile label="Selections" value={selectionsReadyQueue.length} href="/admin/tuition-requests" />
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">

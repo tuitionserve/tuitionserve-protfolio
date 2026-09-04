@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { getApplicationCvUrl } from "@/server/actions/applications";
+import { assignTutor } from "@/server/actions/assignment";
 import type { TutorApplicationStatus } from "@/server/domain/types";
 import type { AdminApplicantView } from "@/server/queries/admin-applicants";
 
@@ -13,9 +15,24 @@ const STATUS_LABEL: Record<TutorApplicationStatus, string> = {
   REJECTED: "Not Selected",
 };
 
-export function ApplicantsList({ applicants }: { applicants: AdminApplicantView[] }) {
+export function ApplicantsList({
+  applicants,
+  tuitionId,
+  tuitionUid,
+  canAssign,
+}: {
+  applicants: AdminApplicantView[];
+  tuitionId: string;
+  tuitionUid: string;
+  /** Only OPEN tuitions can still be assigned — the caller passes `request.status === "OPEN"`. */
+  canAssign: boolean;
+}) {
+  const router = useRouter();
   const [cvErrors, setCvErrors] = useState<Record<string, string>>({});
   const [cvLoading, setCvLoading] = useState<string | null>(null);
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
+  const [assignError, setAssignError] = useState<string | null>(null);
+  const [assignPending, startAssignTransition] = useTransition();
 
   async function handleViewCv(applicationId: string) {
     setCvErrors((prev) => ({ ...prev, [applicationId]: "" }));
@@ -30,6 +47,19 @@ export function ApplicantsList({ applicants }: { applicants: AdminApplicantView[
     } finally {
       setCvLoading(null);
     }
+  }
+
+  function handleAssign(applicationId: string) {
+    setAssignError(null);
+    startAssignTransition(async () => {
+      const result = await assignTutor(tuitionId, applicationId);
+      if (result.ok) {
+        setConfirmingId(null);
+        router.refresh();
+      } else {
+        setAssignError(result.error);
+      }
+    });
   }
 
   if (applicants.length === 0) {
@@ -80,17 +110,64 @@ export function ApplicantsList({ applicants }: { applicants: AdminApplicantView[
             <p className="font-body-sm text-body-sm text-on-surface-variant">
               Expected fee: {application.snapshot.expectedMonthlyFee ? `NPR ${application.snapshot.expectedMonthlyFee}` : "—"}
             </p>
-            <div>
-              <button
-                type="button"
-                onClick={() => handleViewCv(application.id)}
-                disabled={cvLoading === application.id}
-                className="border border-secondary text-secondary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container transition-all disabled:opacity-50"
-              >
-                {cvLoading === application.id ? "Loading CV..." : "View CV"}
-              </button>
-              {cvErrors[application.id] && (
-                <p className="font-body-sm text-body-sm text-error mt-1">{cvErrors[application.id]}</p>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <button
+                  type="button"
+                  onClick={() => handleViewCv(application.id)}
+                  disabled={cvLoading === application.id}
+                  className="border border-secondary text-secondary font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container transition-all disabled:opacity-50"
+                >
+                  {cvLoading === application.id ? "Loading CV..." : "View CV"}
+                </button>
+                {cvErrors[application.id] && (
+                  <p className="font-body-sm text-body-sm text-error mt-1">{cvErrors[application.id]}</p>
+                )}
+              </div>
+
+              {canAssign && application.status === "APPLIED" && (
+                <div className="flex flex-col items-end gap-1">
+                  {confirmingId === application.id ? (
+                    <div className="flex flex-col items-end gap-2 border border-outline-variant rounded-lg p-3 bg-surface-container max-w-xs">
+                      <p className="font-body-sm text-body-sm text-on-surface text-right">
+                        Assign {application.snapshot.tutorUid} to {tuitionUid}? This closes the opportunity to new
+                        applications.
+                      </p>
+                      <div className="flex gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setConfirmingId(null)}
+                          disabled={assignPending}
+                          className="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-lowest transition-all disabled:opacity-60"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleAssign(application.id)}
+                          disabled={assignPending}
+                          className="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all disabled:opacity-60"
+                        >
+                          {assignPending ? "Assigning..." : "Assign"}
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAssignError(null);
+                        setConfirmingId(application.id);
+                      }}
+                      className="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all"
+                    >
+                      Assign
+                    </button>
+                  )}
+                  {assignError && confirmingId === application.id && (
+                    <p className="font-body-sm text-body-sm text-error text-right">{assignError}</p>
+                  )}
+                </div>
               )}
             </div>
           </div>

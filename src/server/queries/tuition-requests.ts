@@ -1,4 +1,9 @@
-import { parentsCollection, studentsCollection, tuitionRequestsCollection } from "@/server/domain/collections";
+import {
+  parentsCollection,
+  studentsCollection,
+  tuitionRequestsCollection,
+  tutorApplicationsCollection,
+} from "@/server/domain/collections";
 import type { AuthSession } from "@/server/auth/session";
 import type { TuitionRequest } from "@/server/domain/types";
 
@@ -30,6 +35,31 @@ export async function getTuitionRequestQueue(session: AuthSession): Promise<Tuit
     parentName: parents[i]?.data()?.fullName ?? null,
     studentName: students[i]?.data()?.fullName ?? null,
   }));
+}
+
+/**
+ * Branch-scoped list of OPEN tuitions that already have at least one
+ * APPLIED applicant — i.e. an admin decision is actually waiting
+ * ("ready to select a tutor"), not just "opportunity is live and might
+ * still get zero applicants". Backs the dashboard "Selections" tile:
+ * counting *tuitions* (not raw application rows) so the number reads as
+ * "N assignment decisions waiting on you".
+ */
+export async function getSelectionsReadyQueue(session: AuthSession): Promise<TuitionRequestQueueRow[]> {
+  const openRows = await getOpenTuitionsQueue(session);
+  if (openRows.length === 0) return [];
+
+  const applicantSnaps = await Promise.all(
+    openRows.map((row) =>
+      tutorApplicationsCollection()
+        .where("tuitionId", "==", row.request.id)
+        .where("status", "==", "APPLIED")
+        .limit(1)
+        .get(),
+    ),
+  );
+
+  return openRows.filter((_, i) => !applicantSnaps[i].empty);
 }
 
 /** Branch-scoped list of OPEN tuitions (confirmed, awaiting/reviewing applicants). */

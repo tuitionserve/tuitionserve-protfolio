@@ -61,6 +61,12 @@ export default async function MyApplicationsPage() {
                 >
                   {STATUS_LABEL[application.status]}
                 </span>
+                {/* Read-only: post-assignment withdrawal requests are a separate milestone (M11). */}
+                {application.status === "SELECTED" && (
+                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-sm">
+                    You&rsquo;ve been assigned to this tuition. An admin will contact you with further details.
+                  </p>
+                )}
               </div>
               {application.status === "APPLIED" && <WithdrawApplicationButton applicationId={application.id} />}
             </div>
