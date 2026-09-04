@@ -23,6 +23,9 @@ export default async function TutorLayout({ children }: { children: React.ReactN
               <Link href="/tutor/applications" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
                 My Applications
               </Link>
+              <Link href="/tutor/messages" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
+                Messages
+              </Link>
             </nav>
           </div>
           <div className="flex items-center gap-md">
