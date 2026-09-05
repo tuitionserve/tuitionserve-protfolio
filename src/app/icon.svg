@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <circle cx="16" cy="16" r="16" fill="#0A4D8C" />
+  <g transform="translate(4, 4) scale(0.046875)" fill="none" stroke="#FFFFFF" stroke-width="40" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 256 420 Q 180 390 90 370 L 90 130 Q 180 150 256 180 Q 332 150 422 130 L 422 370 Q 332 390 256 420 Z" />
+    <line x1="256" y1="180" x2="256" y2="420" />
+    <!-- Simplified inner lines for tiny rendering -->
+    <path d="M 140 250 Q 190 260 210 270" stroke-width="32" />
+    <path d="M 140 330 Q 190 340 210 350" stroke-width="32" />
+    <path d="M 372 250 Q 322 260 302 270" stroke-width="32" />
+    <path d="M 372 330 Q 322 340 302 350" stroke-width="32" />
+  </g>
+</svg>
