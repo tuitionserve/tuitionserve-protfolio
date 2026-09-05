@@ -18,7 +18,7 @@ export function PublicFooter() {
     <footer className="bg-secondary-fixed mt-auto">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter w-full px-margin-mobile md:px-margin-desktop py-xxl max-w-max-width mx-auto">
         <div className="flex flex-col gap-4 md:col-span-1">
-          <Image src="/images/logo.svg" alt="Tuition Serve" width={180} height={40} className="h-10 w-auto" />
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={40} className="h-10 w-auto" />
           <p className="font-body-sm text-body-sm text-on-secondary-fixed-variant">
             © {new Date().getFullYear()} Tuition Serve. Empowering education through
             personalized learning.

@@ -37,13 +37,13 @@ export function Hero() {
         <FadeIn className="md:col-span-6 relative" direction="right" delay={0.15} mode="mount">
           <div className="absolute inset-0 bg-primary-container/10 rounded-full blur-3xl -z-10 transform scale-90 translate-x-10 translate-y-10" />
           <Image
-            // TODO: swap for the client's real photo at public/images/hero.jpg
-            // (same filename/size keeps this code unchanged).
             alt="A teacher and student engaged in a home tuition session"
             className="w-full h-auto object-cover rounded-xl shadow-md border border-surface-variant"
             src="/images/hero.jpg"
-            width={800}
-            height={600}
+            width={512}
+            height={279}
+            style={{ height: "auto" }}
+            unoptimized
             priority
             sizes="(min-width: 768px) 50vw, 100vw"
           />

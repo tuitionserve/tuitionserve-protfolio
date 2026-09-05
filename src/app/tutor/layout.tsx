@@ -51,7 +51,7 @@ export default async function TutorLayout({ children }: { children: React.ReactN
         <header className="md:hidden bg-surface-container-lowest border-b border-surface-variant">
           <div className="flex justify-between items-center w-full px-margin-mobile py-4">
             <Link href="/tutor/dashboard" className="flex items-center">
-              <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
+              <Image src="/images/logo.svg" alt="Tuition Serve" width={128} height={32} className="h-8 w-auto" priority />
             </Link>
             <LogoutButton />
           </div>

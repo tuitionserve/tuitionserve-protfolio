@@ -59,7 +59,7 @@ export default function RegisterPage() {
     <div className="min-h-full flex flex-col">
       <header className="w-full px-margin-mobile md:px-margin-desktop py-4">
         <Link href="/" className="inline-flex items-center">
-          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={128} height={32} className="h-8 w-auto" priority />
         </Link>
       </header>
 

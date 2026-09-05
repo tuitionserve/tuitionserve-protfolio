@@ -89,7 +89,7 @@ export function Sidebar({
         ) : (
           <>
             <Link href={homeHref} className="flex items-center overflow-hidden">
-              <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" />
+              <Image src="/images/logo.svg" alt="Tuition Serve" width={128} height={32} className="h-8 w-auto" />
             </Link>
             <button
               type="button"

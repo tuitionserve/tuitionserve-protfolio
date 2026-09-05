@@ -16,7 +16,7 @@ export function PublicHeader({ active = "Home" }: { active?: string }) {
     <header className="bg-surface-container-lowest shadow-sm sticky top-0 z-50 transition-colors duration-200 relative">
       <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
         <Link href="/" className="flex items-center">
-          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto md:h-9" priority />
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={128} height={32} className="h-8 w-auto md:h-9" priority />
         </Link>
 
         <nav className="hidden md:flex gap-gutter items-center">

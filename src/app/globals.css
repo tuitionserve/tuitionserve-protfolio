@@ -7,3 +7,20 @@
 .material-symbols-outlined.filled {
   font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
 }
+
+@keyframes not-found-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.not-found-float,
+.not-found-float-delayed {
+  animation: not-found-float 5s ease-in-out infinite;
+}
+
+.not-found-float-delayed { animation-delay: -2.5s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .not-found-float,
+  .not-found-float-delayed { animation: none; }
+}
