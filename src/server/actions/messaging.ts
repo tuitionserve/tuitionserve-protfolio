@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
 import { assertBranchScope, requireActiveTutor, requireRole, requireSession } from "@/server/auth/guards";
 import {
@@ -348,13 +348,19 @@ export async function sendMessage(conversationId: string, body: string): Promise
 export async function markConversationRead(conversationId: string): Promise<ActionResult> {
   let session: AuthSession;
   let ref: FirebaseFirestore.DocumentReference<Conversation>;
+  let conversation: Conversation;
   try {
-    ({ session, ref } = await loadConversationForParticipant(conversationId));
+    ({ session, ref, conversation } = await loadConversationForParticipant(conversationId));
   } catch {
     return { ok: false, error: "Conversation not found." };
   }
 
   const field = session.role === "TUTOR" ? "tutorUnreadCount" : "adminUnreadCount";
+  // Skip the write entirely when there's nothing to mark — the poll in
+  // MessageThread calls this every 8 seconds while the thread stays
+  // open, so an idle conversation would otherwise write forever for no
+  // reason.
+  if (conversation[field] === 0) return { ok: true };
   await ref.update({ [field]: 0, updatedAt: FieldValue.serverTimestamp() });
   return { ok: true };
 }
@@ -381,12 +387,38 @@ export async function getConversationsForAdmin(cursor: string | null): Promise<P
 /** Most recent MESSAGES_PAGE_SIZE messages, oldest first (ready to render top-to-bottom). Re-verifies participant access. */
 export async function getMessagesForConversation(conversationId: string): Promise<MessageView[]> {
   const { conversation } = await loadConversationForParticipant(conversationId);
-  const snap = await messagesCollection().where("conversationId", "==", conversation.id).get();
-  const sorted = snap.docs
-    .map((d) => d.data())
-    .sort((a, b) => (a.sentAt?.toMillis() ?? 0) - (b.sentAt?.toMillis() ?? 0));
-  const page = sorted.length > MESSAGES_PAGE_SIZE ? sorted.slice(sorted.length - MESSAGES_PAGE_SIZE) : sorted;
-  return page.map(toMessageView);
+  // Bounded at the Firestore level (requires the conversationId+sentAt
+  // composite index in firestore.indexes.json) rather than fetching every
+  // message ever sent and slicing in memory — the earlier equality-only
+  // approach re-read the *entire* conversation history on every 8-second
+  // poll tick, which is fine for a short thread and unboundedly expensive
+  // for a long-running one.
+  const snap = await messagesCollection()
+    .where("conversationId", "==", conversation.id)
+    .orderBy("sentAt", "desc")
+    .limit(MESSAGES_PAGE_SIZE)
+    .get();
+  const chronological = snap.docs.map((d) => d.data()).reverse();
+  return chronological.map(toMessageView);
+}
+
+/**
+ * Delta variant for MessageThread's poll loop: only messages strictly
+ * newer than `sinceMillis`. An idle conversation (the common case for a
+ * left-open tab) matches zero documents instead of re-reading the last
+ * 100 messages every 8 seconds — the client merges these into its
+ * existing state rather than replacing it wholesale.
+ */
+export async function getNewMessagesSince(conversationId: string, sinceMillis: number): Promise<MessageView[]> {
+  const { conversation } = await loadConversationForParticipant(conversationId);
+  const since = Timestamp.fromMillis(sinceMillis);
+  const snap = await messagesCollection()
+    .where("conversationId", "==", conversation.id)
+    .where("sentAt", ">", since)
+    .orderBy("sentAt", "asc")
+    .limit(MESSAGES_PAGE_SIZE)
+    .get();
+  return snap.docs.map((d) => toMessageView(d.data()));
 }
 
 /** Conversation header info (tutor UID/name) for the thread view. Returns null on any not-found/unauthorized outcome so pages can 404. */

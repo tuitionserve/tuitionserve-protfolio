@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import {
-  getMessagesForConversation,
+  getNewMessagesSince,
   markConversationRead,
   sendMessage,
   type MessageView,
@@ -41,27 +41,36 @@ export function MessageThread({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const scrollRef = useRef<HTMLDivElement>(null);
+  // Tracks the latest message's timestamp so the poll can ask for only
+  // what's new, without re-subscribing the interval on every message.
+  const latestSentAtRef = useRef<number>(
+    initialMessages.length > 0 ? (initialMessages[initialMessages.length - 1]!.sentAt ?? 0) : 0,
+  );
 
-  // Mark read on open, and refresh on a modest interval while the thread
-  // stays mounted — re-marking read on every poll keeps the unread badge
-  // at 0 for as long as this thread is actually open.
+  // Mark read on open, and poll for new messages only (not the whole
+  // history) on a modest interval while the thread stays mounted — an
+  // idle conversation matches zero new messages per tick instead of
+  // re-reading the last 100 every 8 seconds. markConversationRead is a
+  // no-op write once the unread count is already 0, so leaving a thread
+  // open costs one cheap read per tick, not a write.
   useEffect(() => {
     let cancelled = false;
 
-    async function refresh() {
+    async function poll() {
       try {
-        const [latest] = await Promise.all([
-          getMessagesForConversation(conversationId),
+        const [newOnes] = await Promise.all([
+          getNewMessagesSince(conversationId, latestSentAtRef.current),
           markConversationRead(conversationId),
         ]);
-        if (!cancelled) setMessages(latest);
+        if (cancelled || newOnes.length === 0) return;
+        latestSentAtRef.current = newOnes[newOnes.length - 1]!.sentAt ?? latestSentAtRef.current;
+        setMessages((prev) => [...prev, ...newOnes]);
       } catch {
         // Transient poll failure — the next interval tick will retry.
       }
     }
 
-    void refresh();
-    const interval = setInterval(refresh, POLL_INTERVAL_MS);
+    const interval = setInterval(poll, POLL_INTERVAL_MS);
     return () => {
       cancelled = true;
       clearInterval(interval);
@@ -83,8 +92,11 @@ export function MessageThread({
         return;
       }
       setDraft("");
-      const latest = await getMessagesForConversation(conversationId);
-      setMessages(latest);
+      const newOnes = await getNewMessagesSince(conversationId, latestSentAtRef.current);
+      if (newOnes.length > 0) {
+        latestSentAtRef.current = newOnes[newOnes.length - 1]!.sentAt ?? latestSentAtRef.current;
+        setMessages((prev) => [...prev, ...newOnes]);
+      }
     });
   }
 
