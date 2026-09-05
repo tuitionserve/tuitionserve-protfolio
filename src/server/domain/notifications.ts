@@ -55,3 +55,16 @@ export async function notifyAdminsForBranch(
     snap.docs.map((doc) => createNotification({ ...notification, recipientUserId: doc.id })),
   );
 }
+
+/**
+ * Fans a notification out to every admin, regardless of branch — for
+ * events that genuinely aren't branch-specific (a general Contact Us
+ * enquiry). Deliberately separate from notifyAdminsForBranch(null,...),
+ * which only reaches Super Admins, not Branch Admins.
+ */
+export async function notifyAllAdmins(notification: Omit<CreateNotificationInput, "recipientUserId">): Promise<void> {
+  const snap = await userAccountsCollection().where("role", "in", ["SUPER_ADMIN", "BRANCH_ADMIN"]).get();
+  await Promise.all(
+    snap.docs.map((doc) => createNotification({ ...notification, recipientUserId: doc.id })),
+  );
+}
