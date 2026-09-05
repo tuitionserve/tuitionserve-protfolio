@@ -9,10 +9,9 @@ import { LocationStep } from "./steps/LocationStep";
 import { AvailabilityStep } from "./steps/AvailabilityStep";
 import { CvStep } from "./steps/CvStep";
 import { ReviewStep } from "./steps/ReviewStep";
+import { STEPS } from "./completeness";
 import { EMPTY_WIZARD_PROFILE, type CascadeResumeState, type WizardProfileState } from "./types";
 import type { LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
-
-const STEPS = ["personal", "education", "teaching", "location", "availability", "cv", "review"] as const;
 
 export function OnboardingWizard({
   initialProfile,
@@ -33,12 +32,20 @@ export function OnboardingWizard({
   function goBack() {
     setStepIndex((i) => Math.max(i - 1, 0));
   }
+  // Steps are freely navigable — each step already saves on its own
+  // "Save & Continue" (or is read from already-saved state on Review),
+  // so jumping around without finishing every step in order is safe;
+  // the Review step is what actually blocks submission until
+  // everything required is filled in.
+  function goToStep(index: number) {
+    setStepIndex(index);
+  }
 
   const step = STEPS[stepIndex];
 
   return (
     <div className="bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
-      <ProgressIndicator currentIndex={stepIndex} />
+      <ProgressIndicator currentIndex={stepIndex} onStepClick={goToStep} />
 
       {step === "personal" && <PersonalStep initial={profile} onSaved={goNext} />}
       {step === "education" && <EducationStep initial={profile} onSaved={goNext} onBack={goBack} />}
@@ -54,7 +61,7 @@ export function OnboardingWizard({
       )}
       {step === "availability" && <AvailabilityStep initial={profile} onSaved={goNext} onBack={goBack} />}
       {step === "cv" && <CvStep initial={profile} onSaved={goNext} onBack={goBack} />}
-      {step === "review" && <ReviewStep profile={profile} onBack={goBack} />}
+      {step === "review" && <ReviewStep profile={profile} onBack={goBack} onJumpToStep={goToStep} />}
     </div>
   );
 }

@@ -1,16 +1,19 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   describeFirebaseAuthError,
-  signInTutorWithGoogle,
+  signInWithGoogle,
   signUpTutorWithEmail,
 } from "@/lib/auth/client-actions";
+import { GoogleLogo } from "@/components/auth/GoogleLogo";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,7 +31,7 @@ export default function RegisterPage() {
 
     setSubmitting(true);
     try {
-      await signUpTutorWithEmail(email, password);
+      await signUpTutorWithEmail(email, password, fullName);
       router.push("/tutor/dashboard");
       router.refresh();
     } catch (err) {
@@ -42,7 +45,7 @@ export default function RegisterPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await signInTutorWithGoogle();
+      await signInWithGoogle();
       router.push("/tutor/dashboard");
       router.refresh();
     } catch (err) {
@@ -55,8 +58,8 @@ export default function RegisterPage() {
   return (
     <div className="min-h-full flex flex-col">
       <header className="w-full px-margin-mobile md:px-margin-desktop py-4">
-        <Link href="/" className="font-headline-md text-headline-md font-bold text-primary">
-          Tuition Serve
+        <Link href="/" className="inline-flex items-center">
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
         </Link>
       </header>
 
@@ -68,6 +71,19 @@ export default function RegisterPage() {
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="fullName" className="font-label-md text-label-md text-on-surface-variant">
+                Full name
+              </label>
+              <input
+                id="fullName"
+                type="text"
+                required
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
+              />
+            </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="email" className="font-label-md text-label-md text-on-surface-variant">
                 Email
@@ -134,8 +150,9 @@ export default function RegisterPage() {
             type="button"
             onClick={handleGoogle}
             disabled={submitting}
-            className="w-full border border-secondary text-secondary font-label-md text-label-md rounded-lg py-3 hover:bg-surface-container transition-all disabled:opacity-60"
+            className="w-full flex items-center justify-center gap-3 border border-secondary text-secondary font-label-md text-label-md rounded-lg py-3 hover:bg-surface-container transition-all disabled:opacity-60"
           >
+            <GoogleLogo className="w-[18px] h-[18px] shrink-0" />
             Continue with Google
           </button>
 

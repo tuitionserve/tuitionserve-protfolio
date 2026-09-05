@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { submitTutorProfileForReview } from "@/server/actions/onboarding";
+import { getMissingRequirements } from "../completeness";
 import { errorTextClass } from "../formStyles";
 import type { WizardProfileState } from "../types";
 
@@ -19,15 +20,21 @@ function Row({ label, value }: { label: string; value: string }) {
 export function ReviewStep({
   profile,
   onBack,
+  onJumpToStep,
 }: {
   profile: WizardProfileState;
   onBack: () => void;
+  onJumpToStep: (index: number) => void;
 }) {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
+  const missing = getMissingRequirements(profile);
+  const isComplete = missing.length === 0;
+
   function handleSubmit() {
+    if (!isComplete) return; // extra guard — the button is already disabled in this state
     setError(null);
     startTransition(async () => {
       const result = await submitTutorProfileForReview();
@@ -44,6 +51,27 @@ export function ReviewStep({
     <div className="flex flex-col gap-4">
       <h2 className="font-headline-md text-headline-md text-on-surface">Review & Submit</h2>
 
+      {!isComplete && (
+        <div className="bg-error-container/60 border border-error rounded-xl p-lg">
+          <p className="font-label-md text-label-md text-on-error-container mb-2">
+            Complete these before you can submit:
+          </p>
+          <ul className="flex flex-col gap-1">
+            {missing.map((item) => (
+              <li key={item.label}>
+                <button
+                  type="button"
+                  onClick={() => onJumpToStep(item.stepIndex)}
+                  className="font-body-sm text-body-sm text-on-error-container underline hover:opacity-80"
+                >
+                  {item.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <Row label="Full name" value={profile.fullName ?? ""} />
         <Row label="Phone" value={profile.phone ?? ""} />
@@ -54,6 +82,8 @@ export function ReviewStep({
           value={profile.highestQualification ? catalogLabel(QUALIFICATIONS, profile.highestQualification) : ""}
         />
         <Row label="Institution" value={profile.institution ?? ""} />
+        <Row label="Graduation year (B.S.)" value={profile.graduationYear ? String(profile.graduationYear) : ""} />
+        <Row label="Major / subject" value={profile.majorSubject ?? ""} />
         <Row label="Subjects" value={profile.subjects.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
         <Row label="Grades" value={profile.grades.map((g) => catalogLabel(GRADES, g)).join(", ")} />
         <Row label="Expected monthly fee" value={profile.expectedMonthlyFee ? `NPR ${profile.expectedMonthlyFee}` : ""} />
@@ -79,7 +109,8 @@ export function ReviewStep({
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={pending}
+          disabled={pending || !isComplete}
+          title={isComplete ? undefined : "Complete the items listed above first"}
           className="bg-primary-container text-on-primary font-label-md text-label-md rounded-lg px-6 py-3 shadow-sm hover:shadow-md transition-all disabled:opacity-60"
         >
           {pending ? "Submitting..." : "Submit for Review"}

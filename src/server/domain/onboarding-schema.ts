@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { DAYS_OF_WEEK, GENDERS, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
+import { EARLIEST_BS_GRADUATION_YEAR, getCurrentBsYear } from "@/lib/nepali-calendar";
 import type { AvailabilitySlot, Gender, HighestQualification } from "./types";
 
 // Catalog ids are kept in sync with these domain literal unions by hand
@@ -15,7 +16,7 @@ const DAY_IDS = DAYS_OF_WEEK.map((d) => d.id) as [
 ];
 
 const TIME_PATTERN = /^([01]\d|2[0-3]):([0-5]\d)$/;
-const currentYear = new Date().getFullYear();
+const currentBsYear = getCurrentBsYear();
 
 export const personalStepSchema = z.object({
   fullName: z.string().trim().min(2, "Enter your full name.").max(120),
@@ -37,11 +38,12 @@ export const personalStepSchema = z.object({
 export const educationStepSchema = z.object({
   highestQualification: z.enum(QUALIFICATION_IDS),
   institution: z.string().trim().min(2, "Enter your institution.").max(200),
+  // Nepal states graduation year in the Bikram Sambat calendar, not AD.
   graduationYear: z.coerce
     .number()
     .int()
-    .min(1950)
-    .max(currentYear, "Graduation year cannot be in the future."),
+    .min(EARLIEST_BS_GRADUATION_YEAR)
+    .max(currentBsYear, "Graduation year cannot be in the future."),
   majorSubject: z.string().trim().min(2, "Enter your major/subject.").max(120),
 });
 

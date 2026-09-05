@@ -3,7 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import { GENDERS } from "@/lib/catalog";
 import { saveTutorPersonalStep } from "@/server/actions/onboarding";
-import { errorTextClass, fieldWrapClass, inputClass, labelClass } from "../formStyles";
+import { errorTextClass, fieldWrapClass, fileInputClass, inputClass, labelClass } from "../formStyles";
 import type { WizardProfileState } from "../types";
 
 export function PersonalStep({
@@ -101,7 +101,7 @@ export function PersonalStep({
           id="photo"
           type="file"
           accept="image/jpeg,image/png,image/webp"
-          className={inputClass}
+          className={fileInputClass}
           onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
         />
       </div>

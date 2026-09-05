@@ -1,6 +1,6 @@
 import { FieldValue } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
-import { tutorsCollection, userAccountsCollection } from "@/server/domain/collections";
+import { tutorProfilesCollection, tutorsCollection, userAccountsCollection } from "@/server/domain/collections";
 import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import type { AuthSession } from "./session";
@@ -22,8 +22,12 @@ export class AccountRoleConflictError extends Error {
 export async function ensureTutorAccount(params: {
   uid: string;
   email: string | null;
+  /** Collected at registration (or from Google's own profile) so the
+   * dashboard has a name to show before onboarding creates a full
+   * TutorProfile — see the fullName Row in that flow. */
+  fullName?: string;
 }): Promise<AuthSession> {
-  const { uid, email } = params;
+  const { uid, email, fullName } = params;
   const accountRef = userAccountsCollection().doc(uid);
   const tutorRef = tutorsCollection().doc(uid);
 
@@ -58,10 +62,18 @@ export async function ensureTutorAccount(params: {
 
   const tutorUid = await generateSequentialUid("tutor");
   const now = FieldValue.serverTimestamp();
+  const profileRef = tutorProfilesCollection().doc(uid);
 
   await adminFirestore.runTransaction(async (tx) => {
     const accountSnap = await tx.get(accountRef);
     if (accountSnap.exists) return; // lost a race with another concurrent request; nothing to do.
+
+    if (fullName) {
+      // A minimal profile doc so the dashboard shows a real name right
+      // away — the onboarding wizard's mergeProfile fills in the rest
+      // later without overwriting this.
+      tx.set(profileRef, { tutorId: uid, fullName, updatedAt: now } as never, { merge: true });
+    }
 
     tx.set(accountRef, {
       id: uid,
@@ -70,6 +82,8 @@ export async function ensureTutorAccount(params: {
       role: "TUTOR",
       branchId: null,
       accountStatus: "ACTIVE",
+      fullName: null,
+      adminUid: null,
       createdAt: now,
       updatedAt: now,
     });

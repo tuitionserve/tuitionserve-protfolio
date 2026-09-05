@@ -14,11 +14,11 @@ export class AuthActionError extends Error {
   }
 }
 
-async function postSession(endpoint: "/api/auth/tutor/session" | "/api/auth/admin/session", idToken: string) {
-  const res = await fetch(endpoint, {
+async function postSession(idToken: string, fullName?: string) {
+  const res = await fetch("/api/auth/session", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ idToken }),
+    body: JSON.stringify({ idToken, fullName }),
   });
   if (!res.ok) {
     const body = await res.json().catch(() => ({ error: "UNKNOWN" }));
@@ -29,8 +29,8 @@ async function postSession(endpoint: "/api/auth/tutor/session" | "/api/auth/admi
 
 function describeSessionError(code: string | undefined): string {
   switch (code) {
-    case "NOT_AN_ADMIN_ACCOUNT":
-      return "This account is not registered as an administrator.";
+    case "ACCOUNT_DISABLED":
+      return "This account has been disabled. Contact an administrator.";
     case "ROLE_CONFLICT":
       return "This account is already registered with a different role.";
     case "INVALID_TOKEN":
@@ -40,28 +40,30 @@ function describeSessionError(code: string | undefined): string {
   }
 }
 
-export async function signUpTutorWithEmail(email: string, password: string) {
+// signUpTutorWithEmail is for the /register page (always a brand-new
+// Firebase Auth identity, so the unified endpoint always resolves it to
+// a first-time Tutor signup). signInWithEmail/signInWithGoogle are the
+// single entry points for /login — the caller never asserts a role;
+// the response's `role` field says where to redirect.
+export async function signUpTutorWithEmail(email: string, password: string, fullName: string) {
   const credential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
   const idToken = await credential.user.getIdToken();
-  return postSession("/api/auth/tutor/session", idToken);
+  return postSession(idToken, fullName);
 }
 
-export async function signInTutorWithEmail(email: string, password: string) {
+export async function signInWithEmail(email: string, password: string) {
   const credential = await signInWithEmailAndPassword(firebaseAuth, email, password);
   const idToken = await credential.user.getIdToken();
-  return postSession("/api/auth/tutor/session", idToken);
+  return postSession(idToken);
 }
 
-export async function signInTutorWithGoogle() {
+export async function signInWithGoogle() {
   const credential = await signInWithPopup(firebaseAuth, googleAuthProvider);
   const idToken = await credential.user.getIdToken();
-  return postSession("/api/auth/tutor/session", idToken);
-}
-
-export async function signInAdminWithEmail(email: string, password: string) {
-  const credential = await signInWithEmailAndPassword(firebaseAuth, email, password);
-  const idToken = await credential.user.getIdToken();
-  return postSession("/api/auth/admin/session", idToken);
+  // Google already knows the user's real name — pass it through so a
+  // first-time Google sign-in gets the same pre-filled name as email
+  // registration, instead of showing their email until they onboard.
+  return postSession(idToken, credential.user.displayName ?? undefined);
 }
 
 export async function signOutCurrentUser() {

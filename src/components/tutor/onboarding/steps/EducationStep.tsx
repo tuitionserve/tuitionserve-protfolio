@@ -2,9 +2,15 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import { QUALIFICATIONS } from "@/lib/catalog";
+import { EARLIEST_BS_GRADUATION_YEAR, getCurrentBsYear } from "@/lib/nepali-calendar";
 import { saveTutorEducationStep } from "@/server/actions/onboarding";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass } from "../formStyles";
 import type { WizardProfileState } from "../types";
+
+const BS_GRADUATION_YEARS = Array.from(
+  { length: getCurrentBsYear() - EARLIEST_BS_GRADUATION_YEAR + 1 },
+  (_, i) => getCurrentBsYear() - i,
+);
 
 export function EducationStep({
   initial,
@@ -73,15 +79,19 @@ export function EducationStep({
       </div>
 
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="graduationYear">Graduation year</label>
-        <input
+        <label className={labelClass} htmlFor="graduationYear">Graduation year (B.S.)</label>
+        <select
           id="graduationYear"
-          type="number"
           className={inputClass}
           value={graduationYear}
           onChange={(e) => setGraduationYear(e.target.value)}
           required
-        />
+        >
+          <option value="" disabled>Select graduation year</option>
+          {BS_GRADUATION_YEARS.map((year) => (
+            <option key={year} value={year}>{year}</option>
+          ))}
+        </select>
         {fieldErrors.graduationYear && <p className={errorTextClass}>{fieldErrors.graduationYear}</p>}
       </div>
 

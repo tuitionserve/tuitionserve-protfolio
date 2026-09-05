@@ -2,7 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import { uploadTutorCv } from "@/server/actions/onboarding";
-import { errorTextClass } from "../formStyles";
+import { errorTextClass, fileInputClass } from "../formStyles";
 import type { WizardProfileState } from "../types";
 
 export function CvStep({
@@ -58,7 +58,7 @@ export function CvStep({
       <input
         type="file"
         accept="application/pdf"
-        className="font-body-sm text-body-sm"
+        className={fileInputClass}
         onChange={(e) => setCv(e.target.files?.[0] ?? null)}
       />
 

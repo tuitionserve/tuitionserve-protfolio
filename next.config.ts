@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
   // Node's own module resolution (which handles ESM/CJS interop
   // correctly) load it instead of the bundler.
   serverExternalPackages: ["firebase-admin"],
+  // Default Server Action body limit is 1MB, which the CV (up to 5MB)
+  // and profile photo (up to 3MB) uploads in onboarding.ts exceed
+  // before even reaching that code's own size validation.
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "6mb",
+    },
+  },
 };
 
 export default nextConfig;

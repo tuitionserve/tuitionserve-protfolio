@@ -38,11 +38,17 @@ function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string
  * before first submission (PROFILE_INCOMPLETE), or after a rejection
  * (REJECTED — PRD: "Rejected tutors can improve and resubmit").
  */
+// Freely editable via the full wizard up until a tutor is actually
+// APPROVED — including while a first submission is still pending
+// review, since nothing has been evaluated and locked in yet. Once
+// APPROVED, most fields are frozen (an admin already vetted them) and
+// go through the profile-change-request flow instead — see
+// src/server/actions/profile-changes.ts.
 async function requireEditableTutorSession() {
   const session = await requireRole(["TUTOR"]);
   if (!session.tutor) throw new Error("Tutor record missing for an authenticated tutor session.");
   const status = session.tutor.verificationStatus;
-  if (status !== "PROFILE_INCOMPLETE" && status !== "REJECTED") {
+  if (status === "APPROVED" || status === "SUSPENDED") {
     return { session, editable: false as const };
   }
   return { session, editable: true as const };

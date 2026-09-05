@@ -4,10 +4,29 @@ import { requireActiveTutor } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { countUnreadNotifications } from "@/server/queries/my-notifications";
 import { BottomTabBar } from "@/components/shared/BottomTabBar";
+import { Sidebar } from "@/components/shared/Sidebar";
 
 export default async function TutorLayout({ children }: { children: React.ReactNode }) {
   const session = await requireActiveTutor();
   const unreadCount = await countUnreadNotifications(session.uid);
+  const sections = [
+    { links: [{ label: "Dashboard", href: "/tutor/dashboard", icon: "home" }] },
+    {
+      label: "Tuitions",
+      links: [
+        { label: "Available Tuitions", href: "/tutor/opportunities", icon: "search" },
+        { label: "My Applications", href: "/tutor/applications", icon: "assignment" },
+      ],
+    },
+    {
+      label: "Communication",
+      links: [
+        { label: "Messages", href: "/tutor/messages", icon: "chat" },
+        { label: "Notifications", href: "/tutor/notifications", icon: "notifications", badge: unreadCount },
+      ],
+    },
+  ];
+  // Shorter labels for the mobile bottom tab bar, where space is tight.
   const tabLinks = [
     { label: "Home", href: "/tutor/dashboard", icon: "home" },
     { label: "Tuitions", href: "/tutor/opportunities", icon: "search" },
@@ -17,47 +36,32 @@ export default async function TutorLayout({ children }: { children: React.ReactN
   ];
 
   return (
-    <div className="min-h-full flex flex-col">
-      <header className="bg-surface-container-lowest border-b border-surface-variant relative">
-        <div className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-max-width mx-auto">
-          <div className="flex items-center gap-xl">
+    <div className="min-h-screen flex">
+      <Sidebar
+        sections={sections}
+        homeHref="/tutor/dashboard"
+        profileHref="/tutor/profile"
+        roleLabel={session.tutor?.tutorUid ?? "Tutor"}
+      />
+
+      <div className="flex-1 flex flex-col min-w-0">
+        {/* Mobile-only — the sidebar above is desktop-only (md:), and the
+            bottom tab bar below covers primary nav on mobile, so this is
+            just the logo + a way to log out on small screens. */}
+        <header className="md:hidden bg-surface-container-lowest border-b border-surface-variant">
+          <div className="flex justify-between items-center w-full px-margin-mobile py-4">
             <Link href="/tutor/dashboard" className="flex items-center">
               <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
             </Link>
-            <nav className="hidden md:flex gap-gutter items-center">
-              <Link href="/tutor/dashboard" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
-                Dashboard
-              </Link>
-              <Link href="/tutor/opportunities" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
-                Available Tuitions
-              </Link>
-              <Link href="/tutor/applications" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
-                My Applications
-              </Link>
-              <Link href="/tutor/messages" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors">
-                Messages
-              </Link>
-              <Link href="/tutor/notifications" className="font-label-md text-label-md text-secondary hover:text-primary transition-colors flex items-center gap-1">
-                Notifications
-                {unreadCount > 0 && (
-                  <span className="font-label-md text-label-md bg-primary-container text-on-primary px-2 py-0.5 rounded-full">
-                    {unreadCount}
-                  </span>
-                )}
-              </Link>
-            </nav>
-          </div>
-          <div className="flex items-center gap-md">
-            <span className="font-body-sm text-body-sm text-on-surface-variant hidden sm:inline">
-              {session.tutor?.tutorUid}
-            </span>
             <LogoutButton />
           </div>
-        </div>
-      </header>
-      <main className="flex-1 w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
-        {children}
-      </main>
+        </header>
+
+        <main className="flex-1 w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
+          {children}
+        </main>
+      </div>
+
       <BottomTabBar links={tabLinks} />
     </div>
   );

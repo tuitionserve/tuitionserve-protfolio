@@ -1,38 +1,38 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   describeFirebaseAuthError,
-  signInAdminWithEmail,
-  signInTutorWithEmail,
-  signInTutorWithGoogle,
+  signInWithEmail,
+  signInWithGoogle,
 } from "@/lib/auth/client-actions";
-
-type Tab = "tutor" | "admin";
+import { GoogleLogo } from "@/components/auth/GoogleLogo";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("tutor");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  // The server looks up the account's actual role — we never assert
+  // "I'm a tutor" or "I'm an admin" here, we just redirect wherever the
+  // response says to.
+  function redirectForRole(role: string) {
+    router.push(role === "TUTOR" ? "/tutor/dashboard" : "/admin/dashboard");
+    router.refresh();
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
-      if (tab === "tutor") {
-        await signInTutorWithEmail(email, password);
-        router.push("/tutor/dashboard");
-      } else {
-        await signInAdminWithEmail(email, password);
-        router.push("/admin/dashboard");
-      }
-      router.refresh();
+      const { role } = await signInWithEmail(email, password);
+      redirectForRole(role);
     } catch (err) {
       setError(describeFirebaseAuthError(err));
     } finally {
@@ -44,9 +44,8 @@ export default function LoginPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await signInTutorWithGoogle();
-      router.push("/tutor/dashboard");
-      router.refresh();
+      const { role } = await signInWithGoogle();
+      redirectForRole(role);
     } catch (err) {
       setError(describeFirebaseAuthError(err));
     } finally {
@@ -57,41 +56,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-full flex flex-col">
       <header className="w-full px-margin-mobile md:px-margin-desktop py-4">
-        <Link href="/" className="font-headline-md text-headline-md font-bold text-primary">
-          Tuition Serve
+        <Link href="/" className="inline-flex items-center">
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={160} height={36} className="h-8 w-auto" priority />
         </Link>
       </header>
 
       <main className="flex-1 flex items-center justify-center px-margin-mobile py-xl">
         <div className="w-full max-w-[28rem] bg-surface-container-lowest border border-surface-variant rounded-xl shadow-sm p-lg">
           <h1 className="font-headline-lg text-headline-lg text-on-surface mb-6">Log In</h1>
-
-          <div className="flex mb-6 border border-outline-variant rounded-lg overflow-hidden">
-            <button
-              type="button"
-              onClick={() => {
-                setTab("tutor");
-                setError(null);
-              }}
-              className={`flex-1 py-2 font-label-md text-label-md ${
-                tab === "tutor" ? "bg-primary-container text-on-primary" : "bg-surface-container-lowest text-secondary"
-              }`}
-            >
-              Tutor
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setTab("admin");
-                setError(null);
-              }}
-              className={`flex-1 py-2 font-label-md text-label-md ${
-                tab === "admin" ? "bg-primary-container text-on-primary" : "bg-surface-container-lowest text-secondary"
-              }`}
-            >
-              Admin
-            </button>
-          </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
@@ -136,29 +108,26 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {tab === "tutor" && (
-            <>
-              <div className="flex items-center gap-3 my-6">
-                <div className="flex-1 h-px bg-surface-variant" />
-                <span className="font-body-sm text-body-sm text-on-surface-variant">or</span>
-                <div className="flex-1 h-px bg-surface-variant" />
-              </div>
-              <button
-                type="button"
-                onClick={handleGoogle}
-                disabled={submitting}
-                className="w-full border border-secondary text-secondary font-label-md text-label-md rounded-lg py-3 hover:bg-surface-container transition-all disabled:opacity-60"
-              >
-                Continue with Google
-              </button>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-6 text-center">
-                New tutor?{" "}
-                <Link href="/register" className="text-primary font-medium">
-                  Create an account
-                </Link>
-              </p>
-            </>
-          )}
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-surface-variant" />
+            <span className="font-body-sm text-body-sm text-on-surface-variant">or</span>
+            <div className="flex-1 h-px bg-surface-variant" />
+          </div>
+          <button
+            type="button"
+            onClick={handleGoogle}
+            disabled={submitting}
+            className="w-full flex items-center justify-center gap-3 border border-secondary text-secondary font-label-md text-label-md rounded-lg py-3 hover:bg-surface-container transition-all disabled:opacity-60"
+          >
+            <GoogleLogo className="w-[18px] h-[18px] shrink-0" />
+            Continue with Google
+          </button>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-6 text-center">
+            New tutor?{" "}
+            <Link href="/register" className="text-primary font-medium">
+              Create an account
+            </Link>
+          </p>
         </div>
       </main>
     </div>

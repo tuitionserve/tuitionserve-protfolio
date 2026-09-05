@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { signOutCurrentUser } from "@/lib/auth/client-actions";
 
-export function LogoutButton({ className }: { className?: string }) {
+export function LogoutButton({ className, children }: { className?: string; children?: ReactNode }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -29,7 +30,7 @@ export function LogoutButton({ className }: { className?: string }) {
         "font-label-md text-label-md text-secondary border border-secondary px-4 py-2 rounded-lg hover:bg-surface-container transition-colors disabled:opacity-60"
       }
     >
-      {loading ? "Signing out..." : "Sign Out"}
+      {children ?? (loading ? "Signing out..." : "Sign Out")}
     </button>
   );
 }

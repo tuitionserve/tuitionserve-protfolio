@@ -14,8 +14,11 @@ export default async function TutorOnboardingPage() {
   const session = await requireActiveTutor();
   if (!session.tutor) redirect("/login");
   const status = session.tutor.verificationStatus;
-  if (status !== "PROFILE_INCOMPLETE" && status !== "REJECTED") {
-    redirect("/tutor/dashboard");
+  // Matches requireEditableTutorSession in server/actions/onboarding.ts —
+  // freely editable up until APPROVED (including while a submission is
+  // still pending review), then locked to the profile-change-request flow.
+  if (status === "APPROVED" || status === "SUSPENDED") {
+    redirect("/tutor/profile");
   }
 
   const [profileSnap, provinces] = await Promise.all([

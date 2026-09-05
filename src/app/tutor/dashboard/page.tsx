@@ -5,6 +5,7 @@ import { ApprovalBanner } from "@/components/tutor/ApprovalBanner";
 import { getOpenOpportunities } from "@/server/queries/opportunities";
 import { getMyApplicationStatusCounts } from "@/server/queries/my-applications";
 import { getNotifications } from "@/server/queries/my-notifications";
+import { tutorProfilesCollection } from "@/server/domain/collections";
 import type { TutorVerificationStatus } from "@/server/domain/types";
 
 const STATUS_LABEL: Record<TutorVerificationStatus, string> = {
@@ -40,11 +41,13 @@ export default async function TutorDashboardPage() {
   // page and its `.totalCount` comes from a `.count()` aggregation, not
   // a full-collection read; getMyApplicationStatusCounts is
   // aggregation-only, no document reads at all.
-  const [openOpportunitiesPage, applicationCounts, recentNotifications] = await Promise.all([
+  const [openOpportunitiesPage, applicationCounts, recentNotifications, profileSnap] = await Promise.all([
     getOpenOpportunities({}, null),
     getMyApplicationStatusCounts(session.uid),
     getNotifications(session.uid, null),
+    tutorProfilesCollection().doc(session.uid).get(),
   ]);
+  const displayName = profileSnap.data()?.fullName || session.email || "Welcome";
 
   return (
     <div className="flex flex-col gap-lg">
@@ -53,7 +56,7 @@ export default async function TutorDashboardPage() {
       <div>
         <div className="flex items-center gap-3 flex-wrap">
           <h1 className="font-headline-lg text-headline-lg text-on-surface">
-            {session.email ?? "Welcome"}
+            {displayName}
           </h1>
           <span
             className={`font-label-md text-label-md px-3 py-1 rounded-full ${STATUS_COLOR[tutor.verificationStatus]}`}
