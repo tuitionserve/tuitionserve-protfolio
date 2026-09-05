@@ -26,7 +26,7 @@ async function withParentAndStudent(requests: TuitionRequest[]): Promise<Tuition
   }));
 }
 
-function statusQuery(session: AuthSession, status: "NEW" | "OPEN") {
+function statusQuery(session: AuthSession, status: "NEW" | "OPEN" | "ASSIGNED" | "REJECTED") {
   return session.role === "BRANCH_ADMIN"
     ? tuitionRequestsCollection().where("branchId", "==", session.branchId).where("status", "==", status)
     : tuitionRequestsCollection().where("status", "==", status);
@@ -47,6 +47,24 @@ export async function getOpenTuitionsQueue(
   cursor: string | null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
   const page = await fetchPage(statusQuery(session, "OPEN"), "createdAt", cursor);
+  return { ...page, items: await withParentAndStudent(page.items) };
+}
+
+/** Branch-scoped, paginated list of ASSIGNED tuitions (a tutor has been selected). */
+export async function getAssignedTuitionsQueue(
+  session: AuthSession,
+  cursor: string | null,
+): Promise<PageResult<TuitionRequestQueueRow>> {
+  const page = await fetchPage(statusQuery(session, "ASSIGNED"), "createdAt", cursor);
+  return { ...page, items: await withParentAndStudent(page.items) };
+}
+
+/** Branch-scoped, paginated list of REJECTED tuition requests. */
+export async function getRejectedTuitionsQueue(
+  session: AuthSession,
+  cursor: string | null,
+): Promise<PageResult<TuitionRequestQueueRow>> {
+  const page = await fetchPage(statusQuery(session, "REJECTED"), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 

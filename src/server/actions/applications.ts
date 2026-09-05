@@ -65,12 +65,14 @@ export async function applyToOpportunity(tuitionId: string): Promise<ActionResul
       applicationUid: "", // filled in after the transaction (UID generation is its own transaction)
       tuitionId,
       tutorId: session.uid,
+      branchId: tuition.branchId,
       status: "APPLIED",
       appliedAt: now,
       withdrawnAt: null,
       withdrawalReason: null,
       selectedAt: null,
       cvDocumentId: profile.cvDocumentId,
+      viewedByAdminAt: null,
       snapshot: {
         tutorUid: session.tutor!.tutorUid,
         fullName: profile.fullName,

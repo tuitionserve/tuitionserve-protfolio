@@ -2,10 +2,11 @@ import { notFound } from "next/navigation";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { parentsCollection, studentsCollection, tuitionRequestsCollection } from "@/server/domain/collections";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
+import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE, type PageResult } from "@/server/domain/pagination";
 import { TuitionRequestReviewActions } from "@/components/admin/tuition-requests/TuitionRequestReviewActions";
 import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsList";
 import { AssignmentReviewPanel } from "@/components/admin/tuition-requests/AssignmentReviewPanel";
-import { getApplicantsForTuition } from "@/server/queries/admin-applicants";
+import { getApplicantsForTuition, type AdminApplicantView } from "@/server/queries/admin-applicants";
 import { getLatestAssignmentForTuition } from "@/server/queries/admin-assignment";
 
 function Row({ label, value }: { label: string; value: string }) {
@@ -19,10 +20,13 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export default async function AdminTuitionRequestDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ cursors?: string }>;
 }) {
   const { id } = await params;
+  const cursorStack = parseCursorStack((await searchParams).cursors);
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
 
   const requestSnap = await tuitionRequestsCollection().doc(id).get();
@@ -35,10 +39,19 @@ export default async function AdminTuitionRequestDetailPage({
     notFound();
   }
 
+  const emptyApplicantsPage: PageResult<AdminApplicantView> = {
+    items: [],
+    nextCursor: null,
+    hasNextPage: false,
+    totalCount: 0,
+  };
+
   const [parentSnap, studentSnap, applicants, assignment] = await Promise.all([
     parentsCollection().doc(request.parentId).get(),
     studentsCollection().doc(request.studentId).get(),
-    request.status === "NEW" ? Promise.resolve([]) : getApplicantsForTuition(id),
+    request.status === "NEW"
+      ? Promise.resolve(emptyApplicantsPage)
+      : getApplicantsForTuition(id, currentCursor(cursorStack)),
     request.status === "ASSIGNED" ? getLatestAssignmentForTuition(id) : Promise.resolve(null),
   ]);
   const parent = parentSnap.data() ?? null;
@@ -87,10 +100,15 @@ export default async function AdminTuitionRequestDetailPage({
         <AssignmentReviewPanel assignment={assignment} tuitionId={id} />
       ) : (
         <ApplicantsList
-          applicants={applicants}
+          applicants={applicants.items}
           tuitionId={id}
           tuitionUid={request.tuitionUid}
           canAssign={request.status === "OPEN"}
+          basePath={`/admin/tuition-requests/${id}`}
+          cursorStack={cursorStack}
+          nextCursor={applicants.nextCursor}
+          hasNextPage={applicants.hasNextPage}
+          totalCount={applicants.totalCount}
         />
       )}
     </div>

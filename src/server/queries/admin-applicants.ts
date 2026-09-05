@@ -1,5 +1,9 @@
-import { tutorApplicationsCollection } from "@/server/domain/collections";
+import { FieldValue } from "firebase-admin/firestore";
+import { tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
+import { fetchPage, type PageResult } from "@/server/domain/pagination";
+import type { AuthSession } from "@/server/auth/session";
 import type { TutorApplication, TutorApplicationSnapshot, TutorApplicationStatus } from "@/server/domain/types";
+
 
 /**
  * Client-safe applicant view — excludes Firestore Timestamp fields
@@ -13,6 +17,8 @@ export interface AdminApplicantView {
   applicationUid: string;
   status: TutorApplicationStatus;
   snapshot: Omit<TutorApplicationSnapshot, "capturedAt">;
+  /** True the first time this application appears in an admin's list — like an unread email, it flips to false as soon as this page has been viewed once. */
+  isNew: boolean;
 }
 
 function toAdminView(a: TutorApplication): AdminApplicantView {
@@ -23,14 +29,70 @@ function toAdminView(a: TutorApplication): AdminApplicantView {
     applicationUid: a.applicationUid,
     status: a.status,
     snapshot: snapshotWithoutTimestamp,
+    isNew: a.viewedByAdminAt === null,
   };
 }
 
-/** Admin-side applicant list for one tuition — caller must already have verified branch scope on the tuition. */
-export async function getApplicantsForTuition(tuitionId: string): Promise<AdminApplicantView[]> {
-  const snap = await tutorApplicationsCollection().where("tuitionId", "==", tuitionId).get();
-  return snap.docs
-    .map((d) => d.data())
-    .sort((a, b) => (a.appliedAt?.toMillis() ?? 0) - (b.appliedAt?.toMillis() ?? 0))
-    .map(toAdminView);
+/**
+ * Admin-side applicant list for one tuition, paginated — caller must
+ * already have verified branch scope on the tuition. Marks whichever
+ * applications land on this page as viewed (so they render bold/new
+ * once here, then dim on the next visit), the same "flip after this
+ * render" pattern as a mail client rather than an explicit mark-read
+ * click, since applicants aren't individually click-through pages.
+ */
+export async function getApplicantsForTuition(
+  tuitionId: string,
+  cursor: string | null,
+): Promise<PageResult<AdminApplicantView>> {
+  const base = tutorApplicationsCollection().where("tuitionId", "==", tuitionId);
+  const page = await fetchPage(base, "appliedAt", cursor);
+  const items = page.items.map(toAdminView);
+
+  const unviewedIds = page.items.filter((a) => a.viewedByAdminAt === null).map((a) => a.id);
+  if (unviewedIds.length > 0) {
+    const batch = tutorApplicationsCollection().firestore.batch();
+    const now = FieldValue.serverTimestamp();
+    for (const id of unviewedIds) {
+      batch.update(tutorApplicationsCollection().doc(id), { viewedByAdminAt: now });
+    }
+    await batch.commit();
+  }
+
+  return { ...page, items };
+}
+
+/** Overview row for the branch-wide "All Applications" list — carries which tuition, unlike the per-tuition view above. */
+export interface AllApplicationsRow {
+  application: AdminApplicantView;
+  tuitionUid: string;
+  tuitionId: string;
+}
+
+/**
+ * Every application across the branch (or platform, for Super Admin),
+ * newest first — the per-tuition applicant list above is where an
+ * admin actually acts on one; this is the bird's-eye view of
+ * application activity. Uses TutorApplication.branchId, denormalized
+ * from the tuition at apply-time specifically so this query doesn't
+ * need to fan out per-tuition.
+ */
+export async function getAllApplications(
+  session: AuthSession,
+  cursor: string | null,
+): Promise<PageResult<AllApplicationsRow>> {
+  const base =
+    session.role === "BRANCH_ADMIN"
+      ? tutorApplicationsCollection().where("branchId", "==", session.branchId)
+      : tutorApplicationsCollection();
+  const page = await fetchPage(base, "appliedAt", cursor);
+
+  const tuitionSnaps = await Promise.all(page.items.map((a) => tuitionRequestsCollection().doc(a.tuitionId).get()));
+  const items = page.items.map((a, i) => ({
+    application: toAdminView(a),
+    tuitionUid: tuitionSnaps[i]?.data()?.tuitionUid ?? "—",
+    tuitionId: a.tuitionId,
+  }));
+
+  return { ...page, items };
 }
