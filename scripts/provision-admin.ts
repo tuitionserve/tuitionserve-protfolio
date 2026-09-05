@@ -72,6 +72,11 @@ async function main() {
     (await adminAuth.createUser({ email, password, displayName: values.name, emailVerified: true }));
 
   const accountRef = userAccountsCollection().doc(authUser.uid);
+  // Reuse the existing adminUid on a re-run (e.g. re-provisioning after an
+  // emulator reset) rather than burning a new sequence number each time.
+  const existingAccountSnap = await accountRef.get();
+  const adminUid = existingAccountSnap.data()?.adminUid ?? (await generateSequentialUid("admin"));
+
   await accountRef.set(
     {
       id: authUser.uid,
@@ -80,13 +85,15 @@ async function main() {
       role,
       branchId,
       accountStatus: "ACTIVE",
+      fullName: values.name ?? null,
+      adminUid,
       createdAt: FieldValue.serverTimestamp() as never,
       updatedAt: FieldValue.serverTimestamp() as never,
     },
     { merge: true },
   );
 
-  console.log(`Provisioned ${role} account for ${email} (uid=${authUser.uid})`);
+  console.log(`Provisioned ${role} account for ${email} (uid=${authUser.uid}, adminUid=${adminUid})`);
   if (branchId) console.log(`  branchId=${branchId}`);
 }
 

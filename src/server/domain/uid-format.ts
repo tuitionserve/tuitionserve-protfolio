@@ -6,6 +6,7 @@
  */
 export const UID_PREFIXES = {
   tutor: "TS-T-",
+  admin: "TS-A-",
   branch: "TS-B-",
   tuition: "TS-TU-",
   application: "TS-APP-",
@@ -13,6 +14,7 @@ export const UID_PREFIXES = {
   profileChange: "TS-PC-",
   conversation: "TS-CONV-",
   parent: "TS-P-",
+  contactQuery: "TS-CQ-",
 } as const;
 
 export type UidKind = keyof typeof UID_PREFIXES;
