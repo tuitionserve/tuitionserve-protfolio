@@ -3,3 +3,11 @@ allowBuilds:
   esbuild: true
   protobufjs: true
   unrs-resolver: true
+
+# jwks-rsa 4.x depends on jose ^6, which is pure-ESM and cannot be
+# require()'d — breaks firebase-admin's verifyIdToken/verifySessionCookie
+# at runtime on Vercel (works in `next dev`, fails in the real serverless
+# runtime). jwks-rsa 3.x still depends on jose ^4, which has real CJS
+# support. Pinned down regardless of firebase-admin's own ^4.0.1 range.
+overrides:
+  jwks-rsa: 3.2.2
