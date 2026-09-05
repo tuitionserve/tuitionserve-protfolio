@@ -27,7 +27,7 @@ export default async function SuspendedPage() {
           </p>
           <div className="flex flex-col gap-3 items-center">
             <a
-              href="mailto:support@tuitionserve.com"
+              href="mailto:tuitionserve@gmail.com"
               className="bg-primary-container text-on-primary font-label-md text-label-md px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all inline-flex items-center justify-center min-h-[44px] w-full"
             >
               Contact Support
