@@ -20,7 +20,18 @@
 
 .not-found-float-delayed { animation-delay: -2.5s; }
 
+@keyframes not-found-glow-pulse {
+  0%, 100% { opacity: 0.75; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+.not-found-glow-pulse {
+  transform-origin: 720px 118px;
+  animation: not-found-glow-pulse 6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .not-found-float,
-  .not-found-float-delayed { animation: none; }
+  .not-found-float-delayed,
+  .not-found-glow-pulse { animation: none; }
 }

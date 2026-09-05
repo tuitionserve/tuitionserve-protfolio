@@ -34,30 +34,47 @@ export default function NotFound() {
         </div>
       </main>
 
-      <svg aria-hidden="true" viewBox="0 0 1440 420" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[42%] min-h-64 w-full">
+      <svg aria-hidden="true" viewBox="0 0 1440 420" preserveAspectRatio="none" className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[46%] min-h-72 w-full">
         <defs>
-          <linearGradient id="mesh-surface" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#99f6cf" stopOpacity="0.08" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0.28" />
+          <linearGradient id="floor-fill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#059669" stopOpacity="0" />
+            <stop offset="55%" stopColor="#059669" stopOpacity="0.05" />
+            <stop offset="100%" stopColor="#059669" stopOpacity="0.16" />
           </linearGradient>
-          <linearGradient id="mesh-line" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#34d399" stopOpacity="0.16" />
-            <stop offset="55%" stopColor="#10b981" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="#047857" stopOpacity="0.32" />
+          <linearGradient id="grid-stroke" gradientUnits="userSpaceOnUse" x1="0" y1="420" x2="0" y2="120">
+            <stop offset="0%" stopColor="#047857" stopOpacity="0.6" />
+            <stop offset="45%" stopColor="#10b981" stopOpacity="0.45" />
+            <stop offset="100%" stopColor="#6ee7b7" stopOpacity="0" />
           </linearGradient>
-          <filter id="mesh-glow" x="-15%" y="-20%" width="130%" height="150%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <radialGradient id="horizon-glow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#6ee7b7" stopOpacity="0.55" />
+            <stop offset="45%" stopColor="#34d399" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#34d399" stopOpacity="0" />
+          </radialGradient>
+          <filter id="grid-glow" x="-20%" y="-40%" width="140%" height="180%">
+            <feGaussianBlur stdDeviation="1.4" result="blur" />
             <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
         </defs>
-        <path d="M0,210 C145,105 295,320 500,205 C675,108 785,256 965,160 C1110,82 1260,76 1440,142 L1440,420 L0,420 Z" fill="url(#mesh-surface)" />
-        <g fill="none" stroke="url(#mesh-line)" filter="url(#mesh-glow)">
-          <path strokeWidth="1" d="M-50,225 C145,105 295,320 500,205 C675,108 785,256 965,160 C1110,82 1260,76 1490,142" />
-          <path strokeWidth="1.3" d="M-50,260 C145,140 295,355 500,240 C675,143 785,291 965,195 C1110,117 1260,111 1490,177" />
-          <path strokeWidth="1.6" d="M-50,300 C145,180 295,395 500,280 C675,183 785,331 965,235 C1110,157 1260,151 1490,217" />
-          <path strokeWidth="1.9" d="M-50,345 C145,225 295,440 500,325 C675,228 785,376 965,280 C1110,202 1260,196 1490,262" />
-          <path strokeWidth="2.2" d="M-50,395 C145,275 295,490 500,375 C675,278 785,426 965,330 C1110,252 1260,246 1490,312" />
-          <path strokeWidth="1" d="M60,170 C30,260 130,320 140,420 M245,135 C215,260 330,330 340,420 M445,165 C410,270 520,340 530,420 M655,150 C620,275 730,350 740,420 M870,120 C835,270 955,345 965,420 M1085,95 C1055,240 1180,330 1190,420 M1305,105 C1270,235 1390,320 1405,420" />
+
+        <ellipse className="not-found-glow-pulse" cx="720" cy="118" rx="420" ry="90" fill="url(#horizon-glow)" />
+
+        <path d="M-120,420 L1560,420 L804,132 L636,132 Z" fill="url(#floor-fill)" />
+
+        <g fill="none" stroke="url(#grid-stroke)" filter="url(#grid-glow)">
+          {/* Radial verticals — parallel floor lines converging toward the horizon */}
+          <path strokeWidth="1.4" d="M-120,420 L636,132" />
+          <path strokeWidth="1.4" d="M60,420 L654,132" />
+          <path strokeWidth="1.4" d="M240,420 L672,132" />
+          <path strokeWidth="1.4" d="M420,420 L690,132" />
+          <path strokeWidth="1.4" d="M600,420 L708,132" />
+          <path strokeWidth="1.6" d="M720,420 L720,132" />
+          <path strokeWidth="1.4" d="M840,420 L732,132" />
+          <path strokeWidth="1.4" d="M1020,420 L750,132" />
+          <path strokeWidth="1.4" d="M1200,420 L768,132" />
+          <path strokeWidth="1.4" d="M1380,420 L786,132" />
+          <path strokeWidth="1.4" d="M1560,420 L804,132" />
+          <path strokeWidth="2.4" d="M-120,420 L1560,420" />
         </g>
       </svg>
     </div>
