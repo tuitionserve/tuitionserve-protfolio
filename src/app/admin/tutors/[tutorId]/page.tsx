@@ -4,6 +4,8 @@ import { tutorProfilesCollection, tutorsCollection } from "@/server/domain/colle
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { TutorReviewActions } from "@/components/admin/tutors/TutorReviewActions";
 import { TutorSuspensionActions } from "@/components/admin/tutors/TutorSuspensionActions";
+import { ProfileChangeReviewPanel } from "@/components/admin/tutors/ProfileChangeReviewPanel";
+import { getPendingChangeRequestForTutor } from "@/server/actions/profile-changes";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -32,7 +34,10 @@ export default async function AdminTutorDetailPage({
     notFound();
   }
 
-  const profileSnap = await tutorProfilesCollection().doc(tutorId).get();
+  const [profileSnap, pendingChangeRequest] = await Promise.all([
+    tutorProfilesCollection().doc(tutorId).get(),
+    tutor.verificationStatus === "APPROVED" ? getPendingChangeRequestForTutor(tutorId) : Promise.resolve(null),
+  ]);
   const profile = profileSnap.data() ?? null;
 
   return (
@@ -43,6 +48,8 @@ export default async function AdminTutorDetailPage({
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{tutor.tutorUid}</p>
       </div>
+
+      {pendingChangeRequest && <ProfileChangeReviewPanel request={pendingChangeRequest} />}
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <Row label="Phone" value={profile?.phone ?? ""} />

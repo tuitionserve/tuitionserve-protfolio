@@ -23,6 +23,10 @@ export interface UserAccount {
   role: Role;
   branchId: string | null; // required for BRANCH_ADMIN, null otherwise.
   accountStatus: "ACTIVE" | "DISABLED";
+  /** Admin's display name (a TUTOR's name lives on TutorProfile instead — this stays null for TUTOR-role docs). */
+  fullName: string | null;
+  /** Public identifier for admin accounts (e.g. TS-A-000001) — null for TUTOR-role docs, which have their own tutorUid on the Tutor doc instead. */
+  adminUid: string | null;
   createdAt: FirebaseFirestore.Timestamp;
   updatedAt: FirebaseFirestore.Timestamp;
 }
@@ -104,6 +108,34 @@ export interface TutorProfile {
   cvDocumentId: string | null;
 
   updatedAt: FirebaseFirestore.Timestamp;
+}
+
+/**
+ * Fields an APPROVED tutor can still freely edit without admin
+ * re-approval — everything else on TutorProfile is frozen once
+ * approved and can only change via a TutorProfileChangeRequest.
+ */
+export type FreelyEditableProfileField = "profilePhotoDocumentId" | "teachingExperienceSummary";
+
+export type ProfileChangeRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+/**
+ * A once-APPROVED tutor's proposed edit to any field other than the
+ * freely-editable ones — held for admin review rather than applied
+ * immediately, since the admin already vetted the current values.
+ * `proposedChanges` only carries the fields actually being changed.
+ */
+export interface TutorProfileChangeRequest {
+  id: string;
+  changeUid: string; // TS-PC-######
+  tutorId: string;
+  branchId: string | null; // denormalized from the tutor, for a branch-scoped "all pending changes" overview
+  status: ProfileChangeRequestStatus;
+  proposedChanges: Partial<Omit<TutorProfile, "tutorId" | "updatedAt">>;
+  rejectionReason: string | null;
+  requestedAt: FirebaseFirestore.Timestamp;
+  reviewedAt: FirebaseFirestore.Timestamp | null;
+  reviewedBy: string | null;
 }
 
 export type DocumentType = "CV" | "PROFILE_PHOTO";
@@ -259,12 +291,14 @@ export interface TutorApplication {
   applicationUid: string; // TS-APP-######
   tuitionId: string;
   tutorId: string;
+  branchId: string | null; // denormalized from the tuition, for branch-scoped "all applications" queries
   status: TutorApplicationStatus;
   appliedAt: FirebaseFirestore.Timestamp;
   withdrawnAt: FirebaseFirestore.Timestamp | null;
   withdrawalReason: string | null;
   selectedAt: FirebaseFirestore.Timestamp | null;
   cvDocumentId: string | null; // the CV on file *at application time* — never repointed by a later re-upload.
+  viewedByAdminAt: FirebaseFirestore.Timestamp | null; // set the first time an admin's applicants list includes this row
   snapshot: TutorApplicationSnapshot;
   createdAt: FirebaseFirestore.Timestamp;
   updatedAt: FirebaseFirestore.Timestamp;
@@ -372,5 +406,22 @@ export interface Notification {
   relatedEntityType: string | null;
   relatedEntityId: string | null;
   readAt: FirebaseFirestore.Timestamp | null;
+  createdAt: FirebaseFirestore.Timestamp;
+}
+
+/**
+ * A message submitted through the public Contact Us form. Not
+ * branch-scoped — visible to every admin (Super Admin and every Branch
+ * Admin alike) since a general enquiry isn't tied to one branch. Reply
+ * happens off-platform (a `mailto:` link, no email service required).
+ */
+export interface ContactQuery {
+  id: string;
+  queryUid: string; // TS-CQ-######
+  fullName: string;
+  email: string;
+  phone: string | null;
+  message: string;
+  viewedByAdminAt: FirebaseFirestore.Timestamp | null;
   createdAt: FirebaseFirestore.Timestamp;
 }

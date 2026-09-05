@@ -2,6 +2,7 @@ import { adminFirestore } from "@/lib/firebase/admin";
 import type {
   AuditEvent,
   Branch,
+  ContactQuery,
   Conversation,
   GeographicLocation,
   Message,
@@ -12,6 +13,7 @@ import type {
   TutorApplication,
   TutorDocument,
   TutorProfile,
+  TutorProfileChangeRequest,
   TuitionAssignment,
   TuitionRequest,
   UserAccount,
@@ -24,6 +26,8 @@ function typedCollection<T>(path: string) {
 export const userAccountsCollection = () => typedCollection<UserAccount>("userAccounts");
 export const tutorsCollection = () => typedCollection<Tutor>("tutors");
 export const tutorProfilesCollection = () => typedCollection<TutorProfile>("tutorProfiles");
+export const tutorProfileChangeRequestsCollection = () =>
+  typedCollection<TutorProfileChangeRequest>("tutorProfileChangeRequests");
 export const tutorDocumentsCollection = () => typedCollection<TutorDocument>("tutorDocuments");
 export const geographicLocationsCollection = () =>
   typedCollection<GeographicLocation>("geographicLocations");
@@ -37,5 +41,6 @@ export const tutorApplicationsCollection = () => typedCollection<TutorApplicatio
 export const tuitionAssignmentsCollection = () => typedCollection<TuitionAssignment>("tuitionAssignments");
 export const conversationsCollection = () => typedCollection<Conversation>("conversations");
 export const messagesCollection = () => typedCollection<Message>("messages");
+export const contactQueriesCollection = () => typedCollection<ContactQuery>("contactQueries");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");
