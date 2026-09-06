@@ -93,7 +93,7 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-xl">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-[36rem]">
       <div className={fieldWrapClass}>
         <label className={labelClass} htmlFor="fullName">Full name</label>
         <input id="fullName" className={inputClass} value={fullName} onChange={(e) => setFullName(e.target.value)} required />
@@ -140,6 +140,11 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
       )}
 
       {error && <p className={errorTextClass}>{error}</p>}
+
+      <p className="font-body-sm text-body-sm text-on-surface-variant -mt-1">
+        No password field needed — a secure temporary password is generated automatically and shown once you
+        submit, so you can hand it to them directly.
+      </p>
 
       <button
         type="submit"

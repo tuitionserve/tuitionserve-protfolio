@@ -63,6 +63,16 @@ const config: Config = {
         xl: "0.75rem",
         full: "9999px",
       },
+      // WARNING: these keys (xs/sm/md/lg/xl) intentionally shadow Tailwind's
+      // built-in size scale for spacing utilities (p-lg, gap-md, py-xl, ...)
+      // — that's the intended use. But the SAME key names also back
+      // Tailwind's max-w-*/w-* scale, and this shadows those too: max-w-xl
+      // silently resolves to 32px (this spacing scale's "xl") instead of
+      // Tailwind's real 36rem default — a real bug found in CreateAdminForm
+      // (see its max-w-[36rem] arbitrary-value fix). Never use
+      // max-w-{xs,sm,md,lg,xl} or w-{xs,sm,md,lg,xl} anywhere in this repo —
+      // use max-w-2xl/3xl/etc. (unaffected) or an explicit max-w-[Nrem]
+      // instead.
       spacing: {
         base: "4px",
         lg: "24px",
