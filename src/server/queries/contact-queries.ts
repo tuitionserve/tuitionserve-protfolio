@@ -11,8 +11,9 @@ export interface ContactQueryView {
   fullName: string;
   email: string;
   phone: string | null;
+  location: string;
   message: string;
-  /** True the first time this query appears in an admin's list — same "flip after this render" pattern as the Applications list. */
+  /** True until the detail page is opened — same read/unread idea as an inbox, but the flip happens on open now that the list only shows a preview. */
   isNew: boolean;
 }
 
@@ -23,6 +24,7 @@ function toView(q: ContactQuery): ContactQueryView {
     fullName: q.fullName,
     email: q.email,
     phone: q.phone,
+    location: q.location,
     message: q.message,
     isNew: q.viewedByAdminAt === null,
   };
@@ -31,26 +33,28 @@ function toView(q: ContactQuery): ContactQueryView {
 /**
  * Every Contact Us submission, newest first — not branch-scoped (a
  * general enquiry isn't tied to one branch), so every admin sees the
- * same list regardless of role. Marks whichever queries land on this
- * page as viewed, so they render bold/new once here, then dim after.
+ * same list regardless of role. Read state now flips when the detail
+ * page is opened (getContactQueryDetail), not just by appearing here,
+ * since the list only shows a truncated preview.
  */
 export async function getContactQueries(cursor: string | null): Promise<PageResult<ContactQueryView>> {
   await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-
   const page = await fetchPage(contactQueriesCollection(), "createdAt", cursor);
-  const items = page.items.map(toView);
+  return { ...page, items: page.items.map(toView) };
+}
 
-  const unviewedIds = page.items.filter((q) => q.viewedByAdminAt === null).map((q) => q.id);
-  if (unviewedIds.length > 0) {
-    const batch = contactQueriesCollection().firestore.batch();
-    const now = FieldValue.serverTimestamp();
-    for (const id of unviewedIds) {
-      batch.update(contactQueriesCollection().doc(id), { viewedByAdminAt: now });
-    }
-    await batch.commit();
+/** Single query's full detail — marks it viewed on open (mail-client style). */
+export async function getContactQueryDetail(id: string): Promise<ContactQueryView | null> {
+  await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
+  const ref = contactQueriesCollection().doc(id);
+  const snap = await ref.get();
+  if (!snap.exists) return null;
+  const data = snap.data()!;
+  const wasUnread = data.viewedByAdminAt === null;
+  if (wasUnread) {
+    await ref.update({ viewedByAdminAt: FieldValue.serverTimestamp() });
   }
-
-  return { ...page, items };
+  return { ...toView(data), isNew: wasUnread };
 }
 
 /** Cheap aggregation (no document reads) for the sidebar badge. */

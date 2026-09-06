@@ -2,7 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
-import { submitContactQuery } from "@/server/actions/contact";
+import { submitSchoolContactQuery } from "@/server/actions/school-contact";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import {
   errorTextClass,
@@ -12,8 +12,9 @@ import {
   sectionClass,
 } from "@/components/public/tuition-request/formStyles";
 
-export function ContactForm() {
-  const [fullName, setFullName] = useState("");
+export function SchoolContactForm() {
+  const [institutionName, setInstitutionName] = useState("");
+  const [contactPersonName, setContactPersonName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [location, setLocation] = useState("");
@@ -30,14 +31,15 @@ export function ContactForm() {
     setFieldErrors({});
 
     const formData = new FormData();
-    formData.set("fullName", fullName);
+    formData.set("institutionName", institutionName);
+    formData.set("contactPersonName", contactPersonName);
     formData.set("email", email);
     formData.set("phone", phone);
     formData.set("location", location);
     formData.set("message", message);
 
     startTransition(async () => {
-      const result = await submitContactQuery(formData);
+      const result = await submitSchoolContactQuery(formData);
       if (result.ok) {
         setSubmittedUid(result.queryUid);
       } else {
@@ -52,11 +54,11 @@ export function ContactForm() {
       <div className={sectionClass}>
         <div className="flex items-center gap-3">
           <MaterialIcon name="check_circle" filled className="text-primary-container text-3xl" />
-          <h2 className="font-headline-md text-headline-md text-on-surface">Message sent</h2>
+          <h2 className="font-headline-md text-headline-md text-on-surface">Enquiry sent</h2>
         </div>
         <p className="font-body-md text-body-md text-on-surface-variant">
-          Thanks for reaching out — our team will get back to you by email or phone. If you need to reference
-          this later, your enquiry ID is <strong>{submittedUid}</strong>.
+          Thanks for reaching out — our partnerships team will get back to you. If you need to reference this
+          later, your enquiry ID is <strong>{submittedUid}</strong>.
         </p>
         <Link href="/" className="self-start font-label-md text-label-md text-primary-container">
           Back to home
@@ -68,38 +70,49 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className={sectionClass}>
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="fullName">Full name</label>
+        <label className={labelClass} htmlFor="institutionName">School / institution name</label>
         <input
-          id="fullName"
+          id="institutionName"
           className={inputClass}
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          value={institutionName}
+          onChange={(e) => setInstitutionName(e.target.value)}
           required
         />
-        {fieldErrors.fullName && <p className={errorTextClass}>{fieldErrors.fullName}</p>}
+        {fieldErrors.institutionName && <p className={errorTextClass}>{fieldErrors.institutionName}</p>}
       </div>
 
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="email">Email</label>
+        <label className={labelClass} htmlFor="contactPersonName">Contact person</label>
+        <input
+          id="contactPersonName"
+          className={inputClass}
+          value={contactPersonName}
+          onChange={(e) => setContactPersonName(e.target.value)}
+          required
+        />
+        {fieldErrors.contactPersonName && <p className={errorTextClass}>{fieldErrors.contactPersonName}</p>}
+      </div>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="phone">Phone</label>
+        <input id="phone" className={inputClass} value={phone} onChange={(e) => setPhone(e.target.value)} required />
+        {fieldErrors.phone && <p className={errorTextClass}>{fieldErrors.phone}</p>}
+      </div>
+
+      <div className={fieldWrapClass}>
+        <label className={labelClass} htmlFor="email">Email (optional)</label>
         <input
           id="email"
           type="email"
           className={inputClass}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
         {fieldErrors.email && <p className={errorTextClass}>{fieldErrors.email}</p>}
       </div>
 
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="phone">Phone (optional)</label>
-        <input id="phone" className={inputClass} value={phone} onChange={(e) => setPhone(e.target.value)} />
-        {fieldErrors.phone && <p className={errorTextClass}>{fieldErrors.phone}</p>}
-      </div>
-
-      <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="location">Your location / area</label>
+        <label className={labelClass} htmlFor="location">Location / area</label>
         <input
           id="location"
           className={inputClass}
@@ -112,11 +125,12 @@ export function ContactForm() {
       </div>
 
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="message">Message</label>
+        <label className={labelClass} htmlFor="message">What are you looking for?</label>
         <textarea
           id="message"
           className={inputClass}
           rows={5}
+          placeholder="e.g. Subjects, number of teachers, grade levels, timeline..."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           required
@@ -131,7 +145,7 @@ export function ContactForm() {
         disabled={pending}
         className="self-start bg-primary-container text-on-primary font-label-md text-label-md rounded-lg px-6 py-3 shadow-sm hover:shadow-md transition-all disabled:opacity-60"
       >
-        {pending ? "Sending..." : "Send Message"}
+        {pending ? "Sending..." : "Send Enquiry"}
       </button>
     </form>
   );

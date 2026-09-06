@@ -3,6 +3,7 @@ import type {
   AuditEvent,
   Branch,
   ContactQuery,
+  SchoolContactQuery,
   Conversation,
   GeographicLocation,
   Message,
@@ -42,5 +43,6 @@ export const tuitionAssignmentsCollection = () => typedCollection<TuitionAssignm
 export const conversationsCollection = () => typedCollection<Conversation>("conversations");
 export const messagesCollection = () => typedCollection<Message>("messages");
 export const contactQueriesCollection = () => typedCollection<ContactQuery>("contactQueries");
+export const schoolContactQueriesCollection = () => typedCollection<SchoolContactQuery>("schoolContactQueries");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");

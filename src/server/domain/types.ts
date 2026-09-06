@@ -421,6 +421,27 @@ export interface ContactQuery {
   fullName: string;
   email: string;
   phone: string | null;
+  location: string;
+  message: string;
+  viewedByAdminAt: FirebaseFirestore.Timestamp | null;
+  createdAt: FirebaseFirestore.Timestamp;
+}
+
+/**
+ * A message submitted through the dedicated For Schools contact form —
+ * kept as its own collection/UID series rather than a `kind` flag on
+ * ContactQuery, since it has a different required-field shape (phone is
+ * mandatory here) and its own admin tab. Not branch-scoped, same
+ * reasoning as ContactQuery.
+ */
+export interface SchoolContactQuery {
+  id: string;
+  queryUid: string; // TS-SC-######
+  institutionName: string;
+  contactPersonName: string;
+  email: string | null;
+  phone: string;
+  location: string;
   message: string;
   viewedByAdminAt: FirebaseFirestore.Timestamp | null;
   createdAt: FirebaseFirestore.Timestamp;

@@ -15,6 +15,7 @@ export const UID_PREFIXES = {
   conversation: "TS-CONV-",
   parent: "TS-P-",
   contactQuery: "TS-CQ-",
+  schoolContactQuery: "TS-SC-",
 } as const;
 
 export type UidKind = keyof typeof UID_PREFIXES;

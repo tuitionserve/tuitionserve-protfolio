@@ -4,14 +4,16 @@ import { requireRole } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { countUnreadNotifications } from "@/server/queries/my-notifications";
 import { countUnreadContactQueries } from "@/server/queries/contact-queries";
+import { countUnreadSchoolContactQueries } from "@/server/queries/school-contact-queries";
 import { BottomTabBar } from "@/components/shared/BottomTabBar";
 import { Sidebar, type SidebarSection } from "@/components/shared/Sidebar";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [unreadCount, unreadContactCount] = await Promise.all([
+  const [unreadCount, unreadContactCount, unreadSchoolContactCount] = await Promise.all([
     countUnreadNotifications(session.uid),
     countUnreadContactQueries(),
+    countUnreadSchoolContactQueries(),
   ]);
   const isSuperAdmin = session.role === "SUPER_ADMIN";
 
@@ -39,6 +41,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       label: "Support",
       links: [
         { label: "Contact Queries", href: "/admin/contact-queries", icon: "mail", badge: unreadContactCount },
+        { label: "School Contact", href: "/admin/school-contact-queries", icon: "apartment", badge: unreadSchoolContactCount },
       ],
     },
     ...(isSuperAdmin

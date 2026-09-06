@@ -1,8 +1,8 @@
 "use server";
 
 import { FieldValue } from "firebase-admin/firestore";
-import { contactQueriesCollection } from "@/server/domain/collections";
-import { contactQuerySchema } from "@/server/domain/contact-schema";
+import { schoolContactQueriesCollection } from "@/server/domain/collections";
+import { schoolContactQuerySchema } from "@/server/domain/school-contact-schema";
 import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { notifyAllAdmins } from "@/server/domain/notifications";
@@ -20,12 +20,13 @@ function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string
   return out;
 }
 
-/** Public submission — no authentication, anyone can reach the Contact Us form. */
-export async function submitContactQuery(formData: FormData): Promise<ActionResult> {
-  const parsed = contactQuerySchema.safeParse({
-    fullName: formData.get("fullName"),
-    email: formData.get("email"),
-    phone: formData.get("phone") || null,
+/** Public submission — no authentication, anyone can reach the For Schools contact form. */
+export async function submitSchoolContactQuery(formData: FormData): Promise<ActionResult> {
+  const parsed = schoolContactQuerySchema.safeParse({
+    institutionName: formData.get("institutionName"),
+    contactPersonName: formData.get("contactPersonName"),
+    email: formData.get("email") || null,
+    phone: formData.get("phone"),
     location: formData.get("location"),
     message: formData.get("message"),
   });
@@ -35,36 +36,37 @@ export async function submitContactQuery(formData: FormData): Promise<ActionResu
   const data = parsed.data;
 
   const now = FieldValue.serverTimestamp();
-  const ref = contactQueriesCollection().doc();
+  const ref = schoolContactQueriesCollection().doc();
   await ref.set({
     id: ref.id,
     queryUid: "", // filled in after the transaction-free write below (UID generation is its own transaction)
-    fullName: data.fullName,
-    email: data.email,
-    phone: data.phone || null,
+    institutionName: data.institutionName,
+    contactPersonName: data.contactPersonName,
+    email: data.email || null,
+    phone: data.phone,
     location: data.location,
     message: data.message,
     viewedByAdminAt: null,
     createdAt: now,
   } as never);
 
-  const queryUid = await generateSequentialUid("contactQuery");
+  const queryUid = await generateSequentialUid("schoolContactQuery");
   await ref.update({ queryUid });
 
   await writeAuditEvent({
-    action: "CONTACT_QUERY_SUBMITTED",
+    action: "SCHOOL_CONTACT_QUERY_SUBMITTED",
     actorUserId: null,
     actorRole: "SYSTEM",
-    targetType: "ContactQuery",
+    targetType: "SchoolContactQuery",
     targetId: ref.id,
     metadata: { queryUid },
   });
 
   await notifyAllAdmins({
-    type: "NEW_CONTACT_QUERY",
-    title: "New contact enquiry",
-    body: `${data.fullName} sent a message via Contact Us (${queryUid}).`,
-    relatedEntityType: "ContactQuery",
+    type: "NEW_SCHOOL_CONTACT_QUERY",
+    title: "New school partnership enquiry",
+    body: `${data.institutionName} sent a message via For Schools (${queryUid}).`,
+    relatedEntityType: "SchoolContactQuery",
     relatedEntityId: ref.id,
   });
 
