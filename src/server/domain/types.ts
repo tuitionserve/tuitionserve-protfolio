@@ -27,6 +27,8 @@ export interface UserAccount {
   fullName: string | null;
   /** Public identifier for admin accounts (e.g. TS-A-000001) — null for TUTOR-role docs, which have their own tutorUid on the Tutor doc instead. */
   adminUid: string | null;
+  /** True only right after createAdminAccount hands someone a system-generated temp password — forces a change before they can use anything else. Cleared once they change it. */
+  mustChangePassword: boolean;
   createdAt: FirebaseFirestore.Timestamp;
   updatedAt: FirebaseFirestore.Timestamp;
 }

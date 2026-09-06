@@ -10,6 +10,7 @@ function session(overrides: Partial<AuthSession>): AuthSession {
     role: "BRANCH_ADMIN",
     branchId: "branch-1",
     accountStatus: "ACTIVE",
+    mustChangePassword: false,
     tutor: null,
     ...overrides,
   };

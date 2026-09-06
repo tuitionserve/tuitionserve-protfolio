@@ -9,10 +9,21 @@ export async function requireSession(): Promise<AuthSession> {
   return session;
 }
 
-/** Redirects to /login unless the caller's role is one of `roles`. */
+/**
+ * Redirects to /login unless the caller's role is one of `roles`. Also
+ * enforces the forced-first-login password change for an admin who was
+ * just handed a system-generated temp password (mustChangePassword) —
+ * checked here, not just on the admin layout, so it's enforced on every
+ * admin page's own server-side entry point (same reasoning as the
+ * suspension/branch-scope checks: a layout running first is not
+ * guaranteed). /change-password-required is a top-level route outside
+ * admin/layout.tsx and reads the session directly (not via this
+ * function), so it never redirects to itself.
+ */
 export async function requireRole(roles: Role[]): Promise<AuthSession> {
   const session = await requireSession();
   if (!roles.includes(session.role)) redirect("/login");
+  if (session.mustChangePassword) redirect("/change-password-required");
   return session;
 }
 

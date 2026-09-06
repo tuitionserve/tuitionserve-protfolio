@@ -87,6 +87,9 @@ async function main() {
       accountStatus: "ACTIVE",
       fullName: values.name ?? null,
       adminUid,
+      // Script-provisioned admins get a real password set by whoever ran
+      // it, not a system-generated throwaway one — no forced change.
+      mustChangePassword: false,
       createdAt: FieldValue.serverTimestamp() as never,
       updatedAt: FieldValue.serverTimestamp() as never,
     },

@@ -4,7 +4,7 @@ import { randomBytes } from "node:crypto";
 import { z } from "zod";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth } from "@/lib/firebase/admin";
-import { requireRole } from "@/server/auth/guards";
+import { requireRole, requireSession } from "@/server/auth/guards";
 import { branchesCollection, userAccountsCollection } from "@/server/domain/collections";
 import { generateSequentialUid } from "@/server/domain/ids";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
@@ -96,16 +96,30 @@ export async function setAdminAccountStatus(userId: string, status: "ACTIVE" | "
   return { ok: true };
 }
 
+const NEW_BRANCH_SENTINEL = "__new__";
+
 const createAdminSchema = z
   .object({
     fullName: z.string().trim().min(2, "Enter a full name.").max(120),
     email: z.string().trim().toLowerCase().email("Enter a valid email address."),
     role: z.enum(["BRANCH_ADMIN", "SUPER_ADMIN"]),
     branchId: z.string().trim().optional(),
+    newBranchName: z.string().trim().max(120).optional(),
+    newBranchCity: z.string().trim().max(120).optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.role === "BRANCH_ADMIN" && !data.branchId) {
+    if (data.role !== "BRANCH_ADMIN") return;
+    if (!data.branchId) {
       ctx.addIssue({ code: "custom", path: ["branchId"], message: "Select the branch this admin will manage." });
+      return;
+    }
+    if (data.branchId === NEW_BRANCH_SENTINEL) {
+      if (!data.newBranchName) {
+        ctx.addIssue({ code: "custom", path: ["newBranchName"], message: "Enter the new branch's name." });
+      }
+      if (!data.newBranchCity) {
+        ctx.addIssue({ code: "custom", path: ["newBranchCity"], message: "Enter the new branch's city." });
+      }
     }
   });
 
@@ -132,6 +146,8 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
     email: formData.get("email"),
     role: formData.get("role"),
     branchId: formData.get("branchId") || undefined,
+    newBranchName: formData.get("newBranchName") || undefined,
+    newBranchCity: formData.get("newBranchCity") || undefined,
   });
   if (!parsed.success) {
     const fieldErrors: Record<string, string> = {};
@@ -142,22 +158,45 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
     return { ok: false, error: "Please fix the highlighted fields.", fieldErrors };
   }
   const { fullName, email, role } = parsed.data;
-  let branchId: string | null = null;
 
-  if (role === "BRANCH_ADMIN") {
-    const branchSnap = await branchesCollection().doc(parsed.data.branchId!).get();
-    if (!branchSnap.exists) {
-      return { ok: false, error: "Selected branch not found.", fieldErrors: { branchId: "Selected branch not found." } };
-    }
-    if (branchSnap.data()!.status !== "ACTIVE") {
-      return { ok: false, error: "That branch is inactive.", fieldErrors: { branchId: "That branch is inactive." } };
-    }
-    branchId = branchSnap.id;
-  }
-
+  // Checked before touching the branch so a duplicate email can't leave
+  // behind an orphaned newly-created branch with no admin attached.
   const existingAuthUser = await adminAuth.getUserByEmail(email).catch(() => null);
   if (existingAuthUser) {
     return { ok: false, error: "An account with this email already exists.", fieldErrors: { email: "Already in use." } };
+  }
+
+  let branchId: string | null = null;
+  let newBranchUid: string | null = null;
+
+  if (role === "BRANCH_ADMIN") {
+    if (parsed.data.branchId === NEW_BRANCH_SENTINEL) {
+      // Mirrors scripts/provision-admin.ts's --branch-name/--branch-city
+      // path — this is the in-app equivalent (PRD AUTH-003 forbids
+      // *public* admin/branch registration, not a Super-Admin-gated one).
+      const branchRef = branchesCollection().doc();
+      newBranchUid = await generateSequentialUid("branch");
+      const now = FieldValue.serverTimestamp();
+      await branchRef.set({
+        id: branchRef.id,
+        branchUid: newBranchUid,
+        name: parsed.data.newBranchName!,
+        city: parsed.data.newBranchCity!,
+        status: "ACTIVE",
+        createdAt: now,
+        updatedAt: now,
+      });
+      branchId = branchRef.id;
+    } else {
+      const branchSnap = await branchesCollection().doc(parsed.data.branchId!).get();
+      if (!branchSnap.exists) {
+        return { ok: false, error: "Selected branch not found.", fieldErrors: { branchId: "Selected branch not found." } };
+      }
+      if (branchSnap.data()!.status !== "ACTIVE") {
+        return { ok: false, error: "That branch is inactive.", fieldErrors: { branchId: "That branch is inactive." } };
+      }
+      branchId = branchSnap.id;
+    }
   }
 
   const temporaryPassword = generateTemporaryPassword();
@@ -194,6 +233,7 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
       accountStatus: "ACTIVE",
       fullName,
       adminUid,
+      mustChangePassword: true,
       createdAt: now,
       updatedAt: now,
     });
@@ -204,8 +244,23 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
     actorRole: session.role,
     targetType: "UserAccount",
     targetId: authUid,
-    metadata: { role, branchId, adminUid },
+    metadata: { role, branchId, adminUid, ...(newBranchUid ? { newBranchUid } : {}) },
   });
 
   return { ok: true, email, adminUid, temporaryPassword };
+}
+
+/**
+ * Clears the caller's own mustChangePassword flag, once they've actually
+ * changed it (see /admin/change-password-required). Session-derived —
+ * never trusts a client-supplied target id, since that would let anyone
+ * clear anyone else's flag.
+ */
+export async function clearMustChangePasswordFlag(): Promise<ActionResult> {
+  const session = await requireSession();
+  await userAccountsCollection().doc(session.uid).update({
+    mustChangePassword: false,
+    updatedAt: FieldValue.serverTimestamp(),
+  });
+  return { ok: true };
 }

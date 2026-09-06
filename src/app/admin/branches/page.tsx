@@ -15,8 +15,11 @@ export default async function AdminBranchesPage() {
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">Branches</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          {branches.length} branch{branches.length === 1 ? "" : "es"}. New branches are created via the
-          provisioning script when a new Branch Admin is set up — see the client handbook.
+          {branches.length} branch{branches.length === 1 ? "" : "es"}. New branches are created from{" "}
+          <Link href="/admin/admins/new" className="text-primary-container font-medium">
+            Add Admin
+          </Link>{" "}
+          when you set up their first Branch Admin.
         </p>
       </div>
 

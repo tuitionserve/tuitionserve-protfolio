@@ -9,6 +9,7 @@ const inputClass =
 const labelClass = "font-label-md text-label-md text-on-surface-variant";
 const fieldWrapClass = "flex flex-col gap-2";
 const errorTextClass = "font-body-sm text-body-sm text-error mt-1";
+const NEW_BRANCH_SENTINEL = "__new__";
 
 export function CreateAdminForm({ branches }: { branches: { id: string; name: string }[] }) {
   const router = useRouter();
@@ -16,6 +17,9 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<"BRANCH_ADMIN" | "SUPER_ADMIN">("BRANCH_ADMIN");
   const [branchId, setBranchId] = useState("");
+  const [newBranchName, setNewBranchName] = useState("");
+  const [newBranchCity, setNewBranchCity] = useState("");
+  const isNewBranch = branchId === NEW_BRANCH_SENTINEL;
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
@@ -30,7 +34,13 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
     formData.set("fullName", fullName);
     formData.set("email", email);
     formData.set("role", role);
-    if (role === "BRANCH_ADMIN") formData.set("branchId", branchId);
+    if (role === "BRANCH_ADMIN") {
+      formData.set("branchId", branchId);
+      if (isNewBranch) {
+        formData.set("newBranchName", newBranchName);
+        formData.set("newBranchCity", newBranchCity);
+      }
+    }
 
     startTransition(async () => {
       const result = await createAdminAccount(formData);
@@ -82,6 +92,8 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
               setFullName("");
               setEmail("");
               setBranchId("");
+              setNewBranchName("");
+              setNewBranchCity("");
             }}
             className="border border-secondary text-secondary font-label-md text-label-md rounded-lg px-6 py-3 hover:bg-surface-container transition-all"
           >
@@ -134,8 +146,42 @@ export function CreateAdminForm({ branches }: { branches: { id: string; name: st
             {branches.map((b) => (
               <option key={b.id} value={b.id}>{b.name}</option>
             ))}
+            <option value={NEW_BRANCH_SENTINEL}>+ Create a new branch...</option>
           </select>
           {fieldErrors.branchId && <p className={errorTextClass}>{fieldErrors.branchId}</p>}
+        </div>
+      )}
+
+      {role === "BRANCH_ADMIN" && isNewBranch && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 -mt-2">
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="newBranchName">New branch name</label>
+            <input
+              id="newBranchName"
+              className={inputClass}
+              value={newBranchName}
+              onChange={(e) => setNewBranchName(e.target.value)}
+              placeholder="e.g. Pokhara Branch"
+              required
+            />
+            {fieldErrors.newBranchName && <p className={errorTextClass}>{fieldErrors.newBranchName}</p>}
+          </div>
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="newBranchCity">City</label>
+            <input
+              id="newBranchCity"
+              className={inputClass}
+              value={newBranchCity}
+              onChange={(e) => setNewBranchCity(e.target.value)}
+              placeholder="e.g. Pokhara"
+              required
+            />
+            <p className="font-body-sm text-body-sm text-on-surface-variant">
+              Matched against each location&rsquo;s municipality name to route requests here — see the client
+              handbook, Chapter 4.
+            </p>
+            {fieldErrors.newBranchCity && <p className={errorTextClass}>{fieldErrors.newBranchCity}</p>}
+          </div>
         </div>
       )}
 

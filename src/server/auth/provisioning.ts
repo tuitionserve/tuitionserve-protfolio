@@ -57,6 +57,7 @@ export async function ensureTutorAccount(params: {
       role: result.account.role,
       branchId: result.account.branchId,
       accountStatus: result.account.accountStatus,
+      mustChangePassword: result.account.mustChangePassword ?? false,
       tutor: result.tutor,
     };
   }
@@ -85,6 +86,7 @@ export async function ensureTutorAccount(params: {
       accountStatus: "ACTIVE",
       fullName: null,
       adminUid: null,
+      mustChangePassword: false,
       createdAt: now,
       updatedAt: now,
     });
@@ -128,6 +130,7 @@ export async function ensureTutorAccount(params: {
     role: account.role,
     branchId: account.branchId,
     accountStatus: account.accountStatus,
+    mustChangePassword: account.mustChangePassword ?? false,
     tutor,
   };
 }

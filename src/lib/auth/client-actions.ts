@@ -90,9 +90,17 @@ async function reauthenticateCurrentUser(currentPassword: string) {
   return user;
 }
 
+// Changing a password revokes the account's existing refresh tokens on
+// Firebase's side — our own session cookie is verified with
+// checkRevoked: true (server/auth/session.ts), so without re-minting it
+// here the very next server request after this call would bounce the
+// user straight to /login, right after they just changed their own
+// password. Same fix as changeMyEmail below, same reason.
 export async function changeMyPassword(currentPassword: string, newPassword: string) {
   const user = await reauthenticateCurrentUser(currentPassword);
   await updatePassword(user, newPassword);
+  const idToken = await user.getIdToken(true);
+  await postSession(idToken);
 }
 
 // Firebase Auth requires a fresh credential for security-sensitive changes,

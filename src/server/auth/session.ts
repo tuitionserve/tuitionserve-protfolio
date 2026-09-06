@@ -28,6 +28,7 @@ export interface AuthSession {
   role: Role;
   branchId: string | null;
   accountStatus: UserAccount["accountStatus"];
+  mustChangePassword: boolean;
   tutor: Tutor | null;
 }
 
@@ -68,6 +69,7 @@ export async function getCurrentSession(): Promise<AuthSession | null> {
     role: account.role,
     branchId: account.branchId,
     accountStatus: account.accountStatus,
+    mustChangePassword: account.mustChangePassword ?? false,
     tutor,
   };
 }
