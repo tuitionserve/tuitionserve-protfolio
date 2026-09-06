@@ -5,7 +5,13 @@ import {
   tuitionRequestsCollection,
   tutorApplicationsCollection,
 } from "@/server/domain/collections";
-import type { AvailabilitySlot, TuitionPostingType, TuitionRequest, TuitionRequestStatus } from "@/server/domain/types";
+import type {
+  AvailabilitySlot,
+  TuitionPostingType,
+  TuitionRequest,
+  TuitionRequestStatus,
+  TutorGenderPreference,
+} from "@/server/domain/types";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 
 /**
@@ -24,10 +30,15 @@ export interface TutorOpportunityView {
   subjectId: string;
   gradeId: string;
   tutorVisibleLocality: string;
+  tutorGenderPreference: TutorGenderPreference;
   branchCity: string | null;
   localGovernmentId: string | null;
   availability: AvailabilitySlot[];
   notes: string | null;
+  // Populated on the detail view (both OPEN and ASSIGNED) via a Student
+  // join — not on the list view, to avoid an N+1 join per row there.
+  currentProgram: string | null;
+  currentYearOrSemester: string | null;
   // Populated only once this tutor is the assigned tutor (status ASSIGNED).
   parentName: string | null;
   parentPhone: string | null;
@@ -52,10 +63,13 @@ function toTutorView(r: TuitionRequest): TutorOpportunityView {
     subjectId: r.subjectId,
     gradeId: r.gradeId,
     tutorVisibleLocality: r.tutorVisibleLocality,
+    tutorGenderPreference: r.tutorGenderPreference,
     branchCity: null,
     localGovernmentId: r.localGovernmentId,
     availability: r.availability,
     notes: r.notes,
+    currentProgram: null,
+    currentYearOrSemester: null,
     parentName: null,
     parentPhone: null,
     parentEmail: null,
@@ -141,9 +155,20 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
   const snap = await tuitionRequestsCollection().doc(id).get();
   if (!snap.exists) return null;
   const data = snap.data()!;
+
+  // "Currently studying" is non-sensitive (like grade/subject) — shown
+  // on the detail view regardless of application status, unlike the
+  // parent/exact-address block below which is assignment-gated.
+  const studentSnapForDetail = data.studentId ? await studentsCollection().doc(data.studentId).get() : null;
+  const studentForDetail = studentSnapForDetail?.data();
+  const currentStudyingPatch = {
+    currentProgram: studentForDetail?.currentProgram ?? null,
+    currentYearOrSemester: studentForDetail?.currentYearOrSemester ?? null,
+  };
+
   if (data.status === "OPEN") {
     const [view] = await attachBranchCities([data], [toTutorView(data)]);
-    return view!;
+    return { ...view!, ...currentStudyingPatch };
   }
 
   const applicationSnap = await tutorApplicationsCollection()
@@ -157,22 +182,19 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
   const application = applicationSnap.docs[0]!.data();
 
   if (data.status === "ASSIGNED" && application.status === "SELECTED") {
-    const [parentSnap, studentSnap] = await Promise.all([
-      parentsCollection().doc(data.parentId).get(),
-      data.studentId ? studentsCollection().doc(data.studentId).get() : Promise.resolve(null),
-    ]);
+    const parentSnap = await parentsCollection().doc(data.parentId).get();
     const parent = parentSnap.data();
-    const student = studentSnap?.data();
     return {
       ...view!,
+      ...currentStudyingPatch,
       parentName: parent?.fullName ?? null,
       parentPhone: parent?.phone ?? null,
       parentEmail: parent?.email ?? null,
-      studentName: student?.fullName ?? null,
-      schoolName: student?.schoolName ?? null,
+      studentName: studentForDetail?.fullName ?? null,
+      schoolName: studentForDetail?.schoolName ?? null,
       exactAddress: data.exactAddress,
     };
   }
 
-  return view!;
+  return { ...view!, ...currentStudyingPatch };
 }

@@ -6,6 +6,12 @@ import { ApplyButton } from "@/components/tutor/opportunities/ApplyButton";
 import { tutorApplicationsCollection } from "@/server/domain/collections";
 import { BackButton } from "@/components/shared/BackButton";
 
+const GENDER_PREFERENCE_LABEL: Record<string, string> = {
+  MALE: "Male tutor",
+  FEMALE: "Female tutor",
+  ANY: "No preference",
+};
+
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4 py-2 border-b border-surface-variant last:border-0">
@@ -62,6 +68,13 @@ export default async function TutorOpportunityDetailPage({
           value={opportunity.branchCity ? `${opportunity.tutorVisibleLocality}, ${opportunity.branchCity}` : opportunity.tutorVisibleLocality}
         />
         <Row label="Mode" value={isSchool ? "School Vacancy" : "Home Tuition"} />
+        {(opportunity.currentProgram || opportunity.currentYearOrSemester) && (
+          <Row
+            label="Currently studying"
+            value={[opportunity.currentProgram, opportunity.currentYearOrSemester].filter(Boolean).join(" · ")}
+          />
+        )}
+        <Row label="Tutor preference" value={GENDER_PREFERENCE_LABEL[opportunity.tutorGenderPreference] ?? ""} />
         <Row
           label="Availability"
           value={opportunity.availability

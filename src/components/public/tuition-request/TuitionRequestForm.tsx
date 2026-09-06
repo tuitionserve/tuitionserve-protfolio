@@ -2,19 +2,31 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
-import { DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
+import { GRADES, SUBJECTS } from "@/lib/catalog";
 import { submitTuitionRequest, type ActionResult } from "@/server/actions/parent-request";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } from "./formStyles";
 import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
+import { DayRangeAvailabilityPicker, type AvailabilitySlotState } from "@/components/shared/DayRangeAvailabilityPicker";
 
-interface Slot {
-  dayOfWeek: string;
-  startTime: string;
-  endTime: string;
+interface StudentBlock {
+  studentFullName: string;
+  gradeId: string;
+  schoolName: string;
+  subjectId: string;
+  currentProgram: string;
+  currentYearOrSemester: string;
 }
 
-const EMPTY_SLOT: Slot = { dayOfWeek: "SUN", startTime: "17:00", endTime: "19:00" };
+function emptyStudentBlock(gradeId: string, subjectId: string): StudentBlock {
+  return { studentFullName: "", gradeId, schoolName: "", subjectId, currentProgram: "", currentYearOrSemester: "" };
+}
+
+const GENDER_OPTIONS: { id: "ANY" | "MALE" | "FEMALE"; label: string }[] = [
+  { id: "ANY", label: "No preference" },
+  { id: "MALE", label: "Male tutor" },
+  { id: "FEMALE", label: "Female tutor" },
+];
 
 export function TuitionRequestForm({
   provinces,
@@ -35,23 +47,29 @@ export function TuitionRequestForm({
   const [parentFullName, setParentFullName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [parentEmail, setParentEmail] = useState("");
-  const [studentFullName, setStudentFullName] = useState("");
-  const [gradeId, setGradeId] = useState(initialGradeId);
-  const [schoolName, setSchoolName] = useState("");
-  const [subjectId, setSubjectId] = useState(initialSubjectId);
+  const [students, setStudents] = useState<StudentBlock[]>([emptyStudentBlock(initialGradeId, initialSubjectId)]);
+  const [tutorGenderPreference, setTutorGenderPreference] = useState<"ANY" | "MALE" | "FEMALE">("ANY");
   const [locationId, setLocationId] = useState<string | null>(null);
   const [tutorVisibleLocality, setTutorVisibleLocality] = useState("");
   const [exactAddress, setExactAddress] = useState("");
-  const [slots, setSlots] = useState<Slot[]>([EMPTY_SLOT]);
+  const [slots, setSlots] = useState<AvailabilitySlotState[]>([{ dayOfWeek: "SUN", startTime: "17:00", endTime: "19:00" }]);
   const [notes, setNotes] = useState("");
 
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
-  const [submittedUid, setSubmittedUid] = useState<string | null>(null);
+  const [submittedUids, setSubmittedUids] = useState<string[] | null>(null);
 
-  function updateSlot(index: number, patch: Partial<Slot>) {
-    setSlots((prev) => prev.map((slot, i) => (i === index ? { ...slot, ...patch } : slot)));
+  function updateStudent(index: number, patch: Partial<StudentBlock>) {
+    setStudents((prev) => prev.map((s, i) => (i === index ? { ...s, ...patch } : s)));
+  }
+
+  function addStudent() {
+    setStudents((prev) => [...prev, emptyStudentBlock("", "")]);
+  }
+
+  function removeStudent(index: number) {
+    setStudents((prev) => prev.filter((_, i) => i !== index));
   }
 
   function handleSubmit(e: FormEvent) {
@@ -68,10 +86,20 @@ export function TuitionRequestForm({
     formData.set("parentFullName", parentFullName);
     formData.set("parentPhone", parentPhone);
     formData.set("parentEmail", parentEmail);
-    formData.set("studentFullName", studentFullName);
-    formData.set("gradeId", gradeId);
-    formData.set("schoolName", schoolName);
-    formData.set("subjectId", subjectId);
+    formData.set(
+      "studentsJson",
+      JSON.stringify(
+        students.map((s) => ({
+          studentFullName: s.studentFullName,
+          gradeId: s.gradeId,
+          schoolName: s.schoolName || null,
+          subjectId: s.subjectId,
+          currentProgram: s.gradeId === "bachelor-level" ? s.currentProgram || null : null,
+          currentYearOrSemester: s.gradeId === "bachelor-level" ? s.currentYearOrSemester || null : null,
+        })),
+      ),
+    );
+    formData.set("tutorGenderPreference", tutorGenderPreference);
     formData.set("locationId", locationId);
     formData.set("tutorVisibleLocality", tutorVisibleLocality);
     formData.set("exactAddress", exactAddress);
@@ -81,7 +109,7 @@ export function TuitionRequestForm({
     startTransition(async () => {
       const result = await action(formData);
       if (result.ok) {
-        setSubmittedUid(result.tuitionUid);
+        setSubmittedUids(result.tuitionUids);
       } else {
         setError(result.error);
         setFieldErrors(result.fieldErrors ?? {});
@@ -89,7 +117,7 @@ export function TuitionRequestForm({
     });
   }
 
-  if (submittedUid) {
+  if (submittedUids) {
     return (
       <div className={sectionClass}>
         <div className="flex items-center gap-3">
@@ -97,9 +125,10 @@ export function TuitionRequestForm({
           <h2 className="font-headline-md text-headline-md text-on-surface">Request received</h2>
         </div>
         <p className="font-body-md text-body-md text-on-surface-variant">
-          Thank you — your requirement has been received and will be reviewed by our team. We
-          didn&rsquo;t create an account for you; if you need to follow up, just reference{" "}
-          <strong>{submittedUid}</strong>.
+          Thank you — your requirement{submittedUids.length > 1 ? "s have" : " has"} been received and will be
+          reviewed by our team. We didn&rsquo;t create an account for you; if you need to follow up, just
+          reference {submittedUids.length > 1 ? "these IDs" : "this ID"}:{" "}
+          <strong>{submittedUids.join(", ")}</strong>.
         </p>
         <Link href={successHref} className="self-start font-label-md text-label-md text-primary-container">
           {successHrefLabel}
@@ -132,41 +161,135 @@ export function TuitionRequestForm({
       </div>
 
       <div className={sectionClass}>
-        <h2 className="font-headline-md text-headline-md text-on-surface">Student</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className={fieldWrapClass}>
-            <label className={labelClass} htmlFor="studentFullName">Student name</label>
-            <input id="studentFullName" className={inputClass} value={studentFullName} onChange={(e) => setStudentFullName(e.target.value)} required />
-            {fieldErrors.studentFullName && <p className={errorTextClass}>{fieldErrors.studentFullName}</p>}
-          </div>
-          <div className={fieldWrapClass}>
-            <label className={labelClass} htmlFor="gradeId">Grade</label>
-            <select id="gradeId" className={inputClass} value={gradeId} onChange={(e) => setGradeId(e.target.value)} required>
-              <option value="" disabled>Select grade</option>
-              {GRADES.map((g) => (
-                <option key={g.id} value={g.id}>{g.label}</option>
-              ))}
-            </select>
-            {fieldErrors.gradeId && <p className={errorTextClass}>{fieldErrors.gradeId}</p>}
-          </div>
-          <div className={fieldWrapClass}>
-            <label className={labelClass} htmlFor="schoolName">School (optional)</label>
-            <input id="schoolName" className={inputClass} value={schoolName} onChange={(e) => setSchoolName(e.target.value)} />
-          </div>
+        <div className="flex items-center justify-between">
+          <h2 className="font-headline-md text-headline-md text-on-surface">Student{students.length > 1 ? "s" : ""}</h2>
         </div>
+        <p className="font-body-sm text-body-sm text-on-surface-variant -mt-2">
+          Have more than one child who needs a tutor? Add each one below — we&rsquo;ll treat them as separate
+          requests sharing your contact details and location.
+        </p>
+
+        {students.map((student, index) => (
+          <div key={index} className="border border-outline-variant rounded-xl p-lg flex flex-col gap-4">
+            {students.length > 1 && (
+              <div className="flex items-center justify-between">
+                <p className="font-label-md text-label-md text-on-surface-variant">Student {index + 1}</p>
+                <button
+                  type="button"
+                  onClick={() => removeStudent(index)}
+                  aria-label="Remove student"
+                  className="text-error flex items-center gap-1 font-label-md text-label-md"
+                >
+                  <MaterialIcon name="close" /> Remove
+                </button>
+              </div>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className={fieldWrapClass}>
+                <label className={labelClass} htmlFor={`studentFullName-${index}`}>Student name</label>
+                <input
+                  id={`studentFullName-${index}`}
+                  className={inputClass}
+                  value={student.studentFullName}
+                  onChange={(e) => updateStudent(index, { studentFullName: e.target.value })}
+                  required
+                />
+                {fieldErrors[`students.${index}.studentFullName`] && (
+                  <p className={errorTextClass}>{fieldErrors[`students.${index}.studentFullName`]}</p>
+                )}
+              </div>
+              <div className={fieldWrapClass}>
+                <label className={labelClass} htmlFor={`gradeId-${index}`}>Grade</label>
+                <select
+                  id={`gradeId-${index}`}
+                  className={inputClass}
+                  value={student.gradeId}
+                  onChange={(e) => updateStudent(index, { gradeId: e.target.value })}
+                  required
+                >
+                  <option value="" disabled>Select grade</option>
+                  {GRADES.map((g) => (
+                    <option key={g.id} value={g.id}>{g.label}</option>
+                  ))}
+                </select>
+              </div>
+              <div className={fieldWrapClass}>
+                <label className={labelClass} htmlFor={`schoolName-${index}`}>School (optional)</label>
+                <input
+                  id={`schoolName-${index}`}
+                  className={inputClass}
+                  value={student.schoolName}
+                  onChange={(e) => updateStudent(index, { schoolName: e.target.value })}
+                />
+              </div>
+              <div className={fieldWrapClass}>
+                <label className={labelClass} htmlFor={`subjectId-${index}`}>Subject</label>
+                <select
+                  id={`subjectId-${index}`}
+                  className={inputClass}
+                  value={student.subjectId}
+                  onChange={(e) => updateStudent(index, { subjectId: e.target.value })}
+                  required
+                >
+                  <option value="" disabled>Select subject</option>
+                  {SUBJECTS.map((s) => (
+                    <option key={s.id} value={s.id}>{s.label}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {student.gradeId === "bachelor-level" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className={fieldWrapClass}>
+                  <label className={labelClass} htmlFor={`currentProgram-${index}`}>Current course / program (optional)</label>
+                  <input
+                    id={`currentProgram-${index}`}
+                    className={inputClass}
+                    placeholder="e.g. BSc Computer Science"
+                    value={student.currentProgram}
+                    onChange={(e) => updateStudent(index, { currentProgram: e.target.value })}
+                  />
+                </div>
+                <div className={fieldWrapClass}>
+                  <label className={labelClass} htmlFor={`currentYearOrSemester-${index}`}>Current year / semester (optional)</label>
+                  <input
+                    id={`currentYearOrSemester-${index}`}
+                    className={inputClass}
+                    placeholder="e.g. 4th semester"
+                    value={student.currentYearOrSemester}
+                    onChange={(e) => updateStudent(index, { currentYearOrSemester: e.target.value })}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        <button
+          type="button"
+          onClick={addStudent}
+          className="self-start font-label-md text-label-md text-primary-container flex items-center gap-1"
+        >
+          <MaterialIcon name="add" /> Add Student
+        </button>
+        {fieldErrors.students && <p className={errorTextClass}>{fieldErrors.students}</p>}
       </div>
 
       <div className={sectionClass}>
-        <h2 className="font-headline-md text-headline-md text-on-surface">Tuition</h2>
+        <h2 className="font-headline-md text-headline-md text-on-surface">Tutor Preference</h2>
         <div className={fieldWrapClass}>
-          <label className={labelClass} htmlFor="subjectId">Subject</label>
-          <select id="subjectId" className={inputClass} value={subjectId} onChange={(e) => setSubjectId(e.target.value)} required>
-            <option value="" disabled>Select subject</option>
-            {SUBJECTS.map((s) => (
-              <option key={s.id} value={s.id}>{s.label}</option>
+          <label className={labelClass} htmlFor="tutorGenderPreference">Tutor gender</label>
+          <select
+            id="tutorGenderPreference"
+            className={inputClass}
+            value={tutorGenderPreference}
+            onChange={(e) => setTutorGenderPreference(e.target.value as "ANY" | "MALE" | "FEMALE")}
+          >
+            {GENDER_OPTIONS.map((g) => (
+              <option key={g.id} value={g.id}>{g.label}</option>
             ))}
           </select>
-          {fieldErrors.subjectId && <p className={errorTextClass}>{fieldErrors.subjectId}</p>}
         </div>
       </div>
 
@@ -210,32 +333,7 @@ export function TuitionRequestForm({
 
       <div className={sectionClass}>
         <h2 className="font-headline-md text-headline-md text-on-surface">Availability</h2>
-        <div className="flex flex-col gap-3">
-          {slots.map((slot, index) => (
-            <div key={index} className="flex flex-wrap items-center gap-2">
-              <select className={`${inputClass} w-auto`} value={slot.dayOfWeek} onChange={(e) => updateSlot(index, { dayOfWeek: e.target.value })}>
-                {DAYS_OF_WEEK.map((d) => (
-                  <option key={d.id} value={d.id}>{d.label}</option>
-                ))}
-              </select>
-              <input type="time" className={`${inputClass} w-auto`} value={slot.startTime} onChange={(e) => updateSlot(index, { startTime: e.target.value })} />
-              <span className="font-body-sm text-body-sm text-on-surface-variant">to</span>
-              <input type="time" className={`${inputClass} w-auto`} value={slot.endTime} onChange={(e) => updateSlot(index, { endTime: e.target.value })} />
-              {slots.length > 1 && (
-                <button type="button" onClick={() => setSlots((prev) => prev.filter((_, i) => i !== index))} aria-label="Remove slot" className="text-error">
-                  <MaterialIcon name="close" />
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={() => setSlots((prev) => [...prev, EMPTY_SLOT])}
-          className="self-start font-label-md text-label-md text-primary-container flex items-center gap-1"
-        >
-          <MaterialIcon name="add" /> Add slot
-        </button>
+        <DayRangeAvailabilityPicker slots={slots} onChange={setSlots} />
       </div>
 
       <div className={sectionClass}>

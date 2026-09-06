@@ -6,9 +6,9 @@ import { geographicLocationsCollection } from "@/server/domain/collections";
 import { resolveBranchIdForLocation } from "@/server/domain/branch-routing";
 import { schoolVacancySchema } from "@/server/domain/school-vacancy-schema";
 import { fieldErrorsFrom } from "@/server/actions/action-utils";
-import { createPostingRecord, findOrCreateContact, type ActionResult } from "@/server/actions/parent-request";
+import { createPostingRecord, findOrCreateContact, type PostingRecordResult } from "@/server/actions/parent-request";
 
-export type { ActionResult };
+export type ActionResult = PostingRecordResult;
 
 /**
  * Admin-only: posts a school vacancy after talking to the school
@@ -75,6 +75,9 @@ export async function submitSchoolVacancyAsAdmin(formData: FormData): Promise<Ac
     exactAddress: data.exactAddress,
     locationId: data.locationId,
     tutorVisibleLocality: data.tutorVisibleLocality,
+    // Gender preference isn't part of the school-vacancy intake form —
+    // schools don't typically express one the way a parent might.
+    tutorGenderPreference: "ANY",
     slots: data.slots,
     notes: data.notes || null,
     notifyTitle: "New school vacancy posted",

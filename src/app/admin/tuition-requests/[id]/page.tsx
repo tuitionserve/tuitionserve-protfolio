@@ -10,6 +10,12 @@ import { getApplicantsForTuition, type AdminApplicantView } from "@/server/queri
 import { getLatestAssignmentForTuition } from "@/server/queries/admin-assignment";
 import { BackButton } from "@/components/shared/BackButton";
 
+const GENDER_PREFERENCE_LABEL: Record<string, string> = {
+  MALE: "Male tutor",
+  FEMALE: "Female tutor",
+  ANY: "No preference",
+};
+
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-4 py-2 border-b border-surface-variant last:border-0">
@@ -93,10 +99,17 @@ export default async function AdminTuitionRequestDetailPage({
           <>
             <Row label="Student" value={student?.fullName ?? ""} />
             <Row label="School" value={student?.schoolName ?? ""} />
+            {(student?.currentProgram || student?.currentYearOrSemester) && (
+              <Row
+                label="Currently studying"
+                value={[student?.currentProgram, student?.currentYearOrSemester].filter(Boolean).join(" · ")}
+              />
+            )}
           </>
         )}
         <Row label="Grade" value={catalogLabel(GRADES, request.gradeId)} />
         <Row label="Subject" value={catalogLabel(SUBJECTS, request.subjectId)} />
+        <Row label="Tutor preference" value={GENDER_PREFERENCE_LABEL[request.tutorGenderPreference] ?? ""} />
         <Row
           label="Availability"
           value={request.availability

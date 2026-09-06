@@ -223,6 +223,9 @@ export interface Student {
   fullName: string;
   gradeId: string; // catalog id, src/lib/catalog.ts GRADES
   schoolName: string | null;
+  /** Only meaningful when gradeId is "bachelor-level" — mirrors TutorProfile's currentProgram/currentYearOrSemester. */
+  currentProgram: string | null;
+  currentYearOrSemester: string | null;
   createdAt: FirebaseFirestore.Timestamp;
 }
 
@@ -258,6 +261,7 @@ export type TuitionRequestStatus =
  * authoritative.
  */
 export type TuitionPostingType = "HOME_TUITION" | "SCHOOL";
+export type TutorGenderPreference = "MALE" | "FEMALE" | "ANY";
 
 export interface TuitionRequest {
   id: string;
@@ -275,6 +279,7 @@ export interface TuitionRequest {
   districtId: string | null; // denormalized ancestor of locationId, for filtering
   localGovernmentId: string | null; // denormalized ancestor of locationId, for filtering
   tutorVisibleLocality: string; // free-text area, e.g. "Devichowk"
+  tutorGenderPreference: TutorGenderPreference;
   availability: AvailabilitySlot[];
   notes: string | null;
   rejectionReason: string | null;

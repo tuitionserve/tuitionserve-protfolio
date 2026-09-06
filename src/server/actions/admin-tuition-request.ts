@@ -20,20 +20,20 @@ export async function submitTuitionRequestAsAdmin(formData: FormData): Promise<A
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
 
   let slots: unknown;
+  let students: unknown;
   try {
     slots = JSON.parse(String(formData.get("slotsJson") ?? "[]"));
+    students = JSON.parse(String(formData.get("studentsJson") ?? "[]"));
   } catch {
-    return { ok: false, error: "Invalid availability data." };
+    return { ok: false, error: "Invalid form data." };
   }
 
   const parsed = tuitionRequestSchema.safeParse({
     parentFullName: formData.get("parentFullName"),
     parentPhone: formData.get("parentPhone"),
     parentEmail: formData.get("parentEmail") || null,
-    studentFullName: formData.get("studentFullName"),
-    gradeId: formData.get("gradeId"),
-    schoolName: formData.get("schoolName") || null,
-    subjectId: formData.get("subjectId"),
+    students,
+    tutorGenderPreference: formData.get("tutorGenderPreference"),
     locationId: formData.get("locationId"),
     tutorVisibleLocality: formData.get("tutorVisibleLocality"),
     exactAddress: formData.get("exactAddress"),

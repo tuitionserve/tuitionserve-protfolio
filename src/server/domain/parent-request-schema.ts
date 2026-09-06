@@ -22,6 +22,23 @@ const slotSchema = z
   });
 
 /**
+ * One child's tuition need within a request. A family with more than
+ * one child submits several of these in one sitting (the form's "Add
+ * Student" button) — each becomes its own TuitionRequest sharing the
+ * same parent contact, location, availability, and tutor gender
+ * preference (see createTuitionRequestFromParsedData).
+ */
+const studentBlockSchema = z.object({
+  studentFullName: z.string().trim().min(2, "Enter the student's name.").max(120),
+  gradeId: z.enum(GRADE_IDS),
+  schoolName: z.string().trim().max(200).nullable(),
+  subjectId: z.enum(SUBJECT_IDS),
+  // Only meaningful when gradeId is "bachelor-level" — see Student's doc comment in types.ts.
+  currentProgram: z.string().trim().max(200).nullable(),
+  currentYearOrSemester: z.string().trim().max(50).nullable(),
+});
+
+/**
  * Full parent tuition request submission — single-page form (UX flow doc
  * allows single-page or staged; a single page fits this one better than
  * the tutor onboarding wizard did). No auth: parents never have accounts.
@@ -35,13 +52,11 @@ export const tuitionRequestSchema = z.object({
     .regex(/^[0-9+][0-9+\-\s]{6,19}$/, "Enter a valid phone number."),
   parentEmail: z.union([z.literal(""), z.string().trim().email("Enter a valid email.")]).nullable(),
 
-  // Student
-  studentFullName: z.string().trim().min(2, "Enter the student's name.").max(120),
-  gradeId: z.enum(GRADE_IDS),
-  schoolName: z.string().trim().max(200).nullable(),
+  // One or more children — each becomes its own TuitionRequest.
+  students: z.array(studentBlockSchema).min(1, "Add at least one student."),
 
-  // Tuition
-  subjectId: z.enum(SUBJECT_IDS),
+  // Shared across every student in this submission.
+  tutorGenderPreference: z.enum(["MALE", "FEMALE", "ANY"]),
 
   // Location
   locationId: z.string().min(1, "Select a city."),
@@ -55,3 +70,4 @@ export const tuitionRequestSchema = z.object({
 });
 
 export type TuitionRequestInput = z.infer<typeof tuitionRequestSchema>;
+export type StudentBlockInput = z.infer<typeof studentBlockSchema>;

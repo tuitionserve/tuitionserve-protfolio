@@ -14,10 +14,10 @@ import { writeAuditEvent } from "@/server/domain/audit";
 import { tuitionRequestSchema } from "@/server/domain/parent-request-schema";
 import { getLocationAncestry } from "@/server/queries/location-hierarchy";
 import { fieldErrorsFrom } from "@/server/actions/action-utils";
-import type { TuitionPostingType } from "@/server/domain/types";
+import type { AvailabilitySlot, TuitionPostingType, TutorGenderPreference } from "@/server/domain/types";
 
 export type ActionResult =
-  | { ok: true; tuitionUid: string }
+  | { ok: true; tuitionUids: string[] }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
 type Actor = { userId: string | null; role: "SYSTEM" | "SUPER_ADMIN" | "BRANCH_ADMIN" };
@@ -65,15 +65,20 @@ interface PostingRecordInput {
   exactAddress: string;
   locationId: string;
   tutorVisibleLocality: string;
-  slots: import("@/server/domain/types").AvailabilitySlot[];
+  tutorGenderPreference: TutorGenderPreference;
+  slots: AvailabilitySlot[];
   notes: string | null;
   notifyTitle: string;
   notifyBody: string;
   actor: Actor;
 }
 
-/** Writes the TuitionRequest doc + audit event + admin notification — shared by both posting types below. */
-async function createPostingRecord(input: PostingRecordInput): Promise<ActionResult> {
+export type PostingRecordResult =
+  | { ok: true; tuitionUid: string }
+  | { ok: false; error: string; fieldErrors?: Record<string, string> };
+
+/** Writes one TuitionRequest doc + audit event + admin notification — shared by both posting types below. */
+async function createPostingRecord(input: PostingRecordInput): Promise<PostingRecordResult> {
   const locationSnap = await geographicLocationsCollection().doc(input.locationId).get();
   if (!locationSnap.exists || locationSnap.data()?.level !== "WARD") {
     return {
@@ -111,6 +116,7 @@ async function createPostingRecord(input: PostingRecordInput): Promise<ActionRes
     districtId,
     localGovernmentId,
     tutorVisibleLocality: input.tutorVisibleLocality,
+    tutorGenderPreference: input.tutorGenderPreference,
     availability: input.slots,
     notes: input.notes,
     rejectionReason: null,
@@ -147,6 +153,11 @@ async function createPostingRecord(input: PostingRecordInput): Promise<ActionRes
  * "post a tuition manually" action (phone-intake requests) — same
  * record shape and downstream pipeline either way, only who's
  * recorded as the actor differs.
+ *
+ * One submission can cover several children (the form's "Add Student"
+ * button) — the parent contact, location, availability, and gender
+ * preference are entered once and shared; each student block becomes
+ * its own Student + TuitionRequest, all linked to the same parent.
  */
 export async function createTuitionRequestFromParsedData(
   data: import("zod").infer<typeof tuitionRequestSchema>,
@@ -155,32 +166,42 @@ export async function createTuitionRequestFromParsedData(
   const now = FieldValue.serverTimestamp();
   const parentId = await findOrCreateContact(data.parentFullName, data.parentPhone, data.parentEmail || null, now);
 
-  const studentRef = studentsCollection().doc();
-  await studentRef.set({
-    id: studentRef.id,
-    parentId,
-    fullName: data.studentFullName,
-    gradeId: data.gradeId,
-    schoolName: data.schoolName || null,
-    createdAt: now,
-  });
+  const tuitionUids: string[] = [];
+  for (const student of data.students) {
+    const studentRef = studentsCollection().doc();
+    await studentRef.set({
+      id: studentRef.id,
+      parentId,
+      fullName: student.studentFullName,
+      gradeId: student.gradeId,
+      schoolName: student.schoolName || null,
+      currentProgram: student.currentProgram || null,
+      currentYearOrSemester: student.currentYearOrSemester || null,
+      createdAt: now,
+    });
 
-  return createPostingRecord({
-    postingType: "HOME_TUITION",
-    parentId,
-    studentId: studentRef.id,
-    institutionName: null,
-    subjectId: data.subjectId,
-    gradeId: data.gradeId,
-    exactAddress: data.exactAddress,
-    locationId: data.locationId,
-    tutorVisibleLocality: data.tutorVisibleLocality,
-    slots: data.slots,
-    notes: data.notes || null,
-    notifyTitle: "New tuition request",
-    notifyBody: `${data.studentFullName}'s ${data.subjectId} request in ${data.tutorVisibleLocality} is awaiting review.`,
-    actor,
-  });
+    const result = await createPostingRecord({
+      postingType: "HOME_TUITION",
+      parentId,
+      studentId: studentRef.id,
+      institutionName: null,
+      subjectId: student.subjectId,
+      gradeId: student.gradeId,
+      exactAddress: data.exactAddress,
+      locationId: data.locationId,
+      tutorVisibleLocality: data.tutorVisibleLocality,
+      tutorGenderPreference: data.tutorGenderPreference,
+      slots: data.slots,
+      notes: data.notes || null,
+      notifyTitle: "New tuition request",
+      notifyBody: `${student.studentFullName}'s ${student.subjectId} request in ${data.tutorVisibleLocality} is awaiting review.`,
+      actor,
+    });
+    if (!result.ok) return result;
+    tuitionUids.push(result.tuitionUid);
+  }
+
+  return { ok: true, tuitionUids };
 }
 
 /**
@@ -189,20 +210,20 @@ export async function createTuitionRequestFromParsedData(
  */
 export async function submitTuitionRequest(formData: FormData): Promise<ActionResult> {
   let slots: unknown;
+  let students: unknown;
   try {
     slots = JSON.parse(String(formData.get("slotsJson") ?? "[]"));
+    students = JSON.parse(String(formData.get("studentsJson") ?? "[]"));
   } catch {
-    return { ok: false, error: "Invalid availability data." };
+    return { ok: false, error: "Invalid form data." };
   }
 
   const parsed = tuitionRequestSchema.safeParse({
     parentFullName: formData.get("parentFullName"),
     parentPhone: formData.get("parentPhone"),
     parentEmail: formData.get("parentEmail") || null,
-    studentFullName: formData.get("studentFullName"),
-    gradeId: formData.get("gradeId"),
-    schoolName: formData.get("schoolName") || null,
-    subjectId: formData.get("subjectId"),
+    students,
+    tutorGenderPreference: formData.get("tutorGenderPreference"),
     locationId: formData.get("locationId"),
     tutorVisibleLocality: formData.get("tutorVisibleLocality"),
     exactAddress: formData.get("exactAddress"),

@@ -1,5 +1,5 @@
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
-import { GRADES } from "@/lib/catalog";
+import { GRADES, SUBJECTS } from "@/lib/catalog";
 
 const selectClasses =
   "bg-surface-container-lowest border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-lg p-3 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 outline-none transition-all h-[44px]";
@@ -41,10 +41,9 @@ export function RequestTutorSearch() {
             </label>
             <select id="subject" name="subject" className={selectClasses} defaultValue="">
               <option value="">Select Subject</option>
-              <option value="mathematics">Mathematics</option>
-              <option value="science">Science</option>
-              <option value="english">English</option>
-              <option value="computer-science">Computer Science</option>
+              {SUBJECTS.map((s) => (
+                <option key={s.id} value={s.id}>{s.label}</option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col gap-2">
