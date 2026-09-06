@@ -4,6 +4,7 @@ import { tutorProfilesCollection, branchesCollection } from "@/server/domain/col
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { getMyPendingChangeRequest } from "@/server/actions/profile-changes";
 import { FreeEditForm } from "@/components/tutor/profile/FreeEditForm";
+import { SecuritySettings } from "@/components/shared/SecuritySettings";
 
 const STATUS_LABEL: Record<string, string> = {
   PROFILE_INCOMPLETE: "Profile Incomplete",
@@ -81,6 +82,11 @@ export default async function TutorProfilePage() {
         <Row label="Status" value={STATUS_LABEL[tutor.verificationStatus] ?? tutor.verificationStatus} />
         <Row label="Branch" value={branchName} />
         <Row label="Email" value={session.email ?? ""} />
+      </div>
+
+      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
+        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Security</h2>
+        <SecuritySettings email={session.email} />
       </div>
 
       {isApproved && (

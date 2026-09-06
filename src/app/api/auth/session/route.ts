@@ -47,6 +47,12 @@ export async function POST(request: NextRequest) {
     }
     role = account.role;
     branchId = account.branchId;
+    // Keep the Firestore copy of the email in sync — it's the source for
+    // session.email (see server/auth/session.ts) but the real record of
+    // truth is Firebase Auth, e.g. after a self-service email change.
+    if (decoded.email && account.email !== decoded.email) {
+      await userAccountsCollection().doc(decoded.uid).update({ email: decoded.email });
+    }
     if (role === "TUTOR") {
       const tutorSnap = await tutorsCollection().doc(decoded.uid).get();
       tutorUid = tutorSnap.data()?.tutorUid ?? null;

@@ -1,5 +1,6 @@
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
+import { SecuritySettings } from "@/components/shared/SecuritySettings";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -30,10 +31,8 @@ export default async function AdminProfilePage() {
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <p className="font-body-sm text-body-sm text-on-surface-variant">
-          Admin accounts are provisioned directly and don&rsquo;t have a self-service edit screen — to change your
-          name, email, or password, contact whoever manages the project&rsquo;s Firebase Console.
-        </p>
+        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Security</h2>
+        <SecuritySettings email={session.email} />
       </div>
     </div>
   );

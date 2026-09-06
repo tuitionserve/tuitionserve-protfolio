@@ -2,8 +2,13 @@
 
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import { firebaseAuth, googleAuthProvider } from "@/lib/firebase/client";
 
@@ -71,6 +76,37 @@ export async function signOutCurrentUser() {
   await firebaseAuth.signOut();
 }
 
+export async function sendPasswordReset(email: string) {
+  await sendPasswordResetEmail(firebaseAuth, email);
+}
+
+async function reauthenticateCurrentUser(currentPassword: string) {
+  const user = firebaseAuth.currentUser;
+  if (!user || !user.email) {
+    throw new AuthActionError("NO_USER", "You must be signed in to do this.");
+  }
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+  await reauthenticateWithCredential(user, credential);
+  return user;
+}
+
+export async function changeMyPassword(currentPassword: string, newPassword: string) {
+  const user = await reauthenticateCurrentUser(currentPassword);
+  await updatePassword(user, newPassword);
+}
+
+// Firebase Auth requires a fresh credential for security-sensitive changes,
+// so we reuse the same reauth as changeMyPassword. Our own UserAccount
+// Firestore doc keeps a copy of the email for display/lookup — postSession
+// (also called on every login) is what keeps that copy in sync, so we
+// call it again here right after the Auth-side email actually changes.
+export async function changeMyEmail(currentPassword: string, newEmail: string) {
+  const user = await reauthenticateCurrentUser(currentPassword);
+  await updateEmail(user, newEmail);
+  const idToken = await user.getIdToken(true);
+  await postSession(idToken);
+}
+
 /** Maps common Firebase Auth error codes to user-facing messages. */
 export function describeFirebaseAuthError(error: unknown): string {
   const code = (error as { code?: string } | null)?.code;
@@ -87,6 +123,12 @@ export function describeFirebaseAuthError(error: unknown): string {
       return "Enter a valid email address.";
     case "auth/popup-closed-by-user":
       return "Google sign-in was cancelled.";
+    case "auth/requires-recent-login":
+      return "For security, please sign out and sign in again before retrying this.";
+    case "auth/too-many-requests":
+      return "Too many attempts. Please wait a moment and try again.";
+    case "NO_USER":
+      return "You must be signed in to do this.";
     default:
       return error instanceof Error ? error.message : "Something went wrong. Please try again.";
   }
