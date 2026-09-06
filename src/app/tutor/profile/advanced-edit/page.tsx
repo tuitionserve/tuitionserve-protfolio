@@ -18,8 +18,13 @@ export default async function AdvancedEditPage() {
     tutorProfilesCollection().doc(session.uid).get(),
     getMyPendingChangeRequest(),
   ]);
-  const profile = profileSnap.data();
-  if (!profile) redirect("/tutor/profile");
+  const profileData = profileSnap.data();
+  if (!profileData) redirect("/tutor/profile");
+  // Strip the Firestore Timestamp field — the RSC serialization boundary
+  // rejects Timestamp class instances when passing from a Server
+  // Component to a Client Component (AdvancedEditForm doesn't need it).
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { updatedAt, ...profile } = profileData;
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-lg">

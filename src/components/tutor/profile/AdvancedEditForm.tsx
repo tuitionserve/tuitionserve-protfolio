@@ -12,7 +12,7 @@ const labelClass = "font-label-md text-label-md text-on-surface-variant";
 const fieldWrapClass = "flex flex-col gap-2";
 const errorTextClass = "font-body-sm text-body-sm text-error mt-1";
 
-export function AdvancedEditForm({ profile }: { profile: TutorProfile }) {
+export function AdvancedEditForm({ profile }: { profile: Omit<TutorProfile, "updatedAt"> }) {
   const router = useRouter();
   const [fullName, setFullName] = useState(profile.fullName ?? "");
   const [phone, setPhone] = useState(profile.phone ?? "");
