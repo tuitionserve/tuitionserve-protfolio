@@ -128,8 +128,8 @@ export default async function TutorProfilePage() {
 
           <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
             <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">Teaching</h2>
-            <Row label="Subjects" value={profile.subjects.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
-            <Row label="Grades" value={profile.grades.map((g) => catalogLabel(GRADES, g)).join(", ")} />
+            <Row label="Subjects" value={(profile.subjects ?? []).map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
+            <Row label="Grades" value={(profile.grades ?? []).map((g) => catalogLabel(GRADES, g)).join(", ")} />
             <Row label="Experience" value={profile.teachingExperienceSummary ?? ""} />
             <Row label="Expected monthly fee" value={profile.expectedMonthlyFee ? `NPR ${profile.expectedMonthlyFee}` : ""} />
           </div>
@@ -139,7 +139,7 @@ export default async function TutorProfilePage() {
             <Row label="Preferred locality / area" value={profile.preferredLocality ?? ""} />
             <Row
               label="Availability"
-              value={profile.availability
+              value={(profile.availability ?? [])
                 .map((s) => `${catalogLabel(DAYS_OF_WEEK, s.dayOfWeek)} ${s.startTime}-${s.endTime}`)
                 .join("; ")}
             />
