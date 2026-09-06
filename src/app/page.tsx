@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentSession } from "@/server/auth/session";
 import { PublicHeader } from "@/components/public/PublicHeader";
 import { PublicFooter } from "@/components/public/PublicFooter";
 import { Hero } from "@/components/public/sections/Hero";
@@ -10,7 +12,12 @@ import { Testimonials } from "@/components/public/sections/Testimonials";
 import { Faq } from "@/components/public/sections/Faq";
 import { FadeIn } from "@/components/ui/FadeIn";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const session = await getCurrentSession();
+  if (session) {
+    redirect(session.role === "TUTOR" ? "/tutor/dashboard" : "/admin/dashboard");
+  }
+
   return (
     <>
       <PublicHeader active="Home" />
