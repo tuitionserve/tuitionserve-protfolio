@@ -121,8 +121,9 @@ export default async function AdminDashboardPage() {
                     href={`/admin/tuition-requests/${request.id}`}
                     className="flex items-center gap-3 py-2 border-b border-surface-variant last:border-0 font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors"
                   >
-                    <MaterialIcon name="person" className="text-on-surface-variant shrink-0" />
-                    {studentName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
+                    <MaterialIcon name={request.postingType === "SCHOOL" ? "apartment" : "person"} className="text-on-surface-variant shrink-0" />
+                    {(request.postingType === "SCHOOL" ? request.institutionName : studentName) ?? "Unnamed"} —{" "}
+                    {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
                   </Link>
                 ))}
               </div>

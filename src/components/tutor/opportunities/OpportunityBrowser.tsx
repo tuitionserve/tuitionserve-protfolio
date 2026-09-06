@@ -103,7 +103,7 @@ export function OpportunityBrowser({
 
         <div>
           <p className="font-label-md text-label-md text-on-surface-variant mb-2">
-            Location — optional, narrows results without hiding everything else
+            Narrow further within your city — optional
           </p>
           <LocationCascadeSelect
             provinces={provinces}
@@ -148,11 +148,24 @@ export function OpportunityBrowser({
               className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex items-center justify-between gap-4 hover:shadow-md transition-all"
             >
               <div>
-                <p className="font-label-md text-label-md text-on-surface">
-                  {catalogLabel(GRADES, op.gradeId)} {catalogLabel(SUBJECTS, op.subjectId)}
-                </p>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  {op.tuitionUid} · {op.tutorVisibleLocality} · Home Tuition
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`font-label-md text-[11px] px-2 py-0.5 rounded-full shrink-0 ${
+                      op.postingType === "SCHOOL"
+                        ? "bg-tertiary-container/40 text-on-tertiary-container"
+                        : "bg-secondary-container/50 text-on-secondary-container"
+                    }`}
+                  >
+                    {op.postingType === "SCHOOL" ? "School" : "Home Tuition"}
+                  </span>
+                  <p className="font-label-md text-label-md text-on-surface">
+                    {catalogLabel(GRADES, op.gradeId)} {catalogLabel(SUBJECTS, op.subjectId)}
+                  </p>
+                </div>
+                <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+                  {op.tuitionUid} · {op.tutorVisibleLocality}
+                  {op.branchCity ? `, ${op.branchCity}` : ""}
+                  {op.postingType === "SCHOOL" && op.institutionName ? ` · ${op.institutionName}` : ""}
                 </p>
               </div>
               <span className="font-label-md text-label-md text-primary-container shrink-0">View Details</span>

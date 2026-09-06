@@ -10,6 +10,6 @@ export async function searchOpportunities(
   filters: OpportunityFilters,
   cursor: string | null,
 ): Promise<PageResult<TutorOpportunityView>> {
-  await requireActiveTutor();
-  return getOpenOpportunities(filters, cursor);
+  const session = await requireActiveTutor();
+  return getOpenOpportunities(session.tutor?.branchId ?? null, filters, cursor);
 }

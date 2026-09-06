@@ -34,11 +34,21 @@ export default async function TutorOpportunityDetailPage({
     .limit(1)
     .get();
   const existingApplication = existingApplicationSnap.empty ? null : existingApplicationSnap.docs[0]!.data();
+  const isAssignedToMe = opportunity.status === "ASSIGNED" && opportunity.exactAddress !== null;
+
+  const isSchool = opportunity.postingType === "SCHOOL";
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
       <BackButton />
       <div>
+        <span
+          className={`inline-block font-label-md text-[11px] px-2 py-0.5 rounded-full mb-2 ${
+            isSchool ? "bg-tertiary-container/40 text-on-tertiary-container" : "bg-secondary-container/50 text-on-secondary-container"
+          }`}
+        >
+          {isSchool ? "School" : "Home Tuition"}
+        </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
           {catalogLabel(GRADES, opportunity.gradeId)} {catalogLabel(SUBJECTS, opportunity.subjectId)}
         </h1>
@@ -46,8 +56,12 @@ export default async function TutorOpportunityDetailPage({
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <Row label="Location" value={opportunity.tutorVisibleLocality} />
-        <Row label="Mode" value="Home Tuition" />
+        {isSchool && <Row label="School" value={opportunity.institutionName ?? ""} />}
+        <Row
+          label="Location"
+          value={opportunity.branchCity ? `${opportunity.tutorVisibleLocality}, ${opportunity.branchCity}` : opportunity.tutorVisibleLocality}
+        />
+        <Row label="Mode" value={isSchool ? "School Vacancy" : "Home Tuition"} />
         <Row
           label="Availability"
           value={opportunity.availability
@@ -56,9 +70,28 @@ export default async function TutorOpportunityDetailPage({
         />
         <Row label="Requirements" value={opportunity.notes ?? ""} />
       </div>
-      <p className="font-body-sm text-body-sm text-on-surface-variant -mt-4">
-        Exact address is shared by the admin team only after you&rsquo;re selected.
-      </p>
+
+      {isAssignedToMe ? (
+        <div className="bg-primary-container/10 border border-primary-container rounded-xl p-lg">
+          <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">
+            You&rsquo;re assigned — full details
+          </h2>
+          <Row label={isSchool ? "Contact name" : "Parent name"} value={opportunity.parentName ?? ""} />
+          <Row label={isSchool ? "Contact phone" : "Parent phone"} value={opportunity.parentPhone ?? ""} />
+          <Row label={isSchool ? "Contact email" : "Parent email"} value={opportunity.parentEmail ?? ""} />
+          {!isSchool && (
+            <>
+              <Row label="Student name" value={opportunity.studentName ?? ""} />
+              <Row label="School" value={opportunity.schoolName ?? ""} />
+            </>
+          )}
+          <Row label="Exact address" value={opportunity.exactAddress ?? ""} />
+        </div>
+      ) : (
+        <p className="font-body-sm text-body-sm text-on-surface-variant -mt-4">
+          Exact address and contact details are shared only after you&rsquo;re selected for this tuition.
+        </p>
+      )}
 
       {isOpen ? (
         <ApplyButton

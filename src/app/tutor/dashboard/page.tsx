@@ -45,7 +45,7 @@ export default async function TutorDashboardPage() {
   // a full-collection read; getMyApplicationStatusCounts is
   // aggregation-only, no document reads at all.
   const [openOpportunitiesPage, applicationCounts, recentNotifications, profileSnap] = await Promise.all([
-    getOpenOpportunities({}, null),
+    getOpenOpportunities(tutor.branchId, {}, null),
     getMyApplicationStatusCounts(session.uid),
     getNotifications(session.uid, null),
     tutorProfilesCollection().doc(session.uid).get(),

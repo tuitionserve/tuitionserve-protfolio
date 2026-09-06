@@ -49,37 +49,53 @@ export default async function AdminTuitionRequestDetailPage({
 
   const [parentSnap, studentSnap, applicants, assignment] = await Promise.all([
     parentsCollection().doc(request.parentId).get(),
-    studentsCollection().doc(request.studentId).get(),
+    request.studentId ? studentsCollection().doc(request.studentId).get() : Promise.resolve(null),
     request.status === "NEW"
       ? Promise.resolve(emptyApplicantsPage)
       : getApplicantsForTuition(id, currentCursor(cursorStack)),
     request.status === "ASSIGNED" ? getLatestAssignmentForTuition(id) : Promise.resolve(null),
   ]);
   const parent = parentSnap.data() ?? null;
-  const student = studentSnap.data() ?? null;
+  const student = studentSnap?.data() ?? null;
+  const isSchool = request.postingType === "SCHOOL";
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
       <BackButton />
       <div>
+        <span
+          className={`inline-block font-label-md text-[11px] px-2 py-0.5 rounded-full mb-2 ${
+            isSchool ? "bg-tertiary-container/40 text-on-tertiary-container" : "bg-secondary-container/50 text-on-secondary-container"
+          }`}
+        >
+          {isSchool ? "School Vacancy" : "Home Tuition"}
+        </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {student?.fullName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)}
+          {(isSchool ? request.institutionName : student?.fullName) ?? "Unnamed"} — {catalogLabel(SUBJECTS, request.subjectId)}
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{request.tuitionUid}</p>
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">Parent</h2>
+        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">{isSchool ? "Contact Person" : "Parent"}</h2>
         <Row label="Name" value={parent?.fullName ?? ""} />
         <Row label="Phone" value={parent?.phone ?? ""} />
         <Row label="Email" value={parent?.email ?? ""} />
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">Student & Tuition</h2>
-        <Row label="Student" value={student?.fullName ?? ""} />
-        <Row label="Grade" value={student ? catalogLabel(GRADES, student.gradeId) : ""} />
-        <Row label="School" value={student?.schoolName ?? ""} />
+        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">
+          {isSchool ? "School & Vacancy" : "Student & Tuition"}
+        </h2>
+        {isSchool ? (
+          <Row label="School" value={request.institutionName ?? ""} />
+        ) : (
+          <>
+            <Row label="Student" value={student?.fullName ?? ""} />
+            <Row label="School" value={student?.schoolName ?? ""} />
+          </>
+        )}
+        <Row label="Grade" value={catalogLabel(GRADES, request.gradeId)} />
         <Row label="Subject" value={catalogLabel(SUBJECTS, request.subjectId)} />
         <Row
           label="Availability"

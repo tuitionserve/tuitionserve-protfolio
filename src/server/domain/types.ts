@@ -255,15 +255,19 @@ export type TuitionRequestStatus =
  * convenience, not a second source of truth; `locationId` stays
  * authoritative.
  */
+export type TuitionPostingType = "HOME_TUITION" | "SCHOOL";
+
 export interface TuitionRequest {
   id: string;
   tuitionUid: string; // TS-TU-#####
   branchId: string | null; // resolved via resolveBranchIdForLocation; null = unrouted
-  parentId: string;
-  studentId: string;
+  postingType: TuitionPostingType; // default HOME_TUITION; SCHOOL = a school vacancy an admin posted on a school's behalf
+  parentId: string; // for SCHOOL postings, the school's contact person, stored the same way as a parent contact
+  studentId: string | null; // null for SCHOOL postings — a school vacancy has no single student
+  institutionName: string | null; // SCHOOL postings only
   status: TuitionRequestStatus;
   subjectId: string; // catalog id
-  gradeId: string; // catalog id, snapshot of Student.gradeId at request time
+  gradeId: string; // catalog id, snapshot of Student.gradeId at request time (or the grade level being staffed, for SCHOOL)
   exactAddress: string; // PRIVATE — admin-only, never for a tutor-facing response
   locationId: string; // -> geographicLocations (ward-level)
   districtId: string | null; // denormalized ancestor of locationId, for filtering
