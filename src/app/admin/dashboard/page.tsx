@@ -9,6 +9,10 @@ import {
 } from "@/server/queries/tuition-requests";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 import { getNotifications } from "@/server/queries/my-notifications";
+import { StatCard } from "@/components/shared/StatCard";
+import { NotificationsCard } from "@/components/shared/NotificationsCard";
+import { QuickActionsCard, type QuickAction } from "@/components/shared/QuickActionsCard";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default async function AdminDashboardPage() {
   // Re-runs the guard rather than trusting the layout ran first — see the
@@ -37,115 +41,100 @@ export default async function AdminDashboardPage() {
     ]);
 
   const attentionItems = tutorReviewCount + newRequestsPage.totalCount;
+  const isSuperAdmin = session.role === "SUPER_ADMIN";
+
+  const quickActions: QuickAction[] = [
+    { label: "Post Tuition", href: "/admin/tuition-requests/post", icon: "add_circle" },
+    { label: "Post School Enquiry", href: "/admin/school-contact-queries/post", icon: "add_business" },
+    { label: "Tutor Reviews", href: "/admin/tutors", icon: "fact_check" },
+    ...(isSuperAdmin ? [{ label: "Branches", href: "/admin/branches", icon: "store" }] : []),
+  ];
 
   return (
     <div className="flex flex-col gap-lg">
-      <div>
-        <h1 className="font-headline-lg text-headline-lg text-on-surface">{branchName}</h1>
-        <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          {session.role === "SUPER_ADMIN" ? "Platform-wide view" : "Branch operations"}
-        </p>
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-2xl bg-primary-container/15 flex items-center justify-center shrink-0">
+          <MaterialIcon name="dashboard" filled className="text-3xl text-primary-container" />
+        </div>
+        <div>
+          <h1 className="font-headline-lg text-headline-lg text-on-surface">{branchName}</h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            {isSuperAdmin ? "Platform-wide view" : "Branch operations"}
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-md">
-        <QueueTile label="New Requests" value={newRequestsPage.totalCount} href="/admin/tuition-requests" />
-        <QueueTile label="Tutor Reviews" value={tutorReviewCount} href="/admin/tutors" />
-        <QueueTile label="Open Tuitions" value={openTuitionsCount} href="/admin/tuition-requests" />
+        <StatCard
+          label="New Requests"
+          value={newRequestsPage.totalCount}
+          icon="post_add"
+          tone="tertiary"
+          href="/admin/tuition-requests"
+        />
+        <StatCard label="Tutor Reviews" value={tutorReviewCount} icon="fact_check" tone="secondary" href="/admin/tutors" />
+        <StatCard label="Open Tuitions" value={openTuitionsCount} icon="menu_book" tone="primary" href="/admin/tuition-requests" />
         {/* "Ready for selection" = OPEN tuitions that already have >=1 applicant, i.e. an
             admin can act on them right now (see countSelectionsReady doc comment). */}
-        <QueueTile label="Selections" value={selectionsReadyCount} href="/admin/tuition-requests" />
+        <StatCard label="Selections" value={selectionsReadyCount} icon="task_alt" tone="error" href="/admin/tuition-requests" />
       </div>
 
-      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Needs Attention</h2>
-        {attentionItems === 0 ? (
-          <p className="font-body-sm text-body-sm text-on-surface-variant">Nothing needs your attention right now.</p>
-        ) : (
-          <ul className="flex flex-col gap-2">
-            {tutorReviewCount > 0 && (
-              <li className="font-body-sm text-body-sm text-on-surface-variant">
-                {tutorReviewCount} tutor application{tutorReviewCount === 1 ? "" : "s"} awaiting review —{" "}
-                <Link href="/admin/tutors" className="text-primary-container font-medium">
-                  review now
-                </Link>
-                .
-              </li>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-lg items-start">
+        <div className="lg:col-span-2 flex flex-col gap-lg">
+          <div className="bg-surface-container-lowest border border-surface-variant rounded-2xl p-lg">
+            <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Needs Attention</h2>
+            {attentionItems === 0 ? (
+              <p className="font-body-sm text-body-sm text-on-surface-variant">Nothing needs your attention right now.</p>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {tutorReviewCount > 0 && (
+                  <li className="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+                    <MaterialIcon name="fact_check" className="text-tertiary shrink-0" />
+                    {tutorReviewCount} tutor application{tutorReviewCount === 1 ? "" : "s"} awaiting review —{" "}
+                    <Link href="/admin/tutors" className="text-primary-container font-medium">
+                      review now
+                    </Link>
+                  </li>
+                )}
+                {newRequestsPage.totalCount > 0 && (
+                  <li className="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
+                    <MaterialIcon name="post_add" className="text-tertiary shrink-0" />
+                    {newRequestsPage.totalCount} tuition request{newRequestsPage.totalCount === 1 ? "" : "s"} awaiting review —{" "}
+                    <Link href="/admin/tuition-requests" className="text-primary-container font-medium">
+                      review now
+                    </Link>
+                  </li>
+                )}
+              </ul>
             )}
-            {newRequestsPage.totalCount > 0 && (
-              <li className="font-body-sm text-body-sm text-on-surface-variant">
-                {newRequestsPage.totalCount} tuition request{newRequestsPage.totalCount === 1 ? "" : "s"} awaiting review —{" "}
-                <Link href="/admin/tuition-requests" className="text-primary-container font-medium">
-                  review now
-                </Link>
-                .
-              </li>
-            )}
-          </ul>
-        )}
-      </div>
-
-      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Tuition Requests</h2>
-        {newRequestsPage.items.length === 0 ? (
-          <p className="font-body-sm text-body-sm text-on-surface-variant">No tuition requests yet.</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {newRequestsPage.items.slice(0, 5).map(({ request, studentName }) => (
-              <Link
-                key={request.id}
-                href={`/admin/tuition-requests/${request.id}`}
-                className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors"
-              >
-                {studentName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
-              </Link>
-            ))}
           </div>
-        )}
-      </div>
 
-      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">Notifications</h2>
-          {recentNotifications.totalCount > 0 && (
-            <Link href="/admin/notifications" className="font-label-md text-label-md text-primary-container">
-              View all
-            </Link>
-          )}
+          <div className="bg-surface-container-lowest border border-surface-variant rounded-2xl p-lg">
+            <h2 className="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Tuition Requests</h2>
+            {newRequestsPage.items.length === 0 ? (
+              <p className="font-body-sm text-body-sm text-on-surface-variant">No tuition requests yet.</p>
+            ) : (
+              <div className="flex flex-col gap-1">
+                {newRequestsPage.items.slice(0, 5).map(({ request, studentName }) => (
+                  <Link
+                    key={request.id}
+                    href={`/admin/tuition-requests/${request.id}`}
+                    className="flex items-center gap-3 py-2 border-b border-surface-variant last:border-0 font-body-sm text-body-sm text-on-surface-variant hover:text-primary-container transition-colors"
+                  >
+                    <MaterialIcon name="person" className="text-on-surface-variant shrink-0" />
+                    {studentName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        {recentNotifications.items.length === 0 ? (
-          <p className="font-body-sm text-body-sm text-on-surface-variant">No notifications yet.</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {recentNotifications.items.slice(0, 5).map((n) => (
-              <Link
-                key={n.id}
-                href="/admin/notifications"
-                className={`font-body-sm text-body-sm hover:text-primary-container transition-colors ${
-                  n.read ? "text-on-surface-variant" : "text-on-surface font-medium"
-                }`}
-              >
-                {n.title}
-              </Link>
-            ))}
-          </div>
-        )}
+
+        <div className="flex flex-col gap-lg">
+          <QuickActionsCard actions={quickActions} />
+          <NotificationsCard notifications={recentNotifications} viewAllHref="/admin/notifications" />
+        </div>
       </div>
     </div>
-  );
-}
-
-function QueueTile({ label, value, href }: { label: string; value: number; href?: string }) {
-  const content = (
-    <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg text-center h-full">
-      <p className="font-display-lg text-headline-lg text-on-surface">{value}</p>
-      <p className="font-label-md text-label-md text-on-surface-variant mt-1">{label}</p>
-    </div>
-  );
-  return href ? (
-    <Link href={href} className="hover:shadow-md transition-all rounded-xl block">
-      {content}
-    </Link>
-  ) : (
-    content
   );
 }

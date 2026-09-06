@@ -7,6 +7,9 @@ import { getMyApplicationStatusCounts } from "@/server/queries/my-applications";
 import { getNotifications } from "@/server/queries/my-notifications";
 import { tutorProfilesCollection } from "@/server/domain/collections";
 import type { TutorVerificationStatus } from "@/server/domain/types";
+import { StatCard } from "@/components/shared/StatCard";
+import { NotificationsCard } from "@/components/shared/NotificationsCard";
+import { QuickActionsCard, type QuickAction } from "@/components/shared/QuickActionsCard";
 
 const STATUS_LABEL: Record<TutorVerificationStatus, string> = {
   PROFILE_INCOMPLETE: "Profile Incomplete",
@@ -49,6 +52,13 @@ export default async function TutorDashboardPage() {
   ]);
   const displayName = profileSnap.data()?.fullName || session.email || "Welcome";
 
+  const quickActions: QuickAction[] = [
+    { label: "Browse Tuitions", href: "/tutor/opportunities", icon: "search" },
+    { label: "My Applications", href: "/tutor/applications", icon: "assignment_ind" },
+    { label: "Edit Profile", href: "/tutor/profile", icon: "person" },
+    { label: "Messages", href: "/tutor/messages", icon: "chat" },
+  ];
+
   return (
     <div className="flex flex-col gap-lg">
       {tutor.verificationStatus === "APPROVED" && !tutor.approvalBannerSeenAt && <ApprovalBanner />}
@@ -70,7 +80,7 @@ export default async function TutorDashboardPage() {
       </div>
 
       {tutor.verificationStatus === "PROFILE_INCOMPLETE" && (
-        <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="bg-surface-container-lowest border border-surface-variant rounded-2xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="font-body-md text-body-md text-on-surface-variant">
             Your profile is incomplete. Complete your personal, education, teaching, and
             document details, then submit for admin review to start applying to tuitions.
@@ -85,7 +95,7 @@ export default async function TutorDashboardPage() {
       )}
 
       {tutor.verificationStatus === "REJECTED" && (
-        <div className="bg-error-container/60 border border-error rounded-xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="bg-error-container/60 border border-error rounded-2xl p-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <p className="font-label-md text-label-md text-on-error-container mb-1">
               Changes required
@@ -104,58 +114,35 @@ export default async function TutorDashboardPage() {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-md">
-        <SummaryTile label="Available Tuitions" value={String(openOpportunitiesPage.totalCount)} href="/tutor/opportunities" />
-        <SummaryTile label="My Applications" value={String(applicationCounts.APPLIED)} href="/tutor/applications" />
-        <SummaryTile
+        <StatCard
+          label="Available Tuitions"
+          value={openOpportunitiesPage.totalCount}
+          icon="search"
+          tone="tertiary"
+          href="/tutor/opportunities"
+        />
+        <StatCard
+          label="My Applications"
+          value={applicationCounts.APPLIED}
+          icon="assignment_ind"
+          tone="secondary"
+          href="/tutor/applications"
+        />
+        <StatCard
           label="Assigned Tuition"
-          value={String(applicationCounts.SELECTED)}
+          value={applicationCounts.SELECTED}
+          icon="task_alt"
+          tone="primary"
           href={applicationCounts.SELECTED > 0 ? "/tutor/applications" : undefined}
         />
       </div>
 
-      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="font-headline-sm text-headline-sm text-on-surface">Notifications</h2>
-          {recentNotifications.totalCount > 0 && (
-            <Link href="/tutor/notifications" className="font-label-md text-label-md text-primary-container">
-              View all
-            </Link>
-          )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-lg items-start">
+        <div className="lg:col-span-2">
+          <NotificationsCard notifications={recentNotifications} viewAllHref="/tutor/notifications" />
         </div>
-        {recentNotifications.items.length === 0 ? (
-          <p className="font-body-sm text-body-sm text-on-surface-variant">No notifications yet.</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {recentNotifications.items.slice(0, 5).map((n) => (
-              <Link
-                key={n.id}
-                href="/tutor/notifications"
-                className={`font-body-sm text-body-sm hover:text-primary-container transition-colors ${
-                  n.read ? "text-on-surface-variant" : "text-on-surface font-medium"
-                }`}
-              >
-                {n.title}
-              </Link>
-            ))}
-          </div>
-        )}
+        <QuickActionsCard actions={quickActions} />
       </div>
     </div>
-  );
-}
-
-function SummaryTile({ label, value, href }: { label: string; value: string; href?: string }) {
-  const content = (
-    <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg text-center h-full">
-      <p className="font-display-lg text-headline-lg text-on-surface">{value}</p>
-      <p className="font-label-md text-label-md text-on-surface-variant mt-1">{label}</p>
-    </div>
-  );
-  return href ? (
-    <Link href={href} className="hover:shadow-md transition-all rounded-xl block">
-      {content}
-    </Link>
-  ) : (
-    content
   );
 }
