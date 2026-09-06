@@ -49,7 +49,7 @@ export default async function TutorMessagesPage({
             >
               <div className="min-w-0">
                 <p className="font-label-md text-label-md text-on-surface">
-                  {branches[i]?.exists ? branches[i]!.data()!.name : "Administrator"}
+                  {branches[i]?.exists ? `Administrator — ${branches[i]!.data()!.name}` : "Administrator"}
                 </p>
                 <p className="font-body-sm text-body-sm text-on-surface-variant truncate">
                   {c.lastMessagePreview || "No messages yet"}

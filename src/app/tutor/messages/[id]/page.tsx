@@ -26,7 +26,7 @@ export default async function TutorConversationPage({
           &larr; Messages
         </Link>
         <h1 className="font-headline-lg text-headline-lg text-on-surface mt-2">
-          {branchSnap?.exists ? branchSnap.data()!.name : "Administrator"}
+          {branchSnap?.exists ? `Administrator — ${branchSnap.data()!.name}` : "Administrator"}
         </h1>
       </div>
 

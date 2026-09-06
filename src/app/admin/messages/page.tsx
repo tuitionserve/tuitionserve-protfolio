@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { getConversationsForAdmin } from "@/server/actions/messaging";
-import { tutorsCollection } from "@/server/domain/collections";
+import { tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
 import { StartConversationForm } from "@/components/admin/messages/StartConversationForm";
 import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
 import { PaginationBar } from "@/components/shared/PaginationBar";
@@ -21,7 +21,10 @@ export default async function AdminMessagesPage({
   const page = await getConversationsForAdmin(currentCursor(cursorStack));
   const conversations = page.items;
 
-  const tutors = await Promise.all(conversations.map((c) => tutorsCollection().doc(c.tutorId).get()));
+  const [tutors, tutorProfiles] = await Promise.all([
+    Promise.all(conversations.map((c) => tutorsCollection().doc(c.tutorId).get())),
+    Promise.all(conversations.map((c) => tutorProfilesCollection().doc(c.tutorId).get())),
+  ]);
 
   return (
     <div className="flex flex-col gap-lg">
@@ -48,7 +51,9 @@ export default async function AdminMessagesPage({
             >
               <div className="min-w-0">
                 <p className="font-label-md text-label-md text-on-surface">
-                  {tutors[i]?.exists ? tutors[i]!.data()!.tutorUid : "Unknown tutor"}
+                  {tutors[i]?.exists
+                    ? `${tutorProfiles[i]?.data()?.fullName ?? "Unnamed tutor"} · ${tutors[i]!.data()!.tutorUid}`
+                    : "Unknown tutor"}
                 </p>
                 <p className="font-body-sm text-body-sm text-on-surface-variant truncate">
                   {c.lastMessagePreview || "No messages yet"}

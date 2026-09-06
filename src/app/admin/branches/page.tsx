@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
 
@@ -26,9 +27,10 @@ export default async function AdminBranchesPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {branches.map((branch) => (
-            <div
+            <Link
               key={branch.id}
-              className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex items-center justify-between gap-4"
+              href={`/admin/branches/${branch.id}`}
+              className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex items-center justify-between gap-4 hover:shadow-md transition-all"
             >
               <div>
                 <p className="font-label-md text-label-md text-on-surface">{branch.name}</p>
@@ -45,7 +47,7 @@ export default async function AdminBranchesPage() {
               >
                 {branch.status === "ACTIVE" ? "Active" : "Inactive"}
               </span>
-            </div>
+            </Link>
           ))}
         </div>
       )}
