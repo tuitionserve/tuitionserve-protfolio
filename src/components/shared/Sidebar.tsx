@@ -77,7 +77,7 @@ export function Sidebar({
 
   return (
     <aside
-      className={`hidden md:flex flex-col shrink-0 bg-surface-container-lowest border-r border-surface-variant min-h-screen sticky top-0 transition-all ${
+      className={`hidden md:flex flex-col shrink-0 bg-surface-container-lowest border-r border-surface-variant md:h-screen transition-all ${
         collapsed ? "w-[68px]" : "w-60"
       } ${hydrated ? "" : "invisible"}`}
     >

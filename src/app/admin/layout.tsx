@@ -74,7 +74,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ];
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen md:h-screen flex md:overflow-hidden">
       <Sidebar
         sections={sections}
         homeHref="/admin/dashboard"
@@ -82,11 +82,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         roleLabel={isSuperAdmin ? "Super Admin" : "Branch Admin"}
       />
 
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 md:h-screen md:overflow-hidden">
         {/* Mobile-only — the sidebar above is desktop-only (md:), and the
             bottom tab bar below covers primary nav on mobile, so this is
             just the logo + a way to log out on small screens. */}
-        <header className="md:hidden bg-surface-container-lowest border-b border-surface-variant">
+        <header className="md:hidden shrink-0 bg-surface-container-lowest border-b border-surface-variant">
           <div className="flex justify-between items-center w-full px-margin-mobile py-4">
             <Link href="/admin/dashboard" className="flex items-center gap-2">
               <Image src="/images/logo.svg" alt="Tuition Serve" width={128} height={32} className="h-8 w-auto" priority />
@@ -95,8 +95,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </header>
 
-        <main className="flex-1 w-full max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
-          {children}
+        {/* The one scrolling region on desktop — the sidebar and mobile
+            header stay put; only this panel's content scrolls. */}
+        <main className="flex-1 md:overflow-y-auto w-full">
+          <div className="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
+            {children}
+          </div>
         </main>
       </div>
 
