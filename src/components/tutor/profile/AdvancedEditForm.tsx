@@ -20,6 +20,9 @@ export function AdvancedEditForm({ profile }: { profile: Omit<TutorProfile, "upd
   const [highestQualification, setHighestQualification] = useState(profile.highestQualification ?? "");
   const [institution, setInstitution] = useState(profile.institution ?? "");
   const [majorSubject, setMajorSubject] = useState(profile.majorSubject ?? "");
+  const [currentProgram, setCurrentProgram] = useState(profile.currentProgram ?? "");
+  const [currentYearOrSemester, setCurrentYearOrSemester] = useState(profile.currentYearOrSemester ?? "");
+  const isCurrentlyDegreeLevel = highestQualification === "BACHELORS" || highestQualification === "MASTERS";
   const [subjects, setSubjects] = useState<string[]>(profile.subjects);
   const [grades, setGrades] = useState<string[]>(profile.grades);
   const [expectedMonthlyFee, setExpectedMonthlyFee] = useState(profile.expectedMonthlyFee?.toString() ?? "");
@@ -45,6 +48,10 @@ export function AdvancedEditForm({ profile }: { profile: Omit<TutorProfile, "upd
     formData.set("highestQualification", highestQualification);
     formData.set("institution", institution);
     formData.set("majorSubject", majorSubject);
+    if (isCurrentlyDegreeLevel) {
+      formData.set("currentProgram", currentProgram);
+      formData.set("currentYearOrSemester", currentYearOrSemester);
+    }
     subjects.forEach((s) => formData.append("subjects", s));
     grades.forEach((g) => formData.append("grades", g));
     formData.set("expectedMonthlyFee", expectedMonthlyFee);
@@ -126,6 +133,34 @@ export function AdvancedEditForm({ profile }: { profile: Omit<TutorProfile, "upd
         <input id="majorSubject" className={inputClass} value={majorSubject} onChange={(e) => setMajorSubject(e.target.value)} required />
         {fieldErrors.majorSubject && <p className={errorTextClass}>{fieldErrors.majorSubject}</p>}
       </div>
+
+      {isCurrentlyDegreeLevel && (
+        <>
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="currentProgram">Current course / program (optional)</label>
+            <input
+              id="currentProgram"
+              className={inputClass}
+              placeholder="e.g. BSc Computer Science"
+              value={currentProgram}
+              onChange={(e) => setCurrentProgram(e.target.value)}
+            />
+            {fieldErrors.currentProgram && <p className={errorTextClass}>{fieldErrors.currentProgram}</p>}
+          </div>
+
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="currentYearOrSemester">Current year / semester (optional)</label>
+            <input
+              id="currentYearOrSemester"
+              className={inputClass}
+              placeholder="e.g. 4th semester"
+              value={currentYearOrSemester}
+              onChange={(e) => setCurrentYearOrSemester(e.target.value)}
+            />
+            {fieldErrors.currentYearOrSemester && <p className={errorTextClass}>{fieldErrors.currentYearOrSemester}</p>}
+          </div>
+        </>
+      )}
 
       <div className={fieldWrapClass}>
         <label className={labelClass}>Subjects taught</label>

@@ -13,6 +13,8 @@ const FIELD_LABELS: Record<string, string> = {
   highestQualification: "Highest qualification",
   institution: "Institution",
   majorSubject: "Major / subject",
+  currentProgram: "Current course / program",
+  currentYearOrSemester: "Current year / semester",
   subjects: "Subjects",
   grades: "Grades",
   expectedMonthlyFee: "Expected monthly fee",
@@ -56,7 +58,9 @@ export function ProfileChangeReviewPanel({ request }: { request: ChangeRequestVi
         Pending Profile Change ({request.changeUid})
       </h2>
       <div className="flex flex-col gap-1 mb-4">
-        {Object.entries(request.proposedChanges).map(([field, value]) => (
+        {Object.entries(request.proposedChanges)
+          .filter(([, value]) => value !== null && value !== "")
+          .map(([field, value]) => (
           <div key={field} className="flex justify-between gap-4 py-1 border-b border-surface-variant last:border-0">
             <span className="font-label-md text-label-md text-on-surface-variant">{FIELD_LABELS[field] ?? field}</span>
             <span className="font-body-sm text-body-sm text-on-surface text-right">{formatValue(field, value)}</span>

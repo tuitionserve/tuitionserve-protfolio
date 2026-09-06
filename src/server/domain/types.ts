@@ -94,6 +94,10 @@ export interface TutorProfile {
   institution: string | null;
   graduationYear: number | null;
   majorSubject: string | null;
+  /** Only meaningful when highestQualification is BACHELORS/MASTERS — the program they're in, e.g. "BSc Computer Science". */
+  currentProgram: string | null;
+  /** Free text, e.g. "4th semester" — paired with currentProgram above. */
+  currentYearOrSemester: string | null;
 
   subjects: string[]; // catalog ids, see domain/catalog.ts
   grades: string[]; // catalog ids

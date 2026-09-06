@@ -1,4 +1,5 @@
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
+import { GRADES } from "@/lib/catalog";
 
 const selectClasses =
   "bg-surface-container-lowest border border-outline-variant text-on-surface font-body-sm text-body-sm rounded-lg p-3 focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 outline-none transition-all h-[44px]";
@@ -29,10 +30,9 @@ export function RequestTutorSearch() {
             </label>
             <select id="grade" name="grade" className={selectClasses} defaultValue="">
               <option value="">Select Class</option>
-              <option value="primary">Primary (1-5)</option>
-              <option value="lower-secondary">Lower Secondary (6-8)</option>
-              <option value="secondary">Secondary (9-10)</option>
-              <option value="higher-secondary">Higher Secondary (11-12)</option>
+              {GRADES.map((g) => (
+                <option key={g.id} value={g.id}>{g.label}</option>
+              ))}
             </select>
           </div>
           <div className="flex flex-col gap-2">

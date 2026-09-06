@@ -61,6 +61,12 @@ export default async function AdminTutorDetailPage({
           value={profile?.highestQualification ? catalogLabel(QUALIFICATIONS, profile.highestQualification) : ""}
         />
         <Row label="Institution" value={profile?.institution ?? ""} />
+        {(profile?.currentProgram || profile?.currentYearOrSemester) && (
+          <Row
+            label="Currently studying"
+            value={[profile?.currentProgram, profile?.currentYearOrSemester].filter(Boolean).join(" · ")}
+          />
+        )}
         <Row label="Subjects" value={(profile?.subjects ?? []).map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
         <Row label="Grades" value={(profile?.grades ?? []).map((g) => catalogLabel(GRADES, g)).join(", ")} />
         <Row label="Experience" value={profile?.teachingExperienceSummary ?? ""} />

@@ -25,7 +25,10 @@ export function EducationStep({
   const [institution, setInstitution] = useState(initial.institution ?? "");
   const [graduationYear, setGraduationYear] = useState(initial.graduationYear?.toString() ?? "");
   const [majorSubject, setMajorSubject] = useState(initial.majorSubject ?? "");
+  const [currentProgram, setCurrentProgram] = useState(initial.currentProgram ?? "");
+  const [currentYearOrSemester, setCurrentYearOrSemester] = useState(initial.currentYearOrSemester ?? "");
   const [error, setError] = useState<string | null>(null);
+  const isCurrentlyDegreeLevel = highestQualification === "BACHELORS" || highestQualification === "MASTERS";
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
 
@@ -39,11 +42,22 @@ export function EducationStep({
     formData.set("institution", institution);
     formData.set("graduationYear", graduationYear);
     formData.set("majorSubject", majorSubject);
+    if (isCurrentlyDegreeLevel) {
+      formData.set("currentProgram", currentProgram);
+      formData.set("currentYearOrSemester", currentYearOrSemester);
+    }
 
     startTransition(async () => {
       const result = await saveTutorEducationStep(formData);
       if (result.ok) {
-        onSaved({ highestQualification, institution, graduationYear: Number(graduationYear), majorSubject });
+        onSaved({
+          highestQualification,
+          institution,
+          graduationYear: Number(graduationYear),
+          majorSubject,
+          currentProgram: isCurrentlyDegreeLevel ? currentProgram || null : null,
+          currentYearOrSemester: isCurrentlyDegreeLevel ? currentYearOrSemester || null : null,
+        });
       } else {
         setError(result.error);
         setFieldErrors(result.fieldErrors ?? {});
@@ -100,6 +114,34 @@ export function EducationStep({
         <input id="majorSubject" className={inputClass} value={majorSubject} onChange={(e) => setMajorSubject(e.target.value)} required />
         {fieldErrors.majorSubject && <p className={errorTextClass}>{fieldErrors.majorSubject}</p>}
       </div>
+
+      {isCurrentlyDegreeLevel && (
+        <>
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="currentProgram">Current course / program (optional)</label>
+            <input
+              id="currentProgram"
+              className={inputClass}
+              placeholder="e.g. BSc Computer Science"
+              value={currentProgram}
+              onChange={(e) => setCurrentProgram(e.target.value)}
+            />
+            {fieldErrors.currentProgram && <p className={errorTextClass}>{fieldErrors.currentProgram}</p>}
+          </div>
+
+          <div className={fieldWrapClass}>
+            <label className={labelClass} htmlFor="currentYearOrSemester">Current year / semester (optional)</label>
+            <input
+              id="currentYearOrSemester"
+              className={inputClass}
+              placeholder="e.g. 4th semester"
+              value={currentYearOrSemester}
+              onChange={(e) => setCurrentYearOrSemester(e.target.value)}
+            />
+            {fieldErrors.currentYearOrSemester && <p className={errorTextClass}>{fieldErrors.currentYearOrSemester}</p>}
+          </div>
+        </>
+      )}
 
       {error && <p className={errorTextClass}>{error}</p>}
 

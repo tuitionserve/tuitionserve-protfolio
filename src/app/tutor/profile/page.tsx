@@ -112,6 +112,12 @@ export default async function TutorProfilePage() {
             <Row label="Institution" value={profile.institution ?? ""} />
             <Row label="Graduation year (B.S.)" value={profile.graduationYear ? String(profile.graduationYear) : ""} />
             <Row label="Major / subject" value={profile.majorSubject ?? ""} />
+            {(profile.currentProgram || profile.currentYearOrSemester) && (
+              <Row
+                label="Currently studying"
+                value={[profile.currentProgram, profile.currentYearOrSemester].filter(Boolean).join(" · ")}
+              />
+            )}
           </div>
 
           <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">

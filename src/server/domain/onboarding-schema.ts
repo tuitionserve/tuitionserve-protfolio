@@ -45,6 +45,11 @@ export const educationStepSchema = z.object({
     .min(EARLIEST_BS_GRADUATION_YEAR)
     .max(currentBsYear, "Graduation year cannot be in the future."),
   majorSubject: z.string().trim().min(2, "Enter your major/subject.").max(120),
+  // Only shown/meaningful in the UI when highestQualification is
+  // BACHELORS/MASTERS — optional even then (a long-since-graduated tutor
+  // has nothing "current" to report), so no cross-field requirement here.
+  currentProgram: z.string().trim().max(200).nullable(),
+  currentYearOrSemester: z.string().trim().max(50).nullable(),
 });
 
 export const teachingStepSchema = z.object({

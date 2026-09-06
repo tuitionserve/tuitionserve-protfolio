@@ -77,6 +77,8 @@ export default async function TutorOnboardingPage() {
                 institution: profile.institution,
                 graduationYear: profile.graduationYear,
                 majorSubject: profile.majorSubject,
+                currentProgram: profile.currentProgram,
+                currentYearOrSemester: profile.currentYearOrSemester,
                 // A profile whose Teaching/Availability steps were never
                 // (successfully) saved has these fields entirely absent
                 // in Firestore, not `[]` — default them here so a

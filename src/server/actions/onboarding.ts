@@ -109,6 +109,8 @@ export async function saveTutorEducationStep(formData: FormData): Promise<Action
     institution: formData.get("institution"),
     graduationYear: formData.get("graduationYear"),
     majorSubject: formData.get("majorSubject"),
+    currentProgram: formData.get("currentProgram") || null,
+    currentYearOrSemester: formData.get("currentYearOrSemester") || null,
   });
   if (!parsed.success) {
     return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };

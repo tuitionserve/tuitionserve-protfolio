@@ -15,6 +15,8 @@ export interface WizardProfileState {
   institution: string | null;
   graduationYear: number | null;
   majorSubject: string | null;
+  currentProgram: string | null;
+  currentYearOrSemester: string | null;
   subjects: string[];
   grades: string[];
   teachingExperienceSummary: string | null;
@@ -37,6 +39,8 @@ export const EMPTY_WIZARD_PROFILE: WizardProfileState = {
   institution: null,
   graduationYear: null,
   majorSubject: null,
+  currentProgram: null,
+  currentYearOrSemester: null,
   subjects: [],
   grades: [],
   teachingExperienceSummary: null,

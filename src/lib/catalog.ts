@@ -21,10 +21,22 @@ export const SUBJECTS = [
 ] as const;
 
 export const GRADES = [
-  { id: "primary-1-5", label: "Primary (1-5)" },
-  { id: "lower-secondary-6-8", label: "Lower Secondary (6-8)" },
-  { id: "secondary-9-10", label: "Secondary (9-10)" },
-  { id: "higher-secondary-11-12", label: "Higher Secondary (11-12)" },
+  { id: "pg", label: "Play Group (PG)" },
+  { id: "nursery", label: "Nursery" },
+  { id: "lkg", label: "LKG" },
+  { id: "ukg", label: "UKG" },
+  { id: "grade-1", label: "Grade 1" },
+  { id: "grade-2", label: "Grade 2" },
+  { id: "grade-3", label: "Grade 3" },
+  { id: "grade-4", label: "Grade 4" },
+  { id: "grade-5", label: "Grade 5" },
+  { id: "grade-6", label: "Grade 6" },
+  { id: "grade-7", label: "Grade 7" },
+  { id: "grade-8", label: "Grade 8" },
+  { id: "grade-9", label: "Grade 9" },
+  { id: "grade-10", label: "Grade 10" },
+  { id: "grade-11", label: "Grade 11" },
+  { id: "grade-12", label: "Grade 12" },
   { id: "bachelor-level", label: "Bachelor Level" },
 ] as const;
 

@@ -3,13 +3,6 @@ import { PublicFooter } from "@/components/public/PublicFooter";
 import { getProvinces } from "@/server/queries/location-hierarchy";
 import { TuitionRequestForm } from "@/components/public/tuition-request/TuitionRequestForm";
 
-const GRADE_ID_FROM_WIDGET: Record<string, string> = {
-  primary: "primary-1-5",
-  "lower-secondary": "lower-secondary-6-8",
-  secondary: "secondary-9-10",
-  "higher-secondary": "higher-secondary-11-12",
-};
-
 export default async function RequestTutorPage({
   searchParams,
 }: {
@@ -33,7 +26,7 @@ export default async function RequestTutorPage({
           </p>
           <TuitionRequestForm
             provinces={provinces}
-            initialGradeId={gradeParam ? (GRADE_ID_FROM_WIDGET[gradeParam] ?? "") : ""}
+            initialGradeId={gradeParam ?? ""}
             initialSubjectId={subjectParam ?? ""}
           />
         </div>
