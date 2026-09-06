@@ -77,7 +77,8 @@ export default async function AdminTuitionRequestDetailPage({
           {isSchool ? "School Vacancy" : "Home Tuition"}
         </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {(isSchool ? request.institutionName : student?.fullName) ?? "Unnamed"} — {catalogLabel(SUBJECTS, request.subjectId)}
+          {(isSchool ? request.institutionName : student?.fullName) ?? "Unnamed"} —{" "}
+          {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{request.tuitionUid}</p>
       </div>
@@ -108,7 +109,7 @@ export default async function AdminTuitionRequestDetailPage({
           </>
         )}
         <Row label="Grade" value={catalogLabel(GRADES, request.gradeId)} />
-        <Row label="Subject" value={catalogLabel(SUBJECTS, request.subjectId)} />
+        <Row label="Subject" value={request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
         <Row label="Tutor preference" value={GENDER_PREFERENCE_LABEL[request.tutorGenderPreference] ?? ""} />
         <Row
           label="Availability"
@@ -129,6 +130,18 @@ export default async function AdminTuitionRequestDetailPage({
         <TuitionRequestReviewActions requestId={id} />
       ) : request.status === "ASSIGNED" && assignment ? (
         <AssignmentReviewPanel assignment={assignment} tuitionId={id} />
+      ) : request.status === "CANCELLED" ? (
+        <div className="bg-error-container/20 border border-error rounded-xl p-lg">
+          <h2 className="font-headline-sm text-headline-sm text-on-error-container mb-2">Cancelled</h2>
+          <p className="font-body-sm text-body-sm text-on-error-container">
+            This tuition was closed out after a tutor withdrew and the admin chose not to reopen it.
+          </p>
+          {request.rejectionReason && (
+            <p className="font-body-sm text-body-sm text-on-error-container mt-2">
+              Reason: {request.rejectionReason}
+            </p>
+          )}
+        </div>
       ) : (
         <ApplicantsList
           applicants={applicants.items}

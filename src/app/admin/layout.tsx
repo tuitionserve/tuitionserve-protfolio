@@ -26,6 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { label: "Open Tuitions", href: "/admin/tuition-requests/open", icon: "menu_book" },
         { label: "Assigned", href: "/admin/tuition-requests/assigned", icon: "task_alt" },
         { label: "Rejected", href: "/admin/tuition-requests/rejected", icon: "block" },
+        { label: "Cancelled", href: "/admin/tuition-requests/cancelled", icon: "cancel" },
         { label: "Post Tuition", href: "/admin/tuition-requests/post", icon: "add_circle" },
         { label: "Post School Vacancy", href: "/admin/tuition-requests/post-school-vacancy", icon: "school" },
       ],

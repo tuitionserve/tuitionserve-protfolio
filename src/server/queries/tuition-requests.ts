@@ -30,7 +30,7 @@ async function withParentAndStudent(requests: TuitionRequest[]): Promise<Tuition
 
 function statusQuery(
   session: AuthSession,
-  status: "NEW" | "OPEN" | "ASSIGNED" | "REJECTED",
+  status: "NEW" | "OPEN" | "ASSIGNED" | "REJECTED" | "CANCELLED",
   branchFilter: string | null = null,
 ) {
   const scope = resolveBranchScope(session, branchFilter);
@@ -76,6 +76,16 @@ export async function getRejectedTuitionsQueue(
   branchFilter: string | null = null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
   const page = await fetchPage(statusQuery(session, "REJECTED", branchFilter), "createdAt", cursor);
+  return { ...page, items: await withParentAndStudent(page.items) };
+}
+
+/** Branch-scoped, paginated list of CANCELLED tuitions — closed out after a tutor's withdrawal was approved and the admin chose not to reopen it (see server/actions/withdrawal.ts's cancelTuition). */
+export async function getCancelledTuitionsQueue(
+  session: AuthSession,
+  cursor: string | null,
+  branchFilter: string | null = null,
+): Promise<PageResult<TuitionRequestQueueRow>> {
+  const page = await fetchPage(statusQuery(session, "CANCELLED", branchFilter), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 

@@ -294,3 +294,78 @@ export async function reopenTuition(tuitionId: string): Promise<ActionResult> {
 
   return { ok: true };
 }
+
+/**
+ * Admin closes out a tuition after an approved withdrawal, instead of
+ * reopening it — the other half of the decision reopenTuition already
+ * covers ("find a new tutor" vs. "the family doesn't need one
+ * anymore"). Same eligibility rule: only valid when the tuition's most
+ * recent assignment is RELEASED. Reuses `rejectionReason` to record why
+ * (same "why this didn't proceed" field the NEW->REJECTED transition
+ * already uses) rather than adding a parallel field for the same idea.
+ * Never deletes anything — the tuition, its applications, and the
+ * released assignment all survive with full history, just no longer
+ * actionable (see the admin detail page's CANCELLED branch).
+ */
+export async function cancelTuition(tuitionId: string, reason: string): Promise<ActionResult> {
+  const parsed = reasonSchema.safeParse(reason);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "A reason is required." };
+  }
+
+  const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
+
+  const tuitionRef = tuitionRequestsCollection().doc(tuitionId);
+  const tuitionSnap = await tuitionRef.get();
+  if (!tuitionSnap.exists) return { ok: false, error: "Tuition not found." };
+  const tuition = tuitionSnap.data()!;
+
+  try {
+    assertBranchScope(session, tuition.branchId);
+  } catch {
+    return { ok: false, error: "You are not authorized to act on this tuition." };
+  }
+
+  if (tuition.status !== "ASSIGNED") {
+    return { ok: false, error: "Only an assigned tuition can be cancelled this way." };
+  }
+
+  const latestAssignmentSnap = await tuitionAssignmentsCollection()
+    .where("tuitionId", "==", tuitionId)
+    .orderBy("assignedAt", "desc")
+    .limit(1)
+    .get();
+  const latestAssignment = latestAssignmentSnap.docs[0]?.data();
+  if (!latestAssignment || latestAssignment.status !== "RELEASED") {
+    return { ok: false, error: "This tuition has no released assignment to cancel from." };
+  }
+
+  const now = FieldValue.serverTimestamp();
+
+  const result = await adminFirestore.runTransaction(async (tx) => {
+    const snap = await tx.get(tuitionRef);
+    const current = snap.data();
+    if (!current || current.status !== "ASSIGNED") {
+      return { ok: false as const, error: "This tuition can no longer be cancelled." };
+    }
+    tx.update(tuitionRef, {
+      status: "CANCELLED",
+      rejectionReason: parsed.data,
+      updatedAt: now,
+    });
+    return { ok: true as const };
+  });
+
+  if (!result.ok) return result;
+
+  await writeAuditEvent({
+    action: "TUITION_CANCELLED",
+    actorUserId: session.uid,
+    actorRole: session.role,
+    targetType: "TuitionRequest",
+    targetId: tuitionId,
+    metadata: { previousAssignmentId: latestAssignment.id, reason: parsed.data },
+  });
+
+  return { ok: true };
+}

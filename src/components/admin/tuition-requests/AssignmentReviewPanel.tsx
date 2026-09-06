@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { reopenTuition, reviewAssignmentWithdrawal } from "@/server/actions/withdrawal";
+import { cancelTuition, reopenTuition, reviewAssignmentWithdrawal } from "@/server/actions/withdrawal";
 import type { AdminAssignmentView } from "@/server/queries/admin-assignment";
 
 export function AssignmentReviewPanel({
@@ -15,6 +15,8 @@ export function AssignmentReviewPanel({
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [confirmingReopen, setConfirmingReopen] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelReason, setCancelReason] = useState("");
   const [pending, startTransition] = useTransition();
 
   const tutorLabel = assignment.tutorName ? `${assignment.tutorName} (${assignment.tutorUid})` : assignment.tutorUid;
@@ -35,6 +37,22 @@ export function AssignmentReviewPanel({
     setError(null);
     startTransition(async () => {
       const result = await reopenTuition(tuitionId);
+      if (result.ok) {
+        router.refresh();
+      } else {
+        setError(result.error);
+      }
+    });
+  }
+
+  function handleCancel() {
+    setError(null);
+    if (!cancelReason.trim()) {
+      setError("A reason is required to cancel.");
+      return;
+    }
+    startTransition(async () => {
+      const result = await cancelTuition(tuitionId, cancelReason.trim());
       if (result.ok) {
         router.refresh();
       } else {
@@ -101,7 +119,7 @@ export function AssignmentReviewPanel({
                   disabled={pending}
                   className="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-lowest transition-all disabled:opacity-60"
                 >
-                  Cancel
+                  Back
                 </button>
                 <button
                   type="button"
@@ -113,15 +131,63 @@ export function AssignmentReviewPanel({
                 </button>
               </div>
             </div>
+          ) : cancelling ? (
+            <div className="flex flex-col gap-2">
+              <p className="font-body-sm text-body-sm text-on-surface">
+                This closes the tuition out for good — it won&rsquo;t be reachable from Reopen afterward.
+              </p>
+              <label className="font-label-md text-label-md text-on-surface-variant" htmlFor="cancelReason">
+                Reason
+              </label>
+              <textarea
+                id="cancelReason"
+                value={cancelReason}
+                onChange={(e) => setCancelReason(e.target.value)}
+                rows={2}
+                className="border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
+                placeholder="e.g. Family no longer needs a tutor"
+              />
+              <div className="flex gap-2 justify-end">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setCancelling(false);
+                    setCancelReason("");
+                  }}
+                  disabled={pending}
+                  className="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-surface-container-lowest transition-all disabled:opacity-60"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  disabled={pending}
+                  className="bg-error text-on-error font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all disabled:opacity-60"
+                >
+                  {pending ? "Cancelling..." : "Confirm Cancel"}
+                </button>
+              </div>
+            </div>
           ) : (
-            <button
-              type="button"
-              onClick={() => setConfirmingReopen(true)}
-              disabled={pending}
-              className="self-start bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all disabled:opacity-60"
-            >
-              Reopen Tuition
-            </button>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setConfirmingReopen(true)}
+                disabled={pending}
+                className="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-all disabled:opacity-60"
+              >
+                Reopen Tuition
+              </button>
+              <button
+                type="button"
+                onClick={() => setCancelling(true)}
+                disabled={pending}
+                className="border border-error text-error font-label-md text-label-md px-4 py-2 rounded-lg hover:bg-error-container/20 transition-all disabled:opacity-60"
+              >
+                Cancel Tuition
+              </button>
+            </div>
           )}
         </div>
       )}
