@@ -87,7 +87,7 @@ export function LocationStep({
           className={inputClass}
           value={preferredLocality}
           onChange={(e) => setPreferredLocality(e.target.value)}
-          placeholder="e.g. Devichowk"
+          placeholder="e.g. New Baneshwor"
           required
         />
         <p className="font-body-sm text-body-sm text-on-surface-variant">

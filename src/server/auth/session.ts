@@ -23,6 +23,8 @@ export async function createSessionCookieFromIdToken(idToken: string): Promise<{
 export interface AuthSession {
   uid: string;
   email: string | null;
+  /** Admin's display name — always null for TUTOR role (see UserAccount.fullName doc comment). */
+  fullName: string | null;
   role: Role;
   branchId: string | null;
   accountStatus: UserAccount["accountStatus"];
@@ -62,6 +64,7 @@ export async function getCurrentSession(): Promise<AuthSession | null> {
   return {
     uid: decoded.uid,
     email: account.email,
+    fullName: account.fullName,
     role: account.role,
     branchId: account.branchId,
     accountStatus: account.accountStatus,

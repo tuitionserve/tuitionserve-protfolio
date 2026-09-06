@@ -21,6 +21,13 @@ export interface TabLink {
 export function BottomTabBar({ links }: { links: TabLink[] }) {
   const pathname = usePathname();
 
+  // Same "most specific match wins" fix as Sidebar.tsx — a plain
+  // startsWith() would light up multiple tabs whose hrefs share a prefix.
+  const bestMatch = links
+    .map((l) => l.href)
+    .filter((href) => pathname === href || pathname.startsWith(`${href}/`))
+    .sort((a, b) => b.length - a.length)[0];
+
   return (
     <nav
       className="md:hidden fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-surface-variant z-40 pb-[env(safe-area-inset-bottom)]"
@@ -28,7 +35,7 @@ export function BottomTabBar({ links }: { links: TabLink[] }) {
     >
       <div className="flex items-stretch justify-around">
         {links.map((link) => {
-          const active = link.href === "/" ? pathname === link.href : pathname.startsWith(link.href);
+          const active = link.href === "/" ? pathname === link.href : link.href === bestMatch;
           return (
             <Link
               key={link.href}

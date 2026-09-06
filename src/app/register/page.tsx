@@ -10,6 +10,7 @@ import {
   signUpTutorWithEmail,
 } from "@/lib/auth/client-actions";
 import { GoogleLogo } from "@/components/auth/GoogleLogo";
+import { PasswordInput } from "@/components/auth/PasswordInput";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -101,28 +102,28 @@ export default function RegisterPage() {
               <label htmlFor="password" className="font-label-md text-label-md text-on-surface-variant">
                 Password
               </label>
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 required
                 minLength={6}
+                autoComplete="new-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
+                onChange={setPassword}
+                className="w-full border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
               />
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="confirmPassword" className="font-label-md text-label-md text-on-surface-variant">
                 Confirm Password
               </label>
-              <input
+              <PasswordInput
                 id="confirmPassword"
-                type="password"
                 required
                 minLength={6}
+                autoComplete="new-password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
+                onChange={setConfirmPassword}
+                className="w-full border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
               />
             </div>
 

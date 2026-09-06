@@ -3,6 +3,7 @@ import { requireActiveTutor } from "@/server/auth/guards";
 import { tutorProfilesCollection } from "@/server/domain/collections";
 import { getMyPendingChangeRequest } from "@/server/actions/profile-changes";
 import { AdvancedEditForm } from "@/components/tutor/profile/AdvancedEditForm";
+import { BackButton } from "@/components/shared/BackButton";
 
 export default async function AdvancedEditPage() {
   const session = await requireActiveTutor();
@@ -28,6 +29,7 @@ export default async function AdvancedEditPage() {
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-lg">
+      <BackButton />
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">Advanced Edit</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">

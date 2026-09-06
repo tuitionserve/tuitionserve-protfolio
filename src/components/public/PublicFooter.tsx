@@ -1,13 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { whatsappHref } from "@/lib/whatsapp";
 import { FacebookIcon, InstagramIcon, WhatsappIcon } from "./SocialIcons";
 
-// Social profile URLs are placeholders ("#") until the client provides
-// the real links — swap the hrefs below when they're available.
+// Facebook/Instagram profile URLs are placeholders ("#") until the client
+// provides the real links — swap the hrefs below when they're available.
 const SOCIAL_LINKS = [
   { label: "Facebook", href: "#", Icon: FacebookIcon },
   { label: "Instagram", href: "#", Icon: InstagramIcon },
-  { label: "WhatsApp", href: "#", Icon: WhatsappIcon },
+  {
+    label: "WhatsApp",
+    href: whatsappHref("Hi Tuition Serve, I have a question."),
+    Icon: WhatsappIcon,
+  },
 ];
 
 const linkClass =
@@ -25,7 +30,7 @@ export function PublicFooter() {
           </p>
           <div className="flex gap-3">
             {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <a key={label} href={href} aria-label={label} className="text-on-secondary-fixed-variant opacity-80 hover:opacity-100 hover:text-primary transition-colors">
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="text-on-secondary-fixed-variant opacity-80 hover:opacity-100 hover:text-primary transition-colors">
                 <Icon className="w-5 h-5" />
               </a>
             ))}

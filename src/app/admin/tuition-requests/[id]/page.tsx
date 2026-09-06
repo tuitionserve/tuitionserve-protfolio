@@ -8,6 +8,7 @@ import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsLi
 import { AssignmentReviewPanel } from "@/components/admin/tuition-requests/AssignmentReviewPanel";
 import { getApplicantsForTuition, type AdminApplicantView } from "@/server/queries/admin-applicants";
 import { getLatestAssignmentForTuition } from "@/server/queries/admin-assignment";
+import { BackButton } from "@/components/shared/BackButton";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -59,6 +60,7 @@ export default async function AdminTuitionRequestDetailPage({
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
+      <BackButton />
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
           {student?.fullName ?? "Unnamed student"} — {catalogLabel(SUBJECTS, request.subjectId)}

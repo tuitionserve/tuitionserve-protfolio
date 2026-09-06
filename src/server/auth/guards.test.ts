@@ -6,6 +6,7 @@ function session(overrides: Partial<AuthSession>): AuthSession {
   return {
     uid: "u1",
     email: "a@example.com",
+    fullName: null,
     role: "BRANCH_ADMIN",
     branchId: "branch-1",
     accountStatus: "ACTIVE",

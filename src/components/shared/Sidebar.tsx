@@ -66,6 +66,15 @@ export function Sidebar({
 
   const profileActive = pathname === profileHref;
 
+  // Sibling routes can share a prefix (e.g. "/admin/tutors" and
+  // "/admin/tutors/all") — a plain startsWith() would light up both.
+  // Pick whichever link's href is the longest (most specific) match for
+  // the current path instead of matching every prefix independently.
+  const allHrefs = sections.flatMap((s) => s.links.map((l) => l.href));
+  const bestMatch = allHrefs
+    .filter((href) => pathname === href || pathname.startsWith(`${href}/`))
+    .sort((a, b) => b.length - a.length)[0];
+
   return (
     <aside
       className={`hidden md:flex flex-col shrink-0 bg-surface-container-lowest border-r border-surface-variant min-h-screen sticky top-0 transition-all ${
@@ -115,7 +124,7 @@ export function Sidebar({
               <div className="mx-2 my-1 border-t border-surface-variant" />
             )}
             {section.links.map((link) => {
-              const active = link.href === homeHref ? pathname === link.href : pathname.startsWith(link.href);
+              const active = link.href === homeHref ? pathname === link.href : link.href === bestMatch;
               return (
                 <Link
                   key={link.href}

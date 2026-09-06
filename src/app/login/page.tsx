@@ -10,6 +10,7 @@ import {
   signInWithGoogle,
 } from "@/lib/auth/client-actions";
 import { GoogleLogo } from "@/components/auth/GoogleLogo";
+import { PasswordInput } from "@/components/auth/PasswordInput";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -83,13 +84,13 @@ export default function LoginPage() {
               <label htmlFor="password" className="font-label-md text-label-md text-on-surface-variant">
                 Password
               </label>
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 required
+                autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
+                onChange={setPassword}
+                className="w-full border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20"
               />
             </div>
 

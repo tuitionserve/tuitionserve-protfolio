@@ -178,7 +178,7 @@ export function TuitionRequestForm({
             className={inputClass}
             value={tutorVisibleLocality}
             onChange={(e) => setTutorVisibleLocality(e.target.value)}
-            placeholder="e.g. Devichowk"
+            placeholder="e.g. New Baneshwor"
             required
           />
           <p className="font-body-sm text-body-sm text-on-surface-variant">

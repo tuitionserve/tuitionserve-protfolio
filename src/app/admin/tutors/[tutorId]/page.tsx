@@ -6,6 +6,7 @@ import { TutorReviewActions } from "@/components/admin/tutors/TutorReviewActions
 import { TutorSuspensionActions } from "@/components/admin/tutors/TutorSuspensionActions";
 import { ProfileChangeReviewPanel } from "@/components/admin/tutors/ProfileChangeReviewPanel";
 import { getPendingChangeRequestForTutor } from "@/server/actions/profile-changes";
+import { BackButton } from "@/components/shared/BackButton";
 
 function Row({ label, value }: { label: string; value: string }) {
   return (
@@ -42,6 +43,7 @@ export default async function AdminTutorDetailPage({
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
+      <BackButton />
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
           {profile?.fullName ?? "Unnamed tutor"}

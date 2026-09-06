@@ -1,5 +1,5 @@
-import { tuitionRequestsCollection } from "@/server/domain/collections";
-import type { AvailabilitySlot, TuitionRequest } from "@/server/domain/types";
+import { tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
+import type { AvailabilitySlot, TuitionRequest, TuitionRequestStatus } from "@/server/domain/types";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 
 /**
@@ -13,6 +13,7 @@ import { fetchPage, type PageResult } from "@/server/domain/pagination";
 export interface TutorOpportunityView {
   id: string;
   tuitionUid: string;
+  status: TuitionRequestStatus;
   subjectId: string;
   gradeId: string;
   tutorVisibleLocality: string;
@@ -30,6 +31,7 @@ function toTutorView(r: TuitionRequest): TutorOpportunityView {
   return {
     id: r.id,
     tuitionUid: r.tuitionUid,
+    status: r.status,
     subjectId: r.subjectId,
     gradeId: r.gradeId,
     tutorVisibleLocality: r.tutorVisibleLocality,
@@ -86,10 +88,24 @@ export async function getOpenOpportunities(
   return { ...page, items: items.map(toTutorView) };
 }
 
-export async function getOpenOpportunityById(id: string): Promise<TutorOpportunityView | null> {
+/**
+ * A tutor may view a tuition's detail page either while it's still OPEN
+ * (browsing to apply) or afterward if they actually applied to it (so
+ * "My Applications" rows can link back here even once the tuition has
+ * moved to ASSIGNED/etc.) — never for an arbitrary tuition they have no
+ * relationship to.
+ */
+export async function getOpportunityForTutor(id: string, tutorId: string): Promise<TutorOpportunityView | null> {
   const snap = await tuitionRequestsCollection().doc(id).get();
   if (!snap.exists) return null;
   const data = snap.data()!;
-  if (data.status !== "OPEN") return null;
+  if (data.status === "OPEN") return toTutorView(data);
+
+  const applicationSnap = await tutorApplicationsCollection()
+    .where("tuitionId", "==", id)
+    .where("tutorId", "==", tutorId)
+    .limit(1)
+    .get();
+  if (applicationSnap.empty) return null;
   return toTutorView(data);
 }

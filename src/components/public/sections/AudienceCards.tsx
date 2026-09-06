@@ -18,7 +18,7 @@ const CARDS = [
     description:
       "Partner with us to source qualified teachers and educational professionals for your institution.",
     cta: "Contact Us",
-    href: "/#contact",
+    href: "/for-schools",
     iconWrap: "bg-secondary-container/30 text-on-secondary-container group-hover:bg-secondary group-hover:text-on-secondary",
     ctaColor: "text-secondary",
   },

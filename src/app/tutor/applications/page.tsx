@@ -58,34 +58,45 @@ export default async function MyApplicationsPage({
               key={application.id}
               className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex items-center justify-between gap-4"
             >
-              <div>
-                <p className="font-label-md text-label-md text-on-surface">
-                  {tuition ? `${catalogLabel(GRADES, tuition.gradeId)} ${catalogLabel(SUBJECTS, tuition.subjectId)}` : "Tuition no longer available"}
-                </p>
-                <p className="font-body-sm text-body-sm text-on-surface-variant">
-                  {tuition?.tuitionUid} {tuition ? `· ${tuition.tutorVisibleLocality}` : ""}
-                </p>
-                <span
-                  className={`inline-block mt-2 font-label-md text-label-md px-3 py-1 rounded-full ${STATUS_COLOR[application.status]}`}
-                >
-                  {STATUS_LABEL[application.status]}
-                </span>
-                {application.status === "SELECTED" && assignment?.status === "ACTIVE" && assignment.hasPendingWithdrawal && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
-                    Withdrawal requested — pending admin review.
+              {tuition ? (
+                <Link href={`/tutor/opportunities/${tuition.id}`} className="flex-1 min-w-0 hover:opacity-80 transition-opacity">
+                  <p className="font-label-md text-label-md text-on-surface">
+                    {catalogLabel(GRADES, tuition.gradeId)} {catalogLabel(SUBJECTS, tuition.subjectId)}
                   </p>
-                )}
-                {application.status === "SELECTED" && assignment?.status === "RELEASED" && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
-                    Withdrawal approved — this assignment has ended.
+                  <p className="font-body-sm text-body-sm text-on-surface-variant">
+                    {tuition.tuitionUid} · {tuition.tutorVisibleLocality}
                   </p>
-                )}
-                {application.status === "SELECTED" && !assignment && (
-                  <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
-                    You&rsquo;ve been assigned to this tuition. An admin will contact you with further details.
-                  </p>
-                )}
-              </div>
+                  <span
+                    className={`inline-block mt-2 font-label-md text-label-md px-3 py-1 rounded-full ${STATUS_COLOR[application.status]}`}
+                  >
+                    {STATUS_LABEL[application.status]}
+                  </span>
+                  {application.status === "SELECTED" && assignment?.status === "ACTIVE" && assignment.hasPendingWithdrawal && (
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
+                      Withdrawal requested — pending admin review.
+                    </p>
+                  )}
+                  {application.status === "SELECTED" && assignment?.status === "RELEASED" && (
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
+                      Withdrawal approved — this assignment has ended.
+                    </p>
+                  )}
+                  {application.status === "SELECTED" && !assignment && (
+                    <p className="font-body-sm text-body-sm text-on-surface-variant mt-2 max-w-[24rem]">
+                      You&rsquo;ve been assigned to this tuition. An admin will contact you with further details.
+                    </p>
+                  )}
+                </Link>
+              ) : (
+                <div className="flex-1 min-w-0">
+                  <p className="font-label-md text-label-md text-on-surface">Tuition no longer available</p>
+                  <span
+                    className={`inline-block mt-2 font-label-md text-label-md px-3 py-1 rounded-full ${STATUS_COLOR[application.status]}`}
+                  >
+                    {STATUS_LABEL[application.status]}
+                  </span>
+                </div>
+              )}
               {application.status === "APPLIED" && <WithdrawApplicationButton applicationId={application.id} />}
               {application.status === "SELECTED" && assignment?.status === "ACTIVE" && !assignment.hasPendingWithdrawal && (
                 <RequestWithdrawalButton assignmentId={assignment.id} />

@@ -23,6 +23,7 @@ export default async function AdminProfilePage() {
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">Account</h2>
+        <Row label="Name" value={session.fullName ?? ""} />
         <Row label="Email" value={session.email ?? ""} />
         <Row label="Role" value={session.role === "SUPER_ADMIN" ? "Super Admin" : "Branch Admin"} />
         {session.role === "BRANCH_ADMIN" && <Row label="Branch" value={branchName ?? "Unassigned"} />}

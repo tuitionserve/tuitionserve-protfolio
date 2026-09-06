@@ -53,6 +53,7 @@ export async function ensureTutorAccount(params: {
     return {
       uid,
       email: result.account.email,
+      fullName: result.account.fullName,
       role: result.account.role,
       branchId: result.account.branchId,
       accountStatus: result.account.accountStatus,
@@ -123,6 +124,7 @@ export async function ensureTutorAccount(params: {
   return {
     uid,
     email: account.email,
+    fullName: account.fullName,
     role: account.role,
     branchId: account.branchId,
     accountStatus: account.accountStatus,
