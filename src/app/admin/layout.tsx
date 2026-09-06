@@ -27,6 +27,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { label: "Assigned", href: "/admin/tuition-requests/assigned", icon: "task_alt" },
         { label: "Rejected", href: "/admin/tuition-requests/rejected", icon: "block" },
         { label: "Post Tuition", href: "/admin/tuition-requests/post", icon: "add_circle" },
+        { label: "Post School Vacancy", href: "/admin/tuition-requests/post-school-vacancy", icon: "school" },
       ],
     },
     {
@@ -66,11 +67,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     },
   ];
 
-  // Curated subset for the mobile bottom tab bar — space for 5 max.
+  // Curated subset for the mobile bottom tab bar — 4 primary slots plus
+  // a 5th "More" tab (added by BottomTabBar itself from `sections`
+  // below) now that the sidebar has grown past what a phone screen can
+  // show at once.
   const tabLinks = [
     { label: "Home", href: "/admin/dashboard", icon: "home" },
     { label: "Requests", href: "/admin/tuition-requests/new", icon: "post_add" },
-    { label: "Tutors", href: "/admin/tutors", icon: "fact_check" },
     { label: "Messages", href: "/admin/messages", icon: "chat" },
     { label: "Alerts", href: "/admin/notifications", icon: "notifications", badge: unreadCount },
   ];
@@ -106,7 +109,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         </main>
       </div>
 
-      <BottomTabBar links={tabLinks} />
+      <BottomTabBar
+        links={tabLinks}
+        moreSections={sections}
+        profileHref="/admin/profile"
+        roleLabel={isSuperAdmin ? "Super Admin" : "Branch Admin"}
+      />
     </div>
   );
 }
