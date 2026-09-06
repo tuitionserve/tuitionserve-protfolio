@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { FieldValue, Timestamp } from "firebase-admin/firestore";
+import { FieldValue } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
 import { assertBranchScope, requireActiveTutor, requireRole, requireSession } from "@/server/auth/guards";
 import {
@@ -15,13 +15,30 @@ import { writeAuditEvent } from "@/server/domain/audit";
 import { createNotification, notifyAdminsForBranch } from "@/server/domain/notifications";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import type { AuthSession } from "@/server/auth/session";
-import type { Conversation, Message } from "@/server/domain/types";
+import type { Conversation } from "@/server/domain/types";
+import {
+  toConversationView,
+  toMessageView,
+  type ConversationView,
+  type MessageView,
+  type ConversationDetailView,
+} from "@/server/domain/messaging-views";
+
+export type { ConversationView, MessageView, ConversationDetailView };
 
 /**
  * M9 Messaging (PRD section 19 / messaging-engineering skill): a simple
- * Admin <-> Tutor conversation + message store. Deliberately NOT
- * realtime — thread pages poll on an interval, which the skill calls
- * out as an acceptable substitute for websockets at this scale.
+ * Admin <-> Tutor conversation + message store. Realtime delivery is
+ * Server-Sent Events, not a poll loop and not the client Firestore SDK
+ * — see src/app/api/messages/**\/stream/route.ts. Those routes attach
+ * the Firestore Admin SDK's own `.onSnapshot()` server-side (a plain
+ * Node.js server-to-server subscription, nothing to do with Firestore
+ * Security Rules) and forward each change to the browser over one
+ * long-lived HTTP response. This keeps every authorization check in
+ * this file's TypeScript, in line with firestore.rules' explicit "no
+ * direct client SDK access" contract — the alternative (client-side
+ * `onSnapshot` listeners) would require reimplementing branch-scope
+ * authorization a second time in the rules language.
  *
  * Design choices worth documenting up front:
  *
@@ -85,69 +102,6 @@ const startConversationSchema = z.object({
 });
 
 /**
- * Client-safe (Timestamp-stripped) view types. Firestore Timestamp class
- * instances cannot cross the Server Component -> Client Component or
- * Server Action RPC serialization boundary (see
- * `server/queries/admin-applicants.ts` for the established precedent) —
- * every function here that can be called from/rendered into a "use
- * client" component returns these instead of the raw domain types.
- */
-export interface ConversationView {
-  id: string;
-  conversationUid: string;
-  tutorId: string;
-  adminUserId: string;
-  branchId: string | null;
-  tuitionId: string | null;
-  lastMessageAt: number | null; // epoch millis
-  lastMessagePreview: string;
-  tutorUnreadCount: number;
-  adminUnreadCount: number;
-  createdAt: number | null;
-}
-
-export interface MessageView {
-  id: string;
-  conversationId: string;
-  senderUserId: string;
-  senderRole: Message["senderRole"];
-  body: string;
-  sentAt: number | null;
-}
-
-export interface ConversationDetailView extends ConversationView {
-  tutorUid: string;
-  tutorName: string | null;
-}
-
-function toConversationView(c: Conversation): ConversationView {
-  return {
-    id: c.id,
-    conversationUid: c.conversationUid,
-    tutorId: c.tutorId,
-    adminUserId: c.adminUserId,
-    branchId: c.branchId,
-    tuitionId: c.tuitionId,
-    lastMessageAt: c.lastMessageAt?.toMillis() ?? null,
-    lastMessagePreview: c.lastMessagePreview,
-    tutorUnreadCount: c.tutorUnreadCount,
-    adminUnreadCount: c.adminUnreadCount,
-    createdAt: c.createdAt?.toMillis() ?? null,
-  };
-}
-
-function toMessageView(m: Message): MessageView {
-  return {
-    id: m.id,
-    conversationId: m.conversationId,
-    senderUserId: m.senderUserId,
-    senderRole: m.senderRole,
-    body: m.body,
-    sentAt: m.sentAt?.toMillis() ?? null,
-  };
-}
-
-/**
  * Loads a conversation and verifies the current session is an authorized
  * participant: the owning tutor, or an admin in branch scope (Super Admin
  * always passes). Throws on any failure — missing conversation, wrong
@@ -157,7 +111,7 @@ function toMessageView(m: Message): MessageView {
  * (role-authorization skill: never leak resource existence to a caller
  * who isn't authorized for it).
  */
-async function loadConversationForParticipant(conversationId: string): Promise<{
+export async function loadConversationForParticipant(conversationId: string): Promise<{
   session: AuthSession;
   ref: FirebaseFirestore.DocumentReference<Conversation>;
   conversation: Conversation;
@@ -400,25 +354,6 @@ export async function getMessagesForConversation(conversationId: string): Promis
     .get();
   const chronological = snap.docs.map((d) => d.data()).reverse();
   return chronological.map(toMessageView);
-}
-
-/**
- * Delta variant for MessageThread's poll loop: only messages strictly
- * newer than `sinceMillis`. An idle conversation (the common case for a
- * left-open tab) matches zero documents instead of re-reading the last
- * 100 messages every 8 seconds — the client merges these into its
- * existing state rather than replacing it wholesale.
- */
-export async function getNewMessagesSince(conversationId: string, sinceMillis: number): Promise<MessageView[]> {
-  const { conversation } = await loadConversationForParticipant(conversationId);
-  const since = Timestamp.fromMillis(sinceMillis);
-  const snap = await messagesCollection()
-    .where("conversationId", "==", conversation.id)
-    .where("sentAt", ">", since)
-    .orderBy("sentAt", "asc")
-    .limit(MESSAGES_PAGE_SIZE)
-    .get();
-  return snap.docs.map((d) => toMessageView(d.data()));
 }
 
 /** Conversation header info (tutor UID/name) for the thread view. Returns null on any not-found/unauthorized outcome so pages can 404. */

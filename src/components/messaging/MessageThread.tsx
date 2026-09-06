@@ -1,14 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
-import {
-  getNewMessagesSince,
-  markConversationRead,
-  sendMessage,
-  type MessageView,
-} from "@/server/actions/messaging";
-
-const POLL_INTERVAL_MS = 8000;
+import { markConversationRead, sendMessage } from "@/server/actions/messaging";
+import type { MessageView } from "@/server/domain/messaging-views";
 
 function formatTime(millis: number | null): string {
   if (!millis) return "";
@@ -22,10 +16,12 @@ function formatTime(millis: number | null): string {
 
 /**
  * Shared thread view for both /tutor/messages/[id] and
- * /admin/messages/[id]. Polling (not websockets) per the
- * messaging-engineering skill — a modest interval is enough for a
- * task-oriented admin<->tutor chat, and keeps this a plain client
- * component with no realtime infrastructure.
+ * /admin/messages/[id]. Realtime via Server-Sent Events — see
+ * src/app/api/messages/[conversationId]/stream/route.ts and the module
+ * doc in server/actions/messaging.ts for why SSE rather than polling or
+ * a client Firestore listener. `sendMessage` doesn't need to locally
+ * append its own result: the stream is already listening and delivers
+ * the just-sent message back down like any other new message.
  */
 export function MessageThread({
   conversationId,
@@ -41,40 +37,25 @@ export function MessageThread({
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
   const scrollRef = useRef<HTMLDivElement>(null);
-  // Tracks the latest message's timestamp so the poll can ask for only
-  // what's new, without re-subscribing the interval on every message.
-  const latestSentAtRef = useRef<number>(
-    initialMessages.length > 0 ? (initialMessages[initialMessages.length - 1]!.sentAt ?? 0) : 0,
-  );
+  const seenIdsRef = useRef<Set<string>>(new Set(initialMessages.map((m) => m.id)));
 
-  // Mark read on open, and poll for new messages only (not the whole
-  // history) on a modest interval while the thread stays mounted — an
-  // idle conversation matches zero new messages per tick instead of
-  // re-reading the last 100 every 8 seconds. markConversationRead is a
-  // no-op write once the unread count is already 0, so leaving a thread
-  // open costs one cheap read per tick, not a write.
   useEffect(() => {
-    let cancelled = false;
+    markConversationRead(conversationId);
 
-    async function poll() {
-      try {
-        const [newOnes] = await Promise.all([
-          getNewMessagesSince(conversationId, latestSentAtRef.current),
-          markConversationRead(conversationId),
-        ]);
-        if (cancelled || newOnes.length === 0) return;
-        latestSentAtRef.current = newOnes[newOnes.length - 1]!.sentAt ?? latestSentAtRef.current;
-        setMessages((prev) => [...prev, ...newOnes]);
-      } catch {
-        // Transient poll failure — the next interval tick will retry.
-      }
-    }
-
-    const interval = setInterval(poll, POLL_INTERVAL_MS);
-    return () => {
-      cancelled = true;
-      clearInterval(interval);
+    const since = initialMessages.length > 0 ? (initialMessages[initialMessages.length - 1]!.sentAt ?? 0) : 0;
+    const es = new EventSource(`/api/messages/${conversationId}/stream?since=${since}`);
+    es.onmessage = (event) => {
+      const message: MessageView = JSON.parse(event.data);
+      if (seenIdsRef.current.has(message.id)) return;
+      seenIdsRef.current.add(message.id);
+      setMessages((prev) => [...prev, message]);
+      markConversationRead(conversationId);
     };
+
+    return () => es.close();
+    // Deliberately re-subscribes only when the conversation changes, not
+    // on every render — `initialMessages` is a mount-time snapshot.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversationId]);
 
   useEffect(() => {
@@ -92,16 +73,13 @@ export function MessageThread({
         return;
       }
       setDraft("");
-      const newOnes = await getNewMessagesSince(conversationId, latestSentAtRef.current);
-      if (newOnes.length > 0) {
-        latestSentAtRef.current = newOnes[newOnes.length - 1]!.sentAt ?? latestSentAtRef.current;
-        setMessages((prev) => [...prev, ...newOnes]);
-      }
+      // No local append here — the SSE stream (already subscribed) delivers
+      // this same message back down within one round trip.
     });
   }
 
   return (
-    <div className="bg-surface-container-lowest border border-surface-variant rounded-xl flex flex-col h-[60vh]">
+    <div className="flex flex-col flex-1 min-h-0">
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-lg flex flex-col gap-3">
         {messages.length === 0 ? (
           <p className="font-body-sm text-body-sm text-on-surface-variant">
@@ -130,7 +108,7 @@ export function MessageThread({
         )}
       </div>
 
-      <div className="border-t border-surface-variant p-lg flex flex-col gap-2">
+      <div className="border-t border-surface-variant p-lg flex flex-col gap-2 shrink-0">
         <div className="flex gap-3">
           <textarea
             value={draft}

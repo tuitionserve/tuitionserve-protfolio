@@ -3,6 +3,7 @@ import Link from "next/link";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { getConversationDetail, getMessagesForConversation } from "@/server/actions/messaging";
 import { MessageThread } from "@/components/messaging/MessageThread";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default async function AdminConversationPage({
   params,
@@ -23,15 +24,17 @@ export default async function AdminConversationPage({
   const messages = await getMessagesForConversation(id);
 
   return (
-    <div className="flex flex-col gap-lg max-w-3xl">
-      <div>
-        <Link href="/admin/messages" className="font-label-md text-label-md text-primary-container">
-          &larr; Messages
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2 px-lg py-3.5 border-b border-surface-variant shrink-0">
+        <Link href="/admin/messages" className="md:hidden text-on-surface-variant">
+          <MaterialIcon name="arrow_back" />
         </Link>
-        <h1 className="font-headline-lg text-headline-lg text-on-surface mt-2">
-          {detail.tutorName ?? "Unnamed tutor"}
-        </h1>
-        <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{detail.tutorUid}</p>
+        <div className="min-w-0">
+          <p className="font-label-lg text-label-lg text-on-surface truncate">
+            {detail.tutorName ?? "Unnamed tutor"}
+          </p>
+          <p className="font-body-sm text-body-sm text-on-surface-variant truncate">{detail.tutorUid}</p>
+        </div>
       </div>
 
       <MessageThread conversationId={id} initialMessages={messages} viewerUid={session.uid} />
