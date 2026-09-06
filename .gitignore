@@ -42,6 +42,7 @@ ui-debug.log
 
 # vercel
 .vercel
+.playwright-mcp
 
 # typescript
 *.tsbuildinfo

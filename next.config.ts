@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Don't auto-generate AGENTS.md/CLAUDE.md on every dev/build run.
   agentRules: false,
+  // The dev-tools badge sits bottom-left, right on top of the sidebar's
+  // Sign Out link on every admin/tutor page — turn it off locally.
+  devIndicators: false,
   // firebase-admin's auth module pulls in jwks-rsa -> jose, which ships a
   // pure-ESM build; bundling it into the serverless function output (the
   // Turbopack production build default) breaks with "require() of ES

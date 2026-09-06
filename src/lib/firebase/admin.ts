@@ -13,6 +13,11 @@ if (useEmulators) {
   process.env.FIRESTORE_EMULATOR_HOST ??= "127.0.0.1:8080";
   process.env.FIREBASE_AUTH_EMULATOR_HOST ??= "127.0.0.1:9099";
   process.env.FIREBASE_STORAGE_EMULATOR_HOST ??= "127.0.0.1:9199";
+  // Without real credentials, google-auth-library still tries to probe the
+  // GCE metadata server to detect the runtime environment, which times out
+  // and logs a noisy MetadataLookupWarning on every request. NO_GCE_CHECK
+  // is google-auth-library's documented flag for skipping that probe.
+  process.env.NO_GCE_CHECK ??= "true";
 }
 
 function createAdminApp(): App {
