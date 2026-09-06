@@ -2,24 +2,32 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
-import { GRADES, SUBJECTS } from "@/lib/catalog";
+import { GRADES } from "@/lib/catalog";
 import { submitTuitionRequest, type ActionResult } from "@/server/actions/parent-request";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } from "./formStyles";
 import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
 import { DayRangeAvailabilityPicker, type AvailabilitySlotState } from "@/components/shared/DayRangeAvailabilityPicker";
+import { SubjectMultiSelect } from "@/components/shared/SubjectMultiSelect";
 
 interface StudentBlock {
   studentFullName: string;
   gradeId: string;
   schoolName: string;
-  subjectId: string;
+  subjectIds: string[];
   currentProgram: string;
   currentYearOrSemester: string;
 }
 
 function emptyStudentBlock(gradeId: string, subjectId: string): StudentBlock {
-  return { studentFullName: "", gradeId, schoolName: "", subjectId, currentProgram: "", currentYearOrSemester: "" };
+  return {
+    studentFullName: "",
+    gradeId,
+    schoolName: "",
+    subjectIds: subjectId ? [subjectId] : [],
+    currentProgram: "",
+    currentYearOrSemester: "",
+  };
 }
 
 const GENDER_OPTIONS: { id: "ANY" | "MALE" | "FEMALE"; label: string }[] = [
@@ -81,6 +89,10 @@ export function TuitionRequestForm({
       setError("Select your province, district, municipality, and ward.");
       return;
     }
+    if (students.some((s) => s.subjectIds.length === 0)) {
+      setError("Add at least one subject for each student.");
+      return;
+    }
 
     const formData = new FormData();
     formData.set("parentFullName", parentFullName);
@@ -93,7 +105,7 @@ export function TuitionRequestForm({
           studentFullName: s.studentFullName,
           gradeId: s.gradeId,
           schoolName: s.schoolName || null,
-          subjectId: s.subjectId,
+          subjectIds: s.subjectIds,
           currentProgram: s.gradeId === "bachelor-level" ? s.currentProgram || null : null,
           currentYearOrSemester: s.gradeId === "bachelor-level" ? s.currentYearOrSemester || null : null,
         })),
@@ -222,21 +234,21 @@ export function TuitionRequestForm({
                   onChange={(e) => updateStudent(index, { schoolName: e.target.value })}
                 />
               </div>
-              <div className={fieldWrapClass}>
-                <label className={labelClass} htmlFor={`subjectId-${index}`}>Subject</label>
-                <select
-                  id={`subjectId-${index}`}
-                  className={inputClass}
-                  value={student.subjectId}
-                  onChange={(e) => updateStudent(index, { subjectId: e.target.value })}
-                  required
-                >
-                  <option value="" disabled>Select subject</option>
-                  {SUBJECTS.map((s) => (
-                    <option key={s.id} value={s.id}>{s.label}</option>
-                  ))}
-                </select>
-              </div>
+            </div>
+            <div className={fieldWrapClass}>
+              <label className={labelClass} htmlFor={`subjectIds-${index}`}>Subjects</label>
+              <SubjectMultiSelect
+                id={`subjectIds-${index}`}
+                value={student.subjectIds}
+                onChange={(subjectIds) => updateStudent(index, { subjectIds })}
+                placeholder="Type or pick a subject..."
+              />
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                Add as many as needed — don&rsquo;t see the right one? Type it and add it as-is.
+              </p>
+              {fieldErrors[`students.${index}.subjectIds`] && (
+                <p className={errorTextClass}>{fieldErrors[`students.${index}.subjectIds`]}</p>
+              )}
             </div>
 
             {student.gradeId === "bachelor-level" && (

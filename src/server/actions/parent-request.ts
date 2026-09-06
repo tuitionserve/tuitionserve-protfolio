@@ -60,7 +60,7 @@ interface PostingRecordInput {
   parentId: string;
   studentId: string | null;
   institutionName: string | null;
-  subjectId: string;
+  subjectIds: string[];
   gradeId: string;
   exactAddress: string;
   locationId: string;
@@ -109,7 +109,7 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
     studentId: input.studentId,
     institutionName: input.institutionName,
     status: "NEW",
-    subjectId: input.subjectId,
+    subjectIds: input.subjectIds,
     gradeId: input.gradeId,
     exactAddress: input.exactAddress,
     locationId: input.locationId,
@@ -185,7 +185,7 @@ export async function createTuitionRequestFromParsedData(
       parentId,
       studentId: studentRef.id,
       institutionName: null,
-      subjectId: student.subjectId,
+      subjectIds: student.subjectIds,
       gradeId: student.gradeId,
       exactAddress: data.exactAddress,
       locationId: data.locationId,
@@ -194,7 +194,7 @@ export async function createTuitionRequestFromParsedData(
       slots: data.slots,
       notes: data.notes || null,
       notifyTitle: "New tuition request",
-      notifyBody: `${student.studentFullName}'s ${student.subjectId} request in ${data.tutorVisibleLocality} is awaiting review.`,
+      notifyBody: `${student.studentFullName}'s ${student.subjectIds.join(", ")} request in ${data.tutorVisibleLocality} is awaiting review.`,
       actor,
     });
     if (!result.ok) return result;

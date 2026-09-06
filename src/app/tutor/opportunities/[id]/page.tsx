@@ -56,7 +56,8 @@ export default async function TutorOpportunityDetailPage({
           {isSchool ? "School" : "Home Tuition"}
         </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {catalogLabel(GRADES, opportunity.gradeId)} {catalogLabel(SUBJECTS, opportunity.subjectId)}
+          {catalogLabel(GRADES, opportunity.gradeId)}{" "}
+          {opportunity.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{opportunity.tuitionUid}</p>
       </div>

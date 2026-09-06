@@ -27,7 +27,7 @@ export interface TutorOpportunityView {
   status: TuitionRequestStatus;
   postingType: TuitionPostingType;
   institutionName: string | null; // SCHOOL postings only — the school's name, always tutor-visible (unlike parent/student below)
-  subjectId: string;
+  subjectIds: string[];
   gradeId: string;
   tutorVisibleLocality: string;
   tutorGenderPreference: TutorGenderPreference;
@@ -60,7 +60,7 @@ function toTutorView(r: TuitionRequest): TutorOpportunityView {
     status: r.status,
     postingType: r.postingType,
     institutionName: r.institutionName,
-    subjectId: r.subjectId,
+    subjectIds: r.subjectIds,
     gradeId: r.gradeId,
     tutorVisibleLocality: r.tutorVisibleLocality,
     tutorGenderPreference: r.tutorGenderPreference,
@@ -130,7 +130,7 @@ export async function getOpenOpportunities(
   const page = await fetchPage(base, "createdAt", cursor);
   let requests = page.items;
 
-  if (filters.subjectId) requests = requests.filter((r) => r.subjectId === filters.subjectId);
+  if (filters.subjectId) requests = requests.filter((r) => r.subjectIds.includes(filters.subjectId!));
   if (filters.gradeId) requests = requests.filter((r) => r.gradeId === filters.gradeId);
   if (filters.dayOfWeek) {
     requests = requests.filter((r) => r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek));

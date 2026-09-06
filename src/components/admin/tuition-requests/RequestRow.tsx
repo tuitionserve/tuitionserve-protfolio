@@ -28,7 +28,8 @@ export function RequestRow({
             {isSchool ? "School" : "Home Tuition"}
           </span>
           <p className="font-label-md text-label-md text-on-surface">
-            {(isSchool ? request.institutionName : studentName) ?? "Unnamed"} — {catalogLabel(SUBJECTS, request.subjectId)}
+            {(isSchool ? request.institutionName : studentName) ?? "Unnamed"} —{" "}
+            {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
           </p>
         </div>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">

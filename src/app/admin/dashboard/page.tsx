@@ -123,7 +123,7 @@ export default async function AdminDashboardPage() {
                   >
                     <MaterialIcon name={request.postingType === "SCHOOL" ? "apartment" : "person"} className="text-on-surface-variant shrink-0" />
                     {(request.postingType === "SCHOOL" ? request.institutionName : studentName) ?? "Unnamed"} —{" "}
-                    {catalogLabel(SUBJECTS, request.subjectId)} ({request.tuitionUid})
+                    {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} ({request.tuitionUid})
                   </Link>
                 ))}
               </div>

@@ -272,7 +272,10 @@ export interface TuitionRequest {
   studentId: string | null; // null for SCHOOL postings — a school vacancy has no single student
   institutionName: string | null; // SCHOOL postings only
   status: TuitionRequestStatus;
-  subjectId: string; // catalog id
+  // One or more subjects for the same student/tutor — a catalog id for
+  // a picked suggestion, or free text for a subject the catalog
+  // doesn't have (see SubjectMultiSelect). At least one entry.
+  subjectIds: string[];
   gradeId: string; // catalog id, snapshot of Student.gradeId at request time (or the grade level being staffed, for SCHOOL)
   exactAddress: string; // PRIVATE — admin-only, never for a tutor-facing response
   locationId: string; // -> geographicLocations (ward-level)

@@ -70,7 +70,7 @@ export async function submitSchoolVacancyAsAdmin(formData: FormData): Promise<Ac
     parentId,
     studentId: null,
     institutionName: data.institutionName,
-    subjectId: data.subjectId,
+    subjectIds: [data.subjectId],
     gradeId: data.gradeId,
     exactAddress: data.exactAddress,
     locationId: data.locationId,

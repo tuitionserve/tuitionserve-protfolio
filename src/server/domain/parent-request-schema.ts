@@ -1,9 +1,8 @@
 import { z } from "zod";
-import { GRADES, SUBJECTS, DAYS_OF_WEEK } from "@/lib/catalog";
+import { GRADES, DAYS_OF_WEEK } from "@/lib/catalog";
 import type { AvailabilitySlot } from "./types";
 
 const GRADE_IDS = GRADES.map((g) => g.id) as [string, ...string[]];
-const SUBJECT_IDS = SUBJECTS.map((s) => s.id) as [string, ...string[]];
 const DAY_IDS = DAYS_OF_WEEK.map((d) => d.id) as [
   AvailabilitySlot["dayOfWeek"],
   ...AvailabilitySlot["dayOfWeek"][],
@@ -32,7 +31,10 @@ const studentBlockSchema = z.object({
   studentFullName: z.string().trim().min(2, "Enter the student's name.").max(120),
   gradeId: z.enum(GRADE_IDS),
   schoolName: z.string().trim().max(200).nullable(),
-  subjectId: z.enum(SUBJECT_IDS),
+  // A catalog id (SubjectMultiSelect suggestion) or free text (the
+  // catalog doesn't have to cover every subject a parent might need) —
+  // deliberately not a z.enum, unlike gradeId above.
+  subjectIds: z.array(z.string().trim().min(1).max(80)).min(1, "Add at least one subject."),
   // Only meaningful when gradeId is "bachelor-level" — see Student's doc comment in types.ts.
   currentProgram: z.string().trim().max(200).nullable(),
   currentYearOrSemester: z.string().trim().max(50).nullable(),
