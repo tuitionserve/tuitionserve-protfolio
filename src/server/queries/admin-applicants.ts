@@ -3,6 +3,7 @@ import { tuitionRequestsCollection, tutorApplicationsCollection } from "@/server
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import type { AuthSession } from "@/server/auth/session";
 import type { TutorApplication, TutorApplicationSnapshot, TutorApplicationStatus } from "@/server/domain/types";
+import { resolveBranchScope } from "@/server/domain/branch-scope";
 
 
 /**
@@ -80,11 +81,12 @@ export interface AllApplicationsRow {
 export async function getAllApplications(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<AllApplicationsRow>> {
-  const base =
-    session.role === "BRANCH_ADMIN"
-      ? tutorApplicationsCollection().where("branchId", "==", session.branchId)
-      : tutorApplicationsCollection();
+  const scope = resolveBranchScope(session, branchFilter);
+  const base = scope
+    ? tutorApplicationsCollection().where("branchId", "==", scope)
+    : tutorApplicationsCollection();
   const page = await fetchPage(base, "appliedAt", cursor);
 
   const tuitionSnaps = await Promise.all(page.items.map((a) => tuitionRequestsCollection().doc(a.tuitionId).get()));

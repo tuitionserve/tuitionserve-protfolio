@@ -7,6 +7,7 @@ import {
 import type { AuthSession } from "@/server/auth/session";
 import type { TuitionRequest } from "@/server/domain/types";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
+import { resolveBranchScope } from "@/server/domain/branch-scope";
 
 export interface TuitionRequestQueueRow {
   request: TuitionRequest;
@@ -26,18 +27,24 @@ async function withParentAndStudent(requests: TuitionRequest[]): Promise<Tuition
   }));
 }
 
-function statusQuery(session: AuthSession, status: "NEW" | "OPEN" | "ASSIGNED" | "REJECTED") {
-  return session.role === "BRANCH_ADMIN"
-    ? tuitionRequestsCollection().where("branchId", "==", session.branchId).where("status", "==", status)
+function statusQuery(
+  session: AuthSession,
+  status: "NEW" | "OPEN" | "ASSIGNED" | "REJECTED",
+  branchFilter: string | null = null,
+) {
+  const scope = resolveBranchScope(session, branchFilter);
+  return scope
+    ? tuitionRequestsCollection().where("branchId", "==", scope).where("status", "==", status)
     : tuitionRequestsCollection().where("status", "==", status);
 }
 
-/** Branch-scoped, paginated queue of NEW tuition requests. */
+/** Branch-scoped, paginated queue of NEW tuition requests. `branchFilter` only narrows a Super Admin's view — a Branch Admin stays locked to their own branch regardless. */
 export async function getTuitionRequestQueue(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
-  const page = await fetchPage(statusQuery(session, "NEW"), "createdAt", cursor);
+  const page = await fetchPage(statusQuery(session, "NEW", branchFilter), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 
@@ -45,8 +52,9 @@ export async function getTuitionRequestQueue(
 export async function getOpenTuitionsQueue(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
-  const page = await fetchPage(statusQuery(session, "OPEN"), "createdAt", cursor);
+  const page = await fetchPage(statusQuery(session, "OPEN", branchFilter), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 
@@ -54,8 +62,9 @@ export async function getOpenTuitionsQueue(
 export async function getAssignedTuitionsQueue(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
-  const page = await fetchPage(statusQuery(session, "ASSIGNED"), "createdAt", cursor);
+  const page = await fetchPage(statusQuery(session, "ASSIGNED", branchFilter), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 
@@ -63,8 +72,9 @@ export async function getAssignedTuitionsQueue(
 export async function getRejectedTuitionsQueue(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<TuitionRequestQueueRow>> {
-  const page = await fetchPage(statusQuery(session, "REJECTED"), "createdAt", cursor);
+  const page = await fetchPage(statusQuery(session, "REJECTED", branchFilter), "createdAt", cursor);
   return { ...page, items: await withParentAndStudent(page.items) };
 }
 

@@ -17,6 +17,7 @@ import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import { GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import type { AuthSession } from "@/server/auth/session";
 import type { TutorProfile, TutorProfileChangeRequest } from "@/server/domain/types";
+import { resolveBranchScope } from "@/server/domain/branch-scope";
 
 /** Client-safe view — excludes Firestore Timestamp fields. */
 export interface ChangeRequestView {
@@ -74,11 +75,12 @@ export interface PendingChangeRequestRow {
 export async function getAllPendingChangeRequests(
   session: AuthSession,
   cursor: string | null,
+  branchFilter: string | null = null,
 ): Promise<PageResult<PendingChangeRequestRow>> {
-  const base =
-    session.role === "BRANCH_ADMIN"
-      ? tutorProfileChangeRequestsCollection().where("branchId", "==", session.branchId).where("status", "==", "PENDING")
-      : tutorProfileChangeRequestsCollection().where("status", "==", "PENDING");
+  const scope = resolveBranchScope(session, branchFilter);
+  const base = scope
+    ? tutorProfileChangeRequestsCollection().where("branchId", "==", scope).where("status", "==", "PENDING")
+    : tutorProfileChangeRequestsCollection().where("status", "==", "PENDING");
   const page = await fetchPage(base, "requestedAt", cursor);
 
   const tutorSnaps = await Promise.all(page.items.map((r) => tutorsCollection().doc(r.tutorId).get()));

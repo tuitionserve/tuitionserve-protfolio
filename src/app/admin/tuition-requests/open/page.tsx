@@ -1,17 +1,26 @@
 import { requireRole } from "@/server/auth/guards";
 import { getOpenTuitionsQueue } from "@/server/queries/tuition-requests";
+import { branchesCollection } from "@/server/domain/collections";
 import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
 import { PaginationBar } from "@/components/shared/PaginationBar";
+import { FilterBar, BranchFilterField } from "@/components/shared/FilterBar";
 import { RequestRow } from "@/components/admin/tuition-requests/RequestRow";
 
 export default async function AdminOpenTuitionsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cursors?: string }>;
+  searchParams: Promise<{ cursors?: string; branch?: string }>;
 }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const cursorStack = parseCursorStack((await searchParams).cursors);
-  const page = await getOpenTuitionsQueue(session, currentCursor(cursorStack));
+  const isSuperAdmin = session.role === "SUPER_ADMIN";
+  const params = await searchParams;
+  const branchFilter = params.branch || null;
+  const cursorStack = parseCursorStack(params.cursors);
+
+  const [page, branches] = await Promise.all([
+    getOpenTuitionsQueue(session, currentCursor(cursorStack), branchFilter),
+    isSuperAdmin ? branchesCollection().get().then((s) => s.docs.map((d) => d.data())) : Promise.resolve([]),
+  ]);
 
   return (
     <div className="flex flex-col gap-lg">
@@ -21,6 +30,12 @@ export default async function AdminOpenTuitionsPage({
           Confirmed tuitions visible to tutors, awaiting or reviewing applicants.
         </p>
       </div>
+
+      {isSuperAdmin && (
+        <FilterBar action="/admin/tuition-requests/open" active={Boolean(branchFilter)}>
+          <BranchFilterField branches={branches} value={branchFilter} />
+        </FilterBar>
+      )}
 
       {page.items.length === 0 ? (
         <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -43,6 +58,7 @@ export default async function AdminOpenTuitionsPage({
         itemsCount={page.items.length}
         totalCount={page.totalCount}
         pageSize={DEFAULT_PAGE_SIZE}
+        extraParams={branchFilter ? { branch: branchFilter } : undefined}
       />
     </div>
   );

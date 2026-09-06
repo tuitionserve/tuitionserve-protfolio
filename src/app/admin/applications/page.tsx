@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { getAllApplications } from "@/server/queries/admin-applicants";
+import { branchesCollection } from "@/server/domain/collections";
 import { catalogLabel, SUBJECTS } from "@/lib/catalog";
 import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
 import { PaginationBar } from "@/components/shared/PaginationBar";
+import { FilterBar, BranchFilterField } from "@/components/shared/FilterBar";
 
 const STATUS_LABEL: Record<string, string> = {
   APPLIED: "Applied",
@@ -22,11 +24,18 @@ const STATUS_CLASS: Record<string, string> = {
 export default async function AdminApplicationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cursors?: string }>;
+  searchParams: Promise<{ cursors?: string; branch?: string }>;
 }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const cursorStack = parseCursorStack((await searchParams).cursors);
-  const page = await getAllApplications(session, currentCursor(cursorStack));
+  const isSuperAdmin = session.role === "SUPER_ADMIN";
+  const params = await searchParams;
+  const branchFilter = params.branch || null;
+  const cursorStack = parseCursorStack(params.cursors);
+
+  const [page, branches] = await Promise.all([
+    getAllApplications(session, currentCursor(cursorStack), branchFilter),
+    isSuperAdmin ? branchesCollection().get().then((s) => s.docs.map((d) => d.data())) : Promise.resolve([]),
+  ]);
 
   return (
     <div className="flex flex-col gap-lg">
@@ -37,6 +46,12 @@ export default async function AdminApplicationsPage({
           tuition from here.
         </p>
       </div>
+
+      {isSuperAdmin && (
+        <FilterBar action="/admin/applications" active={Boolean(branchFilter)}>
+          <BranchFilterField branches={branches} value={branchFilter} />
+        </FilterBar>
+      )}
 
       {page.items.length === 0 ? (
         <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -78,6 +93,7 @@ export default async function AdminApplicationsPage({
         itemsCount={page.items.length}
         totalCount={page.totalCount}
         pageSize={DEFAULT_PAGE_SIZE}
+        extraParams={branchFilter ? { branch: branchFilter } : undefined}
       />
     </div>
   );
