@@ -13,55 +13,22 @@ import { notifyAdminsForBranch } from "@/server/domain/notifications";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { tuitionRequestSchema } from "@/server/domain/parent-request-schema";
 import { getLocationAncestry } from "@/server/queries/location-hierarchy";
+import { fieldErrorsFrom } from "@/server/actions/action-utils";
 
 export type ActionResult =
   | { ok: true; tuitionUid: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
-function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string }[] }) {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = String(issue.path[0] ?? "form");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
-}
-
 /**
- * Public submission — no authentication, parents never have accounts
- * (PRD: public form only). Reuses an existing Parent record by phone
- * number so repeat submissions don't create duplicate parents; always
- * creates a new Student (a parent may have multiple children, and a
- * request is a snapshot of who it's for at submission time).
+ * Shared by the public submission below and the admin-initiated
+ * "post a tuition manually" action (phone-intake requests) — same
+ * record shape and downstream pipeline either way, only who's
+ * recorded as the actor differs.
  */
-export async function submitTuitionRequest(formData: FormData): Promise<ActionResult> {
-  let slots: unknown;
-  try {
-    slots = JSON.parse(String(formData.get("slotsJson") ?? "[]"));
-  } catch {
-    return { ok: false, error: "Invalid availability data." };
-  }
-
-  const parsed = tuitionRequestSchema.safeParse({
-    parentFullName: formData.get("parentFullName"),
-    parentPhone: formData.get("parentPhone"),
-    parentEmail: formData.get("parentEmail") || null,
-    studentFullName: formData.get("studentFullName"),
-    gradeId: formData.get("gradeId"),
-    schoolName: formData.get("schoolName") || null,
-    subjectId: formData.get("subjectId"),
-    locationId: formData.get("locationId"),
-    tutorVisibleLocality: formData.get("tutorVisibleLocality"),
-    exactAddress: formData.get("exactAddress"),
-    slots,
-    notes: formData.get("notes") || null,
-  });
-
-  if (!parsed.success) {
-    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };
-  }
-  const data = parsed.data;
-
+export async function createTuitionRequestFromParsedData(
+  data: import("zod").infer<typeof tuitionRequestSchema>,
+  actor: { userId: string | null; role: "SYSTEM" | "SUPER_ADMIN" | "BRANCH_ADMIN" },
+): Promise<ActionResult> {
   const locationSnap = await geographicLocationsCollection().doc(data.locationId).get();
   if (!locationSnap.exists || locationSnap.data()?.level !== "WARD") {
     return {
@@ -73,8 +40,11 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
 
   const now = FieldValue.serverTimestamp();
 
-  // Parent record reuse by phone (the one stable identifying field we
-  // collect for an account-less user).
+  // Reuses an existing Parent record by phone number (the one stable
+  // identifying field for an account-less user) so repeat submissions
+  // don't create duplicates; always creates a new Student, since a
+  // parent may have multiple children and a request is a snapshot of
+  // who it's for at submission time.
   const existingParentSnap = await parentsCollection().where("phone", "==", data.parentPhone).limit(1).get();
   let parentId: string;
   if (!existingParentSnap.empty) {
@@ -147,8 +117,8 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
 
   await writeAuditEvent({
     action: "TUITION_REQUEST_SUBMITTED",
-    actorUserId: null,
-    actorRole: "SYSTEM",
+    actorUserId: actor.userId,
+    actorRole: actor.role,
     targetType: "TuitionRequest",
     targetId: requestRef.id,
     metadata: { tuitionUid, branchId },
@@ -163,4 +133,38 @@ export async function submitTuitionRequest(formData: FormData): Promise<ActionRe
   });
 
   return { ok: true, tuitionUid };
+}
+
+/**
+ * Public submission — no authentication, parents never have accounts
+ * (PRD: public form only).
+ */
+export async function submitTuitionRequest(formData: FormData): Promise<ActionResult> {
+  let slots: unknown;
+  try {
+    slots = JSON.parse(String(formData.get("slotsJson") ?? "[]"));
+  } catch {
+    return { ok: false, error: "Invalid availability data." };
+  }
+
+  const parsed = tuitionRequestSchema.safeParse({
+    parentFullName: formData.get("parentFullName"),
+    parentPhone: formData.get("parentPhone"),
+    parentEmail: formData.get("parentEmail") || null,
+    studentFullName: formData.get("studentFullName"),
+    gradeId: formData.get("gradeId"),
+    schoolName: formData.get("schoolName") || null,
+    subjectId: formData.get("subjectId"),
+    locationId: formData.get("locationId"),
+    tutorVisibleLocality: formData.get("tutorVisibleLocality"),
+    exactAddress: formData.get("exactAddress"),
+    slots,
+    notes: formData.get("notes") || null,
+  });
+
+  if (!parsed.success) {
+    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };
+  }
+
+  return createTuitionRequestFromParsedData(parsed.data, { userId: null, role: "SYSTEM" });
 }

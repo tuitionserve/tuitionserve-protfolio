@@ -6,35 +6,17 @@ import { schoolContactQuerySchema } from "@/server/domain/school-contact-schema"
 import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { notifyAllAdmins } from "@/server/domain/notifications";
+import { fieldErrorsFrom } from "@/server/actions/action-utils";
 
 export type ActionResult =
   | { ok: true; queryUid: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
-function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string }[] }) {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = String(issue.path[0] ?? "form");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
-}
-
-/** Public submission — no authentication, anyone can reach the For Schools contact form. */
-export async function submitSchoolContactQuery(formData: FormData): Promise<ActionResult> {
-  const parsed = schoolContactQuerySchema.safeParse({
-    institutionName: formData.get("institutionName"),
-    contactPersonName: formData.get("contactPersonName"),
-    email: formData.get("email") || null,
-    phone: formData.get("phone"),
-    location: formData.get("location"),
-    message: formData.get("message"),
-  });
-  if (!parsed.success) {
-    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };
-  }
-  const data = parsed.data;
-
+/** Shared by the public form below and the admin-initiated "post a school enquiry manually" action. */
+export async function createSchoolContactQueryFromParsedData(
+  data: import("zod").infer<typeof schoolContactQuerySchema>,
+  actor: { userId: string | null; role: "SYSTEM" | "SUPER_ADMIN" | "BRANCH_ADMIN" },
+): Promise<ActionResult> {
   const now = FieldValue.serverTimestamp();
   const ref = schoolContactQueriesCollection().doc();
   await ref.set({
@@ -55,8 +37,8 @@ export async function submitSchoolContactQuery(formData: FormData): Promise<Acti
 
   await writeAuditEvent({
     action: "SCHOOL_CONTACT_QUERY_SUBMITTED",
-    actorUserId: null,
-    actorRole: "SYSTEM",
+    actorUserId: actor.userId,
+    actorRole: actor.role,
     targetType: "SchoolContactQuery",
     targetId: ref.id,
     metadata: { queryUid },
@@ -71,4 +53,21 @@ export async function submitSchoolContactQuery(formData: FormData): Promise<Acti
   });
 
   return { ok: true, queryUid };
+}
+
+/** Public submission — no authentication, anyone can reach the For Schools contact form. */
+export async function submitSchoolContactQuery(formData: FormData): Promise<ActionResult> {
+  const parsed = schoolContactQuerySchema.safeParse({
+    institutionName: formData.get("institutionName"),
+    contactPersonName: formData.get("contactPersonName"),
+    email: formData.get("email") || null,
+    phone: formData.get("phone"),
+    location: formData.get("location"),
+    message: formData.get("message"),
+  });
+  if (!parsed.success) {
+    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };
+  }
+
+  return createSchoolContactQueryFromParsedData(parsed.data, { userId: null, role: "SYSTEM" });
 }

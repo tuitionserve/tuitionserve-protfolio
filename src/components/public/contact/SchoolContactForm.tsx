@@ -2,7 +2,7 @@
 
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
-import { submitSchoolContactQuery } from "@/server/actions/school-contact";
+import { submitSchoolContactQuery, type ActionResult } from "@/server/actions/school-contact";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import {
   errorTextClass,
@@ -12,7 +12,16 @@ import {
   sectionClass,
 } from "@/components/public/tuition-request/formStyles";
 
-export function SchoolContactForm() {
+export function SchoolContactForm({
+  action = submitSchoolContactQuery,
+  successHref = "/",
+  successHrefLabel = "Back to home",
+}: {
+  /** Defaults to the public submission action — pass the admin-intake action for internal use. */
+  action?: (formData: FormData) => Promise<ActionResult>;
+  successHref?: string;
+  successHrefLabel?: string;
+} = {}) {
   const [institutionName, setInstitutionName] = useState("");
   const [contactPersonName, setContactPersonName] = useState("");
   const [email, setEmail] = useState("");
@@ -39,7 +48,7 @@ export function SchoolContactForm() {
     formData.set("message", message);
 
     startTransition(async () => {
-      const result = await submitSchoolContactQuery(formData);
+      const result = await action(formData);
       if (result.ok) {
         setSubmittedUid(result.queryUid);
       } else {
@@ -60,8 +69,8 @@ export function SchoolContactForm() {
           Thanks for reaching out — our partnerships team will get back to you. If you need to reference this
           later, your enquiry ID is <strong>{submittedUid}</strong>.
         </p>
-        <Link href="/" className="self-start font-label-md text-label-md text-primary-container">
-          Back to home
+        <Link href={successHref} className="self-start font-label-md text-label-md text-primary-container">
+          {successHrefLabel}
         </Link>
       </div>
     );

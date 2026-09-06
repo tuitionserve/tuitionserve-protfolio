@@ -26,6 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { label: "Open Tuitions", href: "/admin/tuition-requests/open", icon: "menu_book" },
         { label: "Assigned", href: "/admin/tuition-requests/assigned", icon: "task_alt" },
         { label: "Rejected", href: "/admin/tuition-requests/rejected", icon: "block" },
+        { label: "Post Tuition", href: "/admin/tuition-requests/post", icon: "add_circle" },
       ],
     },
     {
@@ -42,6 +43,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       links: [
         { label: "Contact Queries", href: "/admin/contact-queries", icon: "mail", badge: unreadContactCount },
         { label: "School Contact", href: "/admin/school-contact-queries", icon: "apartment", badge: unreadSchoolContactCount },
+        { label: "Post School Enquiry", href: "/admin/school-contact-queries/post", icon: "add_business" },
       ],
     },
     ...(isSuperAdmin

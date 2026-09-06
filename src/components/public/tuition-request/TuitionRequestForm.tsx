@@ -3,7 +3,7 @@
 import { useState, useTransition, type FormEvent } from "react";
 import Link from "next/link";
 import { DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
-import { submitTuitionRequest } from "@/server/actions/parent-request";
+import { submitTuitionRequest, type ActionResult } from "@/server/actions/parent-request";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } from "./formStyles";
 import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
@@ -20,10 +20,17 @@ export function TuitionRequestForm({
   provinces,
   initialGradeId,
   initialSubjectId,
+  action = submitTuitionRequest,
+  successHref = "/",
+  successHrefLabel = "Back to home",
 }: {
   provinces: LocationNodeLite[];
   initialGradeId: string;
   initialSubjectId: string;
+  /** Defaults to the public submission action — pass the admin-intake action for internal use. */
+  action?: (formData: FormData) => Promise<ActionResult>;
+  successHref?: string;
+  successHrefLabel?: string;
 }) {
   const [parentFullName, setParentFullName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
@@ -72,7 +79,7 @@ export function TuitionRequestForm({
     formData.set("notes", notes);
 
     startTransition(async () => {
-      const result = await submitTuitionRequest(formData);
+      const result = await action(formData);
       if (result.ok) {
         setSubmittedUid(result.tuitionUid);
       } else {
@@ -94,8 +101,8 @@ export function TuitionRequestForm({
           didn&rsquo;t create an account for you; if you need to follow up, just reference{" "}
           <strong>{submittedUid}</strong>.
         </p>
-        <Link href="/" className="self-start font-label-md text-label-md text-primary-container">
-          Back to home
+        <Link href={successHref} className="self-start font-label-md text-label-md text-primary-container">
+          {successHrefLabel}
         </Link>
       </div>
     );
