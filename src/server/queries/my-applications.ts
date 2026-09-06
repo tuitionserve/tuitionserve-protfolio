@@ -16,7 +16,7 @@ import { fetchPage, type PageResult } from "@/server/domain/pagination";
 export interface MyApplicationTuitionView {
   id: string;
   tuitionUid: string;
-  subjectId: string;
+  subjectIds: string[];
   gradeId: string;
   tutorVisibleLocality: string;
 }
@@ -25,7 +25,7 @@ function toTutorTuitionView(r: TuitionRequest): MyApplicationTuitionView {
   return {
     id: r.id,
     tuitionUid: r.tuitionUid,
-    subjectId: r.subjectId,
+    subjectIds: r.subjectIds,
     gradeId: r.gradeId,
     tutorVisibleLocality: r.tutorVisibleLocality,
   };
@@ -80,13 +80,23 @@ async function withTuitionsAndAssignments(applications: TutorApplication[]): Pro
   });
 }
 
+/**
+ * `statusFilter` is applied in-memory on the fetched page rather than
+ * added as a Firestore where() clause — same trade-off already made
+ * for opportunity filters (see opportunities.ts's doc comment):
+ * avoids a composite index per status, and a status filter here is a
+ * "narrow what I already have" convenience, not something that needs
+ * an exact server-side count.
+ */
 export async function getMyApplications(
   tutorId: string,
   cursor: string | null,
+  statusFilter: TutorApplicationStatus | null = null,
 ): Promise<PageResult<MyApplicationRow>> {
   const base = tutorApplicationsCollection().where("tutorId", "==", tutorId);
   const page = await fetchPage(base, "appliedAt", cursor);
-  return { ...page, items: await withTuitionsAndAssignments(page.items) };
+  const items = statusFilter ? page.items.filter((a) => a.status === statusFilter) : page.items;
+  return { ...page, items: await withTuitionsAndAssignments(items) };
 }
 
 /**

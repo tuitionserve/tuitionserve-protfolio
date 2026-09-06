@@ -125,16 +125,27 @@ export function LocationCascadeSelect({
     onChange(`ward-${code}-${next.padStart(2, "0")}`, label);
   }
 
-  // Fire the initial wardId once on mount if we were given a complete resume state.
+  // Fire the initial selection once on mount if we were given a complete
+  // resume state — ward-level when requireWard, otherwise local-government
+  // level (e.g. a tutor's own location pre-filling a browse filter).
   useEffect(() => {
-    if (initialLocalGovernmentId && initialWardNumber) {
-      const code = initialLocalGovernmentId.replace(/^lg-/, "");
+    if (requireWard) {
+      if (initialLocalGovernmentId && initialWardNumber) {
+        const code = initialLocalGovernmentId.replace(/^lg-/, "");
+        const lg = (initialLocalGovernments ?? []).find((l) => l.id === initialLocalGovernmentId);
+        const d = (initialDistricts ?? []).find((x) => x.id === initialDistrictId);
+        const label = [lg ? locationLabel(lg) : null, d ? locationLabel(d) : null, `Ward ${initialWardNumber}`]
+          .filter(Boolean)
+          .join(", ");
+        onChange(`ward-${code}-${String(initialWardNumber).padStart(2, "0")}`, label);
+      }
+    } else if (initialLocalGovernmentId) {
       const lg = (initialLocalGovernments ?? []).find((l) => l.id === initialLocalGovernmentId);
       const d = (initialDistricts ?? []).find((x) => x.id === initialDistrictId);
-      const label = [lg ? locationLabel(lg) : null, d ? locationLabel(d) : null, `Ward ${initialWardNumber}`]
-        .filter(Boolean)
-        .join(", ");
-      onChange(`ward-${code}-${String(initialWardNumber).padStart(2, "0")}`, label);
+      if (lg) {
+        const label = [locationLabel(lg), d ? locationLabel(d) : null].filter(Boolean).join(", ");
+        onChange(initialLocalGovernmentId, label);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

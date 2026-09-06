@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireActiveTutor } from "@/server/auth/guards";
-import { getMyApplications } from "@/server/queries/my-applications";
+import { getMyApplications, getMyApplicationStatusCounts } from "@/server/queries/my-applications";
 import { catalogLabel, GRADES, SUBJECTS } from "@/lib/catalog";
 import { WithdrawApplicationButton } from "@/components/tutor/opportunities/WithdrawApplicationButton";
 import { RequestWithdrawalButton } from "@/components/tutor/opportunities/RequestWithdrawalButton";
@@ -22,33 +22,76 @@ const STATUS_COLOR: Record<TutorApplicationStatus, string> = {
   REJECTED: "bg-surface-container text-on-surface-variant",
 };
 
+const FILTER_TABS: { id: TutorApplicationStatus | "ALL"; label: string }[] = [
+  { id: "ALL", label: "All" },
+  { id: "SELECTED", label: "Assigned" },
+  { id: "APPLIED", label: "Applied" },
+  { id: "REJECTED", label: "Not Selected" },
+  { id: "WITHDRAWN", label: "Withdrawn" },
+];
+
 export default async function MyApplicationsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ cursors?: string }>;
+  searchParams: Promise<{ cursors?: string; status?: string }>;
 }) {
   const session = await requireActiveTutor();
-  const cursorStack = parseCursorStack((await searchParams).cursors);
-  const page = await getMyApplications(session.uid, currentCursor(cursorStack));
+  const params = await searchParams;
+  const cursorStack = parseCursorStack(params.cursors);
+  const statusFilter =
+    params.status && params.status !== "ALL" ? (params.status as TutorApplicationStatus) : null;
+
+  const [page, counts] = await Promise.all([
+    getMyApplications(session.uid, currentCursor(cursorStack), statusFilter),
+    getMyApplicationStatusCounts(session.uid),
+  ]);
   const rows = page.items;
+  const totalCount = counts.APPLIED + counts.WITHDRAWN + counts.SELECTED + counts.REJECTED;
 
   return (
     <div className="flex flex-col gap-lg">
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">My Applications</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          {page.totalCount} application{page.totalCount === 1 ? "" : "s"} total.
+          {totalCount} application{totalCount === 1 ? "" : "s"} total — assigned tuitions and school vacancies show
+          under &ldquo;Assigned&rdquo;.
         </p>
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        {FILTER_TABS.map((tab) => {
+          const count = tab.id === "ALL" ? totalCount : counts[tab.id];
+          const active = (params.status ?? "ALL") === tab.id;
+          return (
+            <Link
+              key={tab.id}
+              href={tab.id === "ALL" ? "/tutor/applications" : `/tutor/applications?status=${tab.id}`}
+              className={`font-label-md text-label-md px-4 py-2 rounded-full transition-colors ${
+                active
+                  ? "bg-primary-container text-on-primary"
+                  : "bg-surface-container text-on-surface-variant hover:bg-surface-container-high"
+              }`}
+            >
+              {tab.label} ({count})
+            </Link>
+          );
+        })}
       </div>
 
       {rows.length === 0 ? (
         <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            You haven&rsquo;t applied to any tuitions yet —{" "}
-            <Link href="/tutor/opportunities" className="text-primary-container font-medium">
-              browse available tuitions
-            </Link>
-            .
+            {statusFilter ? (
+              "Nothing in this category yet."
+            ) : (
+              <>
+                You haven&rsquo;t applied to any tuitions yet —{" "}
+                <Link href="/tutor/opportunities" className="text-primary-container font-medium">
+                  browse available tuitions
+                </Link>
+                .
+              </>
+            )}
           </p>
         </div>
       ) : (
@@ -61,7 +104,8 @@ export default async function MyApplicationsPage({
               {tuition ? (
                 <Link href={`/tutor/opportunities/${tuition.id}`} className="flex-1 min-w-0 hover:opacity-80 transition-opacity">
                   <p className="font-label-md text-label-md text-on-surface">
-                    {catalogLabel(GRADES, tuition.gradeId)} {catalogLabel(SUBJECTS, tuition.subjectId)}
+                    {catalogLabel(GRADES, tuition.gradeId)}{" "}
+                    {tuition.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
                   </p>
                   <p className="font-body-sm text-body-sm text-on-surface-variant">
                     {tuition.tuitionUid} · {tuition.tutorVisibleLocality}
@@ -115,6 +159,7 @@ export default async function MyApplicationsPage({
         itemsCount={page.items.length}
         totalCount={page.totalCount}
         pageSize={DEFAULT_PAGE_SIZE}
+        extraParams={statusFilter ? { status: statusFilter } : undefined}
       />
     </div>
   );

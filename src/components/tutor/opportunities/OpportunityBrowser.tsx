@@ -12,6 +12,8 @@ import type { PageResult } from "@/server/domain/pagination";
 // browser bundle and break the build (Node-only APIs).
 import { DEFAULT_PAGE_SIZE } from "@/lib/pagination";
 import type { TutorOpportunityView, OpportunityFilters } from "@/server/queries/opportunities";
+import type { CascadeResumeState } from "@/components/tutor/onboarding/types";
+import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 const inputClass =
   "border border-outline-variant rounded-lg p-3 font-body-sm text-body-sm outline-none focus:border-primary-container focus:ring-2 focus:ring-primary-container/20 w-full";
@@ -19,14 +21,17 @@ const inputClass =
 export function OpportunityBrowser({
   initialPage,
   provinces,
+  initialCascade,
 }: {
   initialPage: PageResult<TutorOpportunityView>;
   provinces: LocationNodeLite[];
+  /** Pre-fills the location filter with the tutor's own area instead of starting blank. */
+  initialCascade?: CascadeResumeState;
 }) {
   const [subjectId, setSubjectId] = useState("");
   const [gradeId, setGradeId] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
-  const [localGovernmentId, setLocalGovernmentId] = useState<string | null>(null);
+  const [localGovernmentId, setLocalGovernmentId] = useState<string | null>(initialCascade?.localGovernmentId ?? null);
   const [localGovernmentLabel, setLocalGovernmentLabel] = useState<string | null>(null);
   const [page, setPage] = useState(initialPage);
   // Client-side cursor stack (this browser is fully client-driven, unlike
@@ -79,59 +84,72 @@ export function OpportunityBrowser({
 
   return (
     <div className="flex flex-col gap-lg">
-      <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg flex flex-col gap-4">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <select className={inputClass} value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
-            <option value="">Any subject</option>
-            {SUBJECTS.map((s) => (
-              <option key={s.id} value={s.id}>{s.label}</option>
-            ))}
-          </select>
-          <select className={inputClass} value={gradeId} onChange={(e) => setGradeId(e.target.value)}>
-            <option value="">Any grade</option>
-            {GRADES.map((g) => (
-              <option key={g.id} value={g.id}>{g.label}</option>
-            ))}
-          </select>
-          <select className={inputClass} value={dayOfWeek} onChange={(e) => setDayOfWeek(e.target.value)}>
-            <option value="">Any day</option>
-            {DAYS_OF_WEEK.map((d) => (
-              <option key={d.id} value={d.id}>{d.label}</option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <p className="font-label-md text-label-md text-on-surface-variant mb-2">
-            Narrow further within your city — optional
-          </p>
-          <LocationCascadeSelect
-            provinces={provinces}
-            requireWard={false}
-            onChange={(id, label) => {
-              setLocalGovernmentId(id);
-              setLocalGovernmentLabel(label);
-            }}
-          />
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handleSearch}
-            disabled={pending}
-            className="bg-primary-container text-on-primary font-label-md text-label-md rounded-lg px-6 py-3 shadow-sm hover:shadow-md transition-all disabled:opacity-60"
-          >
-            {pending ? "Searching..." : "Search"}
-          </button>
-          <button type="button" onClick={clearFilters} className="font-label-md text-label-md text-secondary">
-            Clear filters
-          </button>
+      <details className="bg-surface-container-lowest border border-surface-variant rounded-xl">
+        <summary className="flex items-center gap-2 p-lg cursor-pointer font-label-md text-label-md text-on-surface list-none">
+          <MaterialIcon name="tune" className="text-lg" />
+          Filters
           {localGovernmentLabel && (
-            <span className="font-body-sm text-body-sm text-on-surface-variant">Filtering: {localGovernmentLabel}</span>
+            <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">
+              — {localGovernmentLabel}
+            </span>
           )}
+        </summary>
+        <div className="px-lg pb-lg flex flex-col gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <select className={inputClass} value={subjectId} onChange={(e) => setSubjectId(e.target.value)}>
+              <option value="">Any subject</option>
+              {SUBJECTS.map((s) => (
+                <option key={s.id} value={s.id}>{s.label}</option>
+              ))}
+            </select>
+            <select className={inputClass} value={gradeId} onChange={(e) => setGradeId(e.target.value)}>
+              <option value="">Any grade</option>
+              {GRADES.map((g) => (
+                <option key={g.id} value={g.id}>{g.label}</option>
+              ))}
+            </select>
+            <select className={inputClass} value={dayOfWeek} onChange={(e) => setDayOfWeek(e.target.value)}>
+              <option value="">Any day</option>
+              {DAYS_OF_WEEK.map((d) => (
+                <option key={d.id} value={d.id}>{d.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <p className="font-label-md text-label-md text-on-surface-variant mb-2">
+              Narrow further within your city — defaults to your own area
+            </p>
+            <LocationCascadeSelect
+              provinces={provinces}
+              requireWard={false}
+              initialProvinceId={initialCascade?.provinceId}
+              initialDistrictId={initialCascade?.districtId}
+              initialLocalGovernmentId={initialCascade?.localGovernmentId}
+              initialDistricts={initialCascade?.districts}
+              initialLocalGovernments={initialCascade?.localGovernments}
+              onChange={(id, label) => {
+                setLocalGovernmentId(id);
+                setLocalGovernmentLabel(label);
+              }}
+            />
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleSearch}
+              disabled={pending}
+              className="bg-primary-container text-on-primary font-label-md text-label-md rounded-lg px-6 py-3 shadow-sm hover:shadow-md transition-all disabled:opacity-60"
+            >
+              {pending ? "Searching..." : "Search"}
+            </button>
+            <button type="button" onClick={clearFilters} className="font-label-md text-label-md text-secondary">
+              Clear filters
+            </button>
+          </div>
         </div>
-      </div>
+      </details>
 
       {page.items.length === 0 ? (
         <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -159,7 +177,8 @@ export function OpportunityBrowser({
                     {op.postingType === "SCHOOL" ? "School" : "Home Tuition"}
                   </span>
                   <p className="font-label-md text-label-md text-on-surface">
-                    {catalogLabel(GRADES, op.gradeId)} {catalogLabel(SUBJECTS, op.subjectId)}
+                    {catalogLabel(GRADES, op.gradeId)}{" "}
+                    {op.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
                   </p>
                 </div>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
