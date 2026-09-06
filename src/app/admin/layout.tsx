@@ -102,7 +102,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
         {/* The one scrolling region on desktop — the sidebar and mobile
             header stay put; only this panel's content scrolls. */}
-        <main className="flex-1 md:overflow-y-auto w-full">
+        <main className="flex-1 min-h-0 md:overflow-y-auto md:overflow-x-hidden w-full">
           <div className="max-w-max-width mx-auto px-margin-mobile md:px-margin-desktop py-xl pb-24 md:pb-xl">
             {children}
           </div>
