@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { parentsCollection, studentsCollection, tuitionRequestsCollection } from "@/server/domain/collections";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
-import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE, type PageResult } from "@/server/domain/pagination";
+import { currentCursor, parseCursorStack, type PageResult } from "@/server/domain/pagination";
 import { TuitionRequestReviewActions } from "@/components/admin/tuition-requests/TuitionRequestReviewActions";
 import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsList";
 import { AssignmentReviewPanel } from "@/components/admin/tuition-requests/AssignmentReviewPanel";

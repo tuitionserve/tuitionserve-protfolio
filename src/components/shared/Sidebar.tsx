@@ -45,6 +45,7 @@ export function Sidebar({
 
   useEffect(() => {
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCollapsed(localStorage.getItem(COLLAPSE_STORAGE_KEY) === "1");
     } catch {
       // Private browsing / storage blocked — default to expanded.

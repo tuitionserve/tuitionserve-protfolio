@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
@@ -40,13 +40,15 @@ export function BottomTabBar({
 }) {
   const pathname = usePathname();
   const [moreOpen, setMoreOpen] = useState(false);
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
   // Close the "More" sheet whenever navigation actually happens (a Link
   // tap inside it, the browser back button, etc.) rather than leaving it
   // stuck open over the newly-loaded page.
-  useEffect(() => {
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
     setMoreOpen(false);
-  }, [pathname]);
+  }
 
   const hasMore = !!moreSections && moreSections.length > 0;
   const allTabLinks = links.map((l) => l.href);

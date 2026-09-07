@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
@@ -22,12 +23,12 @@ export default function AccessDeniedPage() {
           Don&rsquo;t try this again — it won&rsquo;t end well for you next time.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 mt-2 w-full">
-          <a
+          <Link
             href="/"
             className="flex-1 bg-error text-on-error font-label-md text-label-md rounded-lg py-3 shadow-sm hover:shadow-md transition-all text-center"
           >
             Take Me Somewhere Safe
-          </a>
+          </Link>
           <LogoutButton className="flex-1 border border-white/30 text-white/70 font-label-md text-label-md rounded-lg py-3 hover:bg-white/5 transition-all" />
         </div>
       </div>
