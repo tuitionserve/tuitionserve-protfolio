@@ -177,8 +177,8 @@ export function TuitionRequestForm({
           <h2 className="font-headline-md text-headline-md text-on-surface">Student{students.length > 1 ? "s" : ""}</h2>
         </div>
         <p className="font-body-sm text-body-sm text-on-surface-variant -mt-2">
-          Have more than one child who needs a tutor? Add each one below — we&rsquo;ll treat them as separate
-          requests sharing your contact details and location.
+          Have more than one child who needs a tutor? Add each one below — we&rsquo;ll combine them into a single
+          request so one tutor can teach them together under one arrangement.
         </p>
 
         {students.map((student, index) => (

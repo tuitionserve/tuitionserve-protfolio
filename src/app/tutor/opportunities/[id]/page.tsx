@@ -94,10 +94,34 @@ export default async function TutorOpportunityDetailPage({
           <Row label={isSchool ? "Contact phone" : "Parent phone"} value={opportunity.parentPhone ?? ""} />
           <Row label={isSchool ? "Contact email" : "Parent email"} value={opportunity.parentEmail ?? ""} />
           {!isSchool && (
-            <>
-              <Row label="Student name" value={opportunity.studentName ?? ""} />
-              <Row label="School" value={opportunity.schoolName ?? ""} />
-            </>
+            opportunity.students && opportunity.students.length > 1 ? (
+              <div className="flex flex-col gap-2 my-2 pt-2 border-t border-surface-variant">
+                <span className="font-label-md text-label-md text-primary-container font-semibold">
+                  Students ({opportunity.students.length})
+                </span>
+                {opportunity.students.map((st, idx) => (
+                  <div key={st.id} className="bg-surface-container-low rounded-lg p-3 border border-surface-variant">
+                    <p className="font-title-sm text-title-sm text-on-surface font-medium">
+                      {idx + 1}. {st.fullName}
+                    </p>
+                    <p className="font-body-sm text-body-sm text-on-surface-variant">
+                      Grade: {catalogLabel(GRADES, st.gradeId)}
+                      {st.schoolName ? ` · School: ${st.schoolName}` : ""}
+                    </p>
+                    {(st.currentProgram || st.currentYearOrSemester) && (
+                      <p className="font-body-sm text-body-sm text-on-surface-variant">
+                        Program: {[st.currentProgram, st.currentYearOrSemester].filter(Boolean).join(" · ")}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <>
+                <Row label="Student name" value={opportunity.studentName ?? ""} />
+                <Row label="School" value={opportunity.schoolName ?? ""} />
+              </>
+            )
           )}
           <Row label="Exact address" value={opportunity.exactAddress ?? ""} />
         </div>

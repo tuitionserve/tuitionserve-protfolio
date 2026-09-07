@@ -58,10 +58,11 @@ async function findOrCreateContact(
 interface PostingRecordInput {
   postingType: TuitionPostingType;
   parentId: string;
-  studentId: string | null;
+  studentIds: string[]; // array of child IDs (empty for SCHOOL postings)
   institutionName: string | null;
   subjectIds: string[];
   gradeId: string;
+  gradeIds?: string[];
   exactAddress: string;
   locationId: string;
   tutorVisibleLocality: string;
@@ -106,11 +107,12 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
     branchId,
     postingType: input.postingType,
     parentId: input.parentId,
-    studentId: input.studentId,
+    studentIds: input.studentIds,
     institutionName: input.institutionName,
     status: "NEW",
     subjectIds: input.subjectIds,
     gradeId: input.gradeId,
+    gradeIds: input.gradeIds ?? [input.gradeId],
     exactAddress: input.exactAddress,
     locationId: input.locationId,
     districtId,
@@ -154,10 +156,10 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
  * record shape and downstream pipeline either way, only who's
  * recorded as the actor differs.
  *
- * One submission can cover several children (the form's "Add Student"
- * button) — the parent contact, location, availability, and gender
- * preference are entered once and shared; each student block becomes
- * its own Student + TuitionRequest, all linked to the same parent.
+ * One submission can cover one or more children (the form's "Add Student"
+ * button). All students in the form belong to this single tuition request,
+ * ensuring one tutor is assigned to teach them together under a single
+ * agreed tuition arrangement.
  */
 export async function createTuitionRequestFromParsedData(
   data: import("zod").infer<typeof tuitionRequestSchema>,
@@ -166,7 +168,11 @@ export async function createTuitionRequestFromParsedData(
   const now = FieldValue.serverTimestamp();
   const parentId = await findOrCreateContact(data.parentFullName, data.parentPhone, data.parentEmail || null, now);
 
-  const tuitionUids: string[] = [];
+  const studentIds: string[] = [];
+  const studentNames: string[] = [];
+  const allSubjectIds: string[] = [];
+  const allGradeIds: string[] = [];
+
   for (const student of data.students) {
     const studentRef = studentsCollection().doc();
     await studentRef.set({
@@ -179,29 +185,43 @@ export async function createTuitionRequestFromParsedData(
       currentYearOrSemester: student.currentYearOrSemester || null,
       createdAt: now,
     });
-
-    const result = await createPostingRecord({
-      postingType: "HOME_TUITION",
-      parentId,
-      studentId: studentRef.id,
-      institutionName: null,
-      subjectIds: student.subjectIds,
-      gradeId: student.gradeId,
-      exactAddress: data.exactAddress,
-      locationId: data.locationId,
-      tutorVisibleLocality: data.tutorVisibleLocality,
-      tutorGenderPreference: data.tutorGenderPreference,
-      slots: data.slots,
-      notes: data.notes || null,
-      notifyTitle: "New tuition request",
-      notifyBody: `${student.studentFullName}'s ${student.subjectIds.join(", ")} request in ${data.tutorVisibleLocality} is awaiting review.`,
-      actor,
-    });
-    if (!result.ok) return result;
-    tuitionUids.push(result.tuitionUid);
+    studentIds.push(studentRef.id);
+    studentNames.push(student.studentFullName);
+    if (!allGradeIds.includes(student.gradeId)) {
+      allGradeIds.push(student.gradeId);
+    }
+    for (const sid of student.subjectIds) {
+      if (!allSubjectIds.includes(sid)) {
+        allSubjectIds.push(sid);
+      }
+    }
   }
 
-  return { ok: true, tuitionUids };
+  const primaryGradeId = data.students[0]?.gradeId ?? "";
+  const studentsSummary = studentNames.join(", ");
+  const subjectsSummary = allSubjectIds.join(", ");
+
+  const result = await createPostingRecord({
+    postingType: "HOME_TUITION",
+    parentId,
+    studentIds,
+    institutionName: null,
+    subjectIds: allSubjectIds,
+    gradeId: primaryGradeId,
+    gradeIds: allGradeIds,
+    exactAddress: data.exactAddress,
+    locationId: data.locationId,
+    tutorVisibleLocality: data.tutorVisibleLocality,
+    tutorGenderPreference: data.tutorGenderPreference,
+    slots: data.slots,
+    notes: data.notes || null,
+    notifyTitle: "New tuition request",
+    notifyBody: `${studentsSummary}'s ${subjectsSummary} request in ${data.tutorVisibleLocality} is awaiting review.`,
+    actor,
+  });
+
+  if (!result.ok) return result;
+  return { ok: true, tuitionUids: [result.tuitionUid] };
 }
 
 /**

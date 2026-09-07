@@ -16,15 +16,27 @@ export interface TuitionRequestQueueRow {
 }
 
 async function withParentAndStudent(requests: TuitionRequest[]): Promise<TuitionRequestQueueRow[]> {
-  const [parents, students] = await Promise.all([
+  const [parents, studentNameLists] = await Promise.all([
     Promise.all(requests.map((r) => parentsCollection().doc(r.parentId).get())),
-    // SCHOOL postings have no student (see TuitionRequest.studentId doc comment).
-    Promise.all(requests.map((r) => (r.studentId ? studentsCollection().doc(r.studentId).get() : null))),
+    Promise.all(
+      requests.map(async (r) => {
+        const ids: string[] =
+          Array.isArray(r.studentIds) && r.studentIds.length > 0
+            ? r.studentIds
+            : (r as unknown as { studentId?: string | null }).studentId
+              ? [(r as unknown as { studentId: string }).studentId]
+              : [];
+        if (ids.length === 0) return null;
+        const studentSnaps = await Promise.all(ids.map((id) => studentsCollection().doc(id).get()));
+        const names = studentSnaps.map((s) => s.data()?.fullName).filter(Boolean);
+        return names.length > 0 ? names.join(", ") : null;
+      }),
+    ),
   ]);
   return requests.map((request, i) => ({
     request,
     parentName: parents[i]?.data()?.fullName ?? null,
-    studentName: students[i]?.data()?.fullName ?? null,
+    studentName: studentNameLists[i],
   }));
 }
 

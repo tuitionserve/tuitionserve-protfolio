@@ -7,6 +7,7 @@
  */
 
 export const SUBJECTS = [
+  { id: "all-subjects", label: "All Subjects" },
   { id: "mathematics", label: "Mathematics" },
   { id: "science", label: "Science" },
   { id: "english", label: "English" },

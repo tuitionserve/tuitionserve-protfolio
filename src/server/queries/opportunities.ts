@@ -14,6 +14,15 @@ import type {
 } from "@/server/domain/types";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 
+export interface TutorOpportunityStudentView {
+  id: string;
+  fullName: string;
+  gradeId: string;
+  schoolName: string | null;
+  currentProgram: string | null;
+  currentYearOrSemester: string | null;
+}
+
 /**
  * Tutor-safe view of an open tuition opportunity (PRD section 15 /
  * location-privacy skill). The parent/student/exactAddress fields stay
@@ -45,6 +54,7 @@ export interface TutorOpportunityView {
   parentEmail: string | null;
   studentName: string | null;
   schoolName: string | null;
+  students?: TutorOpportunityStudentView[];
   exactAddress: string | null;
 }
 
@@ -130,8 +140,16 @@ export async function getOpenOpportunities(
   const page = await fetchPage(base, "createdAt", cursor);
   let requests = page.items;
 
-  if (filters.subjectId) requests = requests.filter((r) => r.subjectIds.includes(filters.subjectId!));
-  if (filters.gradeId) requests = requests.filter((r) => r.gradeId === filters.gradeId);
+  if (filters.subjectId) {
+    requests = requests.filter(
+      (r) => r.subjectIds.includes(filters.subjectId!) || r.subjectIds.includes("all-subjects"),
+    );
+  }
+  if (filters.gradeId) {
+    requests = requests.filter(
+      (r) => r.gradeId === filters.gradeId || (r.gradeIds && r.gradeIds.includes(filters.gradeId!)),
+    );
+  }
   if (filters.dayOfWeek) {
     requests = requests.filter((r) => r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek));
   }
@@ -159,11 +177,25 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
   // "Currently studying" is non-sensitive (like grade/subject) — shown
   // on the detail view regardless of application status, unlike the
   // parent/exact-address block below which is assignment-gated.
-  const studentSnapForDetail = data.studentId ? await studentsCollection().doc(data.studentId).get() : null;
-  const studentForDetail = studentSnapForDetail?.data();
+  const studentIds: string[] =
+    Array.isArray(data.studentIds) && data.studentIds.length > 0
+      ? data.studentIds
+      : (data as unknown as { studentId?: string | null }).studentId
+        ? [(data as unknown as { studentId: string }).studentId]
+        : [];
+
+  const studentSnaps =
+    studentIds.length > 0
+      ? await Promise.all(studentIds.map((sid) => studentsCollection().doc(sid).get()))
+      : [];
+  const studentsList = studentSnaps
+    .map((s) => s.data())
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
+
+  const firstStudent = studentsList[0];
   const currentStudyingPatch = {
-    currentProgram: studentForDetail?.currentProgram ?? null,
-    currentYearOrSemester: studentForDetail?.currentYearOrSemester ?? null,
+    currentProgram: firstStudent?.currentProgram ?? null,
+    currentYearOrSemester: firstStudent?.currentYearOrSemester ?? null,
   };
 
   if (data.status === "OPEN") {
@@ -190,8 +222,16 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
       parentName: parent?.fullName ?? null,
       parentPhone: parent?.phone ?? null,
       parentEmail: parent?.email ?? null,
-      studentName: studentForDetail?.fullName ?? null,
-      schoolName: studentForDetail?.schoolName ?? null,
+      studentName: studentsList.map((s) => s.fullName).join(", ") || null,
+      schoolName: studentsList.map((s) => s.schoolName).filter(Boolean).join(", ") || null,
+      students: studentsList.map((s) => ({
+        id: s.id,
+        fullName: s.fullName,
+        gradeId: s.gradeId,
+        schoolName: s.schoolName,
+        currentProgram: s.currentProgram,
+        currentYearOrSemester: s.currentYearOrSemester,
+      })),
       exactAddress: data.exactAddress,
     };
   }

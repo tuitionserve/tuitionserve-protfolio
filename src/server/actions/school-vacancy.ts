@@ -68,10 +68,11 @@ export async function submitSchoolVacancyAsAdmin(formData: FormData): Promise<Ac
   return createPostingRecord({
     postingType: "SCHOOL",
     parentId,
-    studentId: null,
+    studentIds: [],
     institutionName: data.institutionName,
     subjectIds: [data.subjectId],
     gradeId: data.gradeId,
+    gradeIds: [data.gradeId],
     exactAddress: data.exactAddress,
     locationId: data.locationId,
     tutorVisibleLocality: data.tutorVisibleLocality,

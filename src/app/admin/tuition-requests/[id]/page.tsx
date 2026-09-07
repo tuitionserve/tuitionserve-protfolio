@@ -53,16 +53,25 @@ export default async function AdminTuitionRequestDetailPage({
     totalCount: 0,
   };
 
-  const [parentSnap, studentSnap, applicants, assignment] = await Promise.all([
+  const studentIds: string[] =
+    Array.isArray(request.studentIds) && request.studentIds.length > 0
+      ? request.studentIds
+      : (request as unknown as { studentId?: string | null }).studentId
+        ? [(request as unknown as { studentId: string }).studentId]
+        : [];
+
+  const [parentSnap, studentSnaps, applicants, assignment] = await Promise.all([
     parentsCollection().doc(request.parentId).get(),
-    request.studentId ? studentsCollection().doc(request.studentId).get() : Promise.resolve(null),
+    studentIds.length > 0
+      ? Promise.all(studentIds.map((sid) => studentsCollection().doc(sid).get()))
+      : Promise.resolve([]),
     request.status === "NEW"
       ? Promise.resolve(emptyApplicantsPage)
       : getApplicantsForTuition(id, currentCursor(cursorStack)),
     request.status === "ASSIGNED" ? getLatestAssignmentForTuition(id) : Promise.resolve(null),
   ]);
   const parent = parentSnap.data() ?? null;
-  const student = studentSnap?.data() ?? null;
+  const students = studentSnaps.map((s) => s.data()).filter((s): s is NonNullable<typeof s> => Boolean(s));
   const isSchool = request.postingType === "SCHOOL";
 
   return (
@@ -77,7 +86,7 @@ export default async function AdminTuitionRequestDetailPage({
           {isSchool ? "School Vacancy" : "Home Tuition"}
         </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {(isSchool ? request.institutionName : student?.fullName) ?? "Unnamed"} —{" "}
+          {(isSchool ? request.institutionName : students.map((s) => s.fullName).join(", ")) || "Unnamed"} —{" "}
           {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{request.tuitionUid}</p>
@@ -92,32 +101,44 @@ export default async function AdminTuitionRequestDetailPage({
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-2">
-          {isSchool ? "School & Vacancy" : "Student & Tuition"}
+          {isSchool ? "School & Vacancy" : students.length > 1 ? "Students & Tuition" : "Student & Tuition"}
         </h2>
         {isSchool ? (
-          <Row label="School" value={request.institutionName ?? ""} />
-        ) : (
           <>
-            <Row label="Student" value={student?.fullName ?? ""} />
-            <Row label="School" value={student?.schoolName ?? ""} />
-            {(student?.currentProgram || student?.currentYearOrSemester) && (
-              <Row
-                label="Currently studying"
-                value={[student?.currentProgram, student?.currentYearOrSemester].filter(Boolean).join(" · ")}
-              />
-            )}
+            <Row label="School" value={request.institutionName ?? ""} />
+            <Row label="Grade" value={catalogLabel(GRADES, request.gradeId)} />
           </>
+        ) : (
+          students.map((student, idx) => (
+            <div key={student.id ?? idx} className={idx > 0 ? "mt-4 pt-4 border-t border-surface-variant" : ""}>
+              {students.length > 1 && (
+                <div className="font-label-md text-label-md text-primary font-semibold mb-1">
+                  Student {idx + 1}: {student.fullName}
+                </div>
+              )}
+              <Row label="Student" value={student.fullName} />
+              <Row label="Grade" value={catalogLabel(GRADES, student.gradeId)} />
+              <Row label="School" value={student.schoolName ?? ""} />
+              {(student.currentProgram || student.currentYearOrSemester) && (
+                <Row
+                  label="Currently studying"
+                  value={[student.currentProgram, student.currentYearOrSemester].filter(Boolean).join(" · ")}
+                />
+              )}
+            </div>
+          ))
         )}
-        <Row label="Grade" value={catalogLabel(GRADES, request.gradeId)} />
-        <Row label="Subject" value={request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
-        <Row label="Tutor preference" value={GENDER_PREFERENCE_LABEL[request.tutorGenderPreference] ?? ""} />
-        <Row
-          label="Availability"
-          value={request.availability
-            .map((s) => `${catalogLabel(DAYS_OF_WEEK, s.dayOfWeek)} ${s.startTime}-${s.endTime}`)
-            .join("; ")}
-        />
-        <Row label="Notes" value={request.notes ?? ""} />
+        <div className={!isSchool && students.length > 0 ? "mt-4 pt-4 border-t border-surface-variant" : ""}>
+          <Row label="Subjects" value={request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")} />
+          <Row label="Tutor preference" value={GENDER_PREFERENCE_LABEL[request.tutorGenderPreference] ?? ""} />
+          <Row
+            label="Availability"
+            value={request.availability
+              .map((s) => `${catalogLabel(DAYS_OF_WEEK, s.dayOfWeek)} ${s.startTime}-${s.endTime}`)
+              .join("; ")}
+          />
+          <Row label="Notes" value={request.notes ?? ""} />
+        </div>
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">

@@ -269,7 +269,10 @@ export interface TuitionRequest {
   branchId: string | null; // resolved via resolveBranchIdForLocation; null = unrouted
   postingType: TuitionPostingType; // default HOME_TUITION; SCHOOL = a school vacancy an admin posted on a school's behalf
   parentId: string; // for SCHOOL postings, the school's contact person, stored the same way as a parent contact
-  studentId: string | null; // null for SCHOOL postings — a school vacancy has no single student
+  /**
+   * One or more children covered by this tuition request. Empty array for SCHOOL postings.
+   */
+  studentIds: string[]; // [] for SCHOOL postings
   institutionName: string | null; // SCHOOL postings only
   status: TuitionRequestStatus;
   // One or more subjects for the same student/tutor — a catalog id for
@@ -277,6 +280,7 @@ export interface TuitionRequest {
   // doesn't have (see SubjectMultiSelect). At least one entry.
   subjectIds: string[];
   gradeId: string; // catalog id, snapshot of Student.gradeId at request time (or the grade level being staffed, for SCHOOL)
+  gradeIds?: string[]; // all grade catalog IDs across all students in this request
   exactAddress: string; // PRIVATE — admin-only, never for a tutor-facing response
   locationId: string; // -> geographicLocations (ward-level)
   districtId: string | null; // denormalized ancestor of locationId, for filtering
