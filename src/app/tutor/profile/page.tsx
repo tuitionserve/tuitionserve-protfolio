@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { tutorProfilesCollection, branchesCollection } from "@/server/domain/collections";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
@@ -27,7 +28,14 @@ function Row({ label, value }: { label: string; value: string }) {
 
 export default async function TutorProfilePage() {
   const session = await requireActiveTutor();
-  const tutor = session.tutor!;
+  if (!session.tutor) redirect("/login");
+  const tutor = session.tutor;
+
+  // If the tutor has not completed the onboarding wizard yet, send them to onboarding
+  if (tutor.verificationStatus === "PROFILE_INCOMPLETE") {
+    redirect("/tutor/onboarding");
+  }
+
   const isApproved = tutor.verificationStatus === "APPROVED";
 
   const [profileSnap, branchSnap, pendingRequest] = await Promise.all([
@@ -140,7 +148,8 @@ export default async function TutorProfilePage() {
             <Row
               label="Availability"
               value={(profile.availability ?? [])
-                .map((s) => `${catalogLabel(DAYS_OF_WEEK, s.dayOfWeek)} ${s.startTime}-${s.endTime}`)
+                .filter((s) => s && s.dayOfWeek)
+                .map((s) => `${catalogLabel(DAYS_OF_WEEK, s.dayOfWeek)} ${s.startTime || ""}-${s.endTime || ""}`)
                 .join("; ")}
             />
             <Row label="CV" value={profile.cvDocumentId ? "Uploaded" : "Not uploaded"} />
