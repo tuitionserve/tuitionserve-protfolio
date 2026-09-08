@@ -38,7 +38,7 @@ src/server/actions/      "use server" mutations — one file per feature area
 src/server/queries/      Read-only data-fetching for pages (pagination, projections)
 scripts/                 Out-of-band CLI scripts (provision-admin, import-locations, etc.)
 docs/                    01-07: original product/UX/domain/TRD specs. 08: client handbook
-                          (.docx). 09: this file.
+                          (.docx / .md). 09: this file.
 ```
 
 ## 4. Roles and authorization — the exact mechanics

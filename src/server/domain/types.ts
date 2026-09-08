@@ -33,12 +33,25 @@ export interface UserAccount {
   updatedAt: FirebaseFirestore.Timestamp;
 }
 
+export interface BranchCoverage {
+  districtId: string;
+  districtName?: string;
+  /**
+   * Specific local governments (municipalities/rural municipalities) covered.
+   * If empty or undefined, the ENTIRE district is covered by this branch.
+   */
+  localGovernmentIds?: string[];
+}
+
 export interface Branch {
   id: string;
   branchUid: string; // e.g. TS-B-000001
   name: string;
   city: string;
   status: "ACTIVE" | "INACTIVE";
+  coverage?: BranchCoverage[];
+  coverageDistrictIds?: string[];
+  coverageLocalGovernmentIds?: string[];
   createdAt: FirebaseFirestore.Timestamp;
   updatedAt: FirebaseFirestore.Timestamp;
 }

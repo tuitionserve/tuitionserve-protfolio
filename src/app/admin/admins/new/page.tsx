@@ -1,11 +1,15 @@
 import Link from "next/link";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
+import { getAllDistricts } from "@/server/queries/location-hierarchy";
 import { CreateAdminForm } from "@/components/admin/users/CreateAdminForm";
 
 export default async function NewAdminPage() {
   await requireRole(["SUPER_ADMIN"]);
-  const branchesSnap = await branchesCollection().where("status", "==", "ACTIVE").get();
+  const [branchesSnap, districts] = await Promise.all([
+    branchesCollection().where("status", "==", "ACTIVE").get(),
+    getAllDistricts(),
+  ]);
   const branches = branchesSnap.docs.map((d) => ({ id: d.data().id, name: d.data().name }));
 
   return (
@@ -21,7 +25,7 @@ export default async function NewAdminPage() {
         </p>
       </div>
 
-      <CreateAdminForm branches={branches} />
+      <CreateAdminForm branches={branches} districts={districts} />
     </div>
   );
 }

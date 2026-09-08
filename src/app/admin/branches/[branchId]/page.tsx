@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getBranchDetail } from "@/server/queries/branch-detail";
+import { getAllDistricts } from "@/server/queries/location-hierarchy";
 import { currentCursor, parseCursorStack, DEFAULT_PAGE_SIZE } from "@/server/domain/pagination";
 import { PaginationBar } from "@/components/shared/PaginationBar";
 import { BackButton } from "@/components/shared/BackButton";
+import { BranchCoverageCard } from "@/components/admin/branches/BranchCoverageCard";
 
 const STATUS_LABEL: Record<string, string> = {
   PROFILE_INCOMPLETE: "Incomplete",
@@ -24,7 +26,11 @@ export default async function AdminBranchDetailPage({
 }) {
   const { branchId } = await params;
   const cursorStack = parseCursorStack((await searchParams).cursors);
-  const { branch, admins, tutors } = await getBranchDetail(branchId, currentCursor(cursorStack));
+  const [detail, districts] = await Promise.all([
+    getBranchDetail(branchId, currentCursor(cursorStack)),
+    getAllDistricts(),
+  ]);
+  const { branch, admins, tutors } = detail;
   if (!branch) notFound();
 
   return (
@@ -45,6 +51,16 @@ export default async function AdminBranchDetailPage({
           {branch.status === "ACTIVE" ? "Active" : "Inactive"}
         </span>
       </div>
+
+      <BranchCoverageCard
+        branch={{
+          id: branch.id,
+          name: branch.name,
+          city: branch.city,
+          coverage: branch.coverage,
+        }}
+        districts={districts}
+      />
 
       <div>
         <h2 className="font-headline-sm text-headline-sm text-on-surface mb-3">Admins ({admins.length})</h2>

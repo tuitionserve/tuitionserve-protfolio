@@ -9,7 +9,7 @@ import { branchesCollection, userAccountsCollection } from "@/server/domain/coll
 import { generateSequentialUid } from "@/server/domain/ids";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import { writeAuditEvent } from "@/server/domain/audit";
-import type { Role } from "@/server/domain/types";
+import type { Role, BranchCoverage } from "@/server/domain/types";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 export type CreateAdminResult =
@@ -171,6 +171,20 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
 
   if (role === "BRANCH_ADMIN") {
     if (parsed.data.branchId === NEW_BRANCH_SENTINEL) {
+      let parsedCoverage: BranchCoverage[] = [];
+      const coverageRaw = formData.get("newBranchCoverage");
+      if (typeof coverageRaw === "string" && coverageRaw.trim()) {
+        try {
+          parsedCoverage = JSON.parse(coverageRaw);
+        } catch {
+          // ignore
+        }
+      }
+      const coverageDistrictIds = Array.from(new Set(parsedCoverage.map((c) => c.districtId)));
+      const coverageLocalGovernmentIds = Array.from(
+        new Set(parsedCoverage.flatMap((c) => c.localGovernmentIds ?? [])),
+      );
+
       // Mirrors scripts/provision-admin.ts's --branch-name/--branch-city
       // path — this is the in-app equivalent (PRD AUTH-003 forbids
       // *public* admin/branch registration, not a Super-Admin-gated one).
@@ -182,6 +196,9 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
         branchUid: newBranchUid,
         name: parsed.data.newBranchName!,
         city: parsed.data.newBranchCity!,
+        coverage: parsedCoverage,
+        coverageDistrictIds,
+        coverageLocalGovernmentIds,
         status: "ACTIVE",
         createdAt: now,
         updatedAt: now,

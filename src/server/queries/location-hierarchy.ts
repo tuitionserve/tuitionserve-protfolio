@@ -28,6 +28,13 @@ export async function getDistrictsForProvince(provinceId: string): Promise<Locat
   return snap.docs.map((d) => toNode(d.data())).sort((a, b) => a.name.localeCompare(b.name, "ne"));
 }
 
+export async function getAllDistricts(): Promise<LocationNode[]> {
+  const snap = await geographicLocationsCollection().where("level", "==", "DISTRICT").get();
+  return snap.docs
+    .map((d) => toNode(d.data()))
+    .sort((a, b) => (a.nameEnglish ?? a.name).localeCompare(b.nameEnglish ?? b.name));
+}
+
 export async function getLocalGovernmentsForDistrict(districtId: string): Promise<LocationNode[]> {
   const snap = await geographicLocationsCollection()
     .where("level", "==", "LOCAL_GOVERNMENT")
