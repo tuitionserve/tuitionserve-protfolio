@@ -53,6 +53,7 @@ export function PublicFooter() {
         <div className="flex flex-col gap-2">
           <Link href="/privacy-policy" className={linkClass}>Privacy Policy</Link>
           <Link href="/terms-of-service" className={linkClass}>Terms of Service</Link>
+          <Link href="/price" className={linkClass}>Price</Link>
         </div>
       </div>
     </footer>
