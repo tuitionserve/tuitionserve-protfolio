@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminStorage } from "@/lib/firebase/admin";
-import { tutorDocumentsCollection } from "./collections";
+import { tutorApplicationsCollection, tutorDocumentsCollection } from "./collections";
 import type { DocumentType } from "./types";
 
 const MIME_EXTENSIONS: Record<string, string> = {
@@ -111,4 +111,112 @@ export async function getSignedDownloadUrl(storagePath: string): Promise<string>
     .file(storagePath)
     .getSignedUrl({ action: "read", expires: Date.now() + 5 * 60 * 1000 });
   return url;
+}
+
+/** Resolves a short-lived signed URL for a TutorDocument if it exists and belongs to `tutorId`. */
+export async function getTutorDocumentSignedUrl(
+  documentId: string | null | undefined,
+  tutorId: string,
+): Promise<string | null> {
+  if (!documentId) return null;
+  try {
+    const snap = await tutorDocumentsCollection().doc(documentId).get();
+    if (!snap.exists) return null;
+    const doc = snap.data()!;
+    if (doc.tutorId !== tutorId) return null;
+    return await getSignedDownloadUrl(doc.storagePath);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Uploads an admin-supplied blog cover image (JPEG/PNG/WebP, max 3MB,
+ * magic-byte verified) to `blog-covers/` and returns the public-proxy
+ * path `/api/media/blog-cover/<filename>`.
+ */
+export async function uploadBlogCoverImage(params: {
+  buffer: Buffer;
+  mimeType: string;
+  originalFileName: string;
+}): Promise<string> {
+  const { buffer, mimeType } = params;
+  const limits = LIMITS.PROFILE_PHOTO;
+
+  if (!limits.mimeTypes.includes(mimeType)) {
+    throw new InvalidDocumentError(
+      `Cover image must be one of: ${limits.mimeTypes.join(", ")}`,
+    );
+  }
+  if (buffer.byteLength === 0) {
+    throw new InvalidDocumentError("The uploaded cover image is empty.");
+  }
+  if (buffer.byteLength > limits.maxBytes) {
+    throw new InvalidDocumentError(
+      `Cover image exceeds the ${Math.floor(limits.maxBytes / (1024 * 1024))}MB limit.`,
+    );
+  }
+  if (!MAGIC_BYTES[mimeType]!(buffer)) {
+    throw new InvalidDocumentError(
+      "The file's contents don't match its image type. Please choose a valid PNG, JPG, or WebP.",
+    );
+  }
+
+  const extension = MIME_EXTENSIONS[mimeType];
+  const fileName = `${Date.now()}-${randomUUID()}.${extension}`;
+  const storagePath = `blog-covers/${fileName}`;
+
+  await adminStorage.bucket().file(storagePath).save(buffer, {
+    metadata: { contentType: mimeType },
+  });
+
+  return `/api/media/blog-cover/${fileName}`;
+}
+
+/**
+ * Best-effort cleanup of a replaced or deleted blog cover stored in
+ * `blog-covers/<file>`. External HTTPS URLs are untouched.
+ */
+export async function deleteBlogCoverByUrl(url: string | null | undefined): Promise<void> {
+  const prefix = "/api/media/blog-cover/";
+  if (!url || !url.startsWith(prefix)) return;
+  const fileName = url.slice(prefix.length);
+  if (!/^[0-9]+-[0-9a-f-]+\.(jpg|png|webp)$/.test(fileName)) return;
+  try {
+    await adminStorage.bucket().file(`blog-covers/${fileName}`).delete({ ignoreNotFound: true });
+  } catch {
+    // Non-fatal cleanup
+  }
+}
+
+/**
+ * Best-effort cleanup of a replaced TutorDocument + its Storage object.
+ * Never deletes a CV that is still referenced by a submitted
+ * TutorApplication (snapshot principle).
+ */
+export async function deleteReplacedTutorDocument(
+  oldDocumentId: string | null | undefined,
+  tutorId: string,
+): Promise<void> {
+  if (!oldDocumentId) return;
+  try {
+    const ref = tutorDocumentsCollection().doc(oldDocumentId);
+    const snap = await ref.get();
+    if (!snap.exists) return;
+    const doc = snap.data()!;
+    if (doc.tutorId !== tutorId) return;
+
+    if (doc.documentType === "CV") {
+      const appRefCheck = await tutorApplicationsCollection()
+        .where("cvDocumentId", "==", oldDocumentId)
+        .limit(1)
+        .get();
+      if (!appRefCheck.empty) return;
+    }
+
+    await adminStorage.bucket().file(doc.storagePath).delete({ ignoreNotFound: true });
+    await ref.delete();
+  } catch {
+    // Non-fatal cleanup — never fail an upload if old file cleanup fails.
+  }
 }

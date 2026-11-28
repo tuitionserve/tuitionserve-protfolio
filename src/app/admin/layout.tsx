@@ -5,15 +5,17 @@ import { LogoutButton } from "@/components/auth/LogoutButton";
 import { countUnreadNotifications } from "@/server/queries/my-notifications";
 import { countUnreadContactQueries } from "@/server/queries/contact-queries";
 import { countUnreadSchoolContactQueries } from "@/server/queries/school-contact-queries";
+import { countUnreadConversationsForAdmin } from "@/server/actions/messaging";
 import { BottomTabBar } from "@/components/shared/BottomTabBar";
 import { Sidebar, type SidebarSection } from "@/components/shared/Sidebar";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
-  const [unreadCount, unreadContactCount, unreadSchoolContactCount] = await Promise.all([
+  const [unreadCount, unreadContactCount, unreadSchoolContactCount, unreadMessagesCount] = await Promise.all([
     countUnreadNotifications(session.uid),
     countUnreadContactQueries(),
     countUnreadSchoolContactQueries(),
+    countUnreadConversationsForAdmin(session),
   ]);
   const isSuperAdmin = session.role === "SUPER_ADMIN";
 
@@ -48,6 +50,13 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         { label: "Post School Enquiry", href: "/admin/school-contact-queries/post", icon: "add_business" },
       ],
     },
+    {
+      label: "Content",
+      links: [
+        { label: "Blog Posts", href: "/admin/blogs", icon: "article" },
+        { label: "Write Blog Post", href: "/admin/blogs/new", icon: "edit_square" },
+      ],
+    },
     ...(isSuperAdmin
       ? [
           {
@@ -62,7 +71,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     {
       label: "Communication",
       links: [
-        { label: "Messages", href: "/admin/messages", icon: "chat" },
+        { label: "Messages", href: "/admin/messages", icon: "chat", badge: unreadMessagesCount },
         { label: "Notifications", href: "/admin/notifications", icon: "notifications", badge: unreadCount },
       ],
     },
@@ -75,7 +84,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const tabLinks = [
     { label: "Home", href: "/admin/dashboard", icon: "home" },
     { label: "Requests", href: "/admin/tuition-requests/new", icon: "post_add" },
-    { label: "Messages", href: "/admin/messages", icon: "chat" },
+    { label: "Messages", href: "/admin/messages", icon: "chat", badge: unreadMessagesCount },
     { label: "Alerts", href: "/admin/notifications", icon: "notifications", badge: unreadCount },
   ];
 
