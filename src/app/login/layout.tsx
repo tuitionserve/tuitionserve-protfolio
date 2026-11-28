@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/server/auth/session";
+
+export const metadata: Metadata = {
+  title: "Log In",
+  robots: { index: false, follow: false },
+};
 
 /** A signed-in user has no business on the login page — bounce them to their dashboard instead of showing the form. */
 export default async function LoginLayout({ children }: { children: React.ReactNode }) {

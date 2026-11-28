@@ -1,20 +1,23 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   describeFirebaseAuthError,
   sendPasswordReset,
   signInWithEmail,
   signInWithGoogle,
 } from "@/lib/auth/client-actions";
+import { resolveSafeNextPath } from "@/lib/auth/safe-next";
 import { GoogleLogo } from "@/components/auth/GoogleLogo";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 
-export default function LoginPage() {
+function LoginFormContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextParam = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -24,11 +27,13 @@ export default function LoginPage() {
 
   // The server looks up the account's actual role — we never assert
   // "I'm a tutor" or "I'm an admin" here, we just redirect wherever the
-  // response says to.
+  // safe role-scoped destination says to.
   function redirectForRole(role: string) {
-    router.push(role === "TUTOR" ? "/tutor/dashboard" : "/admin/dashboard");
+    router.push(resolveSafeNextPath(nextParam, role));
     router.refresh();
   }
+
+  const registerHref = nextParam ? `/register?next=${encodeURIComponent(nextParam)}` : "/register";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -221,7 +226,7 @@ export default function LoginPage() {
               </button>
               <p className="font-body-sm text-body-sm text-on-surface-variant mt-6 text-center">
                 New tutor?{" "}
-                <Link href="/register" className="text-primary font-medium">
+                <Link href={registerHref} className="text-primary font-medium">
                   Create an account
                 </Link>
               </p>
@@ -230,5 +235,13 @@ export default function LoginPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-full bg-surface" />}>
+      <LoginFormContent />
+    </Suspense>
   );
 }

@@ -1,25 +1,29 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { Suspense, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   describeFirebaseAuthError,
   signInWithGoogle,
   signUpTutorWithEmail,
 } from "@/lib/auth/client-actions";
+import { resolveSafeNextPath } from "@/lib/auth/safe-next";
 import { GoogleLogo } from "@/components/auth/GoogleLogo";
 import { PasswordInput } from "@/components/auth/PasswordInput";
 
-export default function RegisterPage() {
+function RegisterFormContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextParam = searchParams.get("next");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const loginHref = nextParam ? `/login?next=${encodeURIComponent(nextParam)}` : "/login";
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -32,8 +36,8 @@ export default function RegisterPage() {
 
     setSubmitting(true);
     try {
-      await signUpTutorWithEmail(email, password, fullName);
-      router.push("/tutor/dashboard");
+      const { role } = await signUpTutorWithEmail(email, password, fullName);
+      router.push(resolveSafeNextPath(nextParam, role));
       router.refresh();
     } catch (err) {
       setError(describeFirebaseAuthError(err));
@@ -46,8 +50,8 @@ export default function RegisterPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await signInWithGoogle();
-      router.push("/tutor/dashboard");
+      const { role } = await signInWithGoogle();
+      router.push(resolveSafeNextPath(nextParam, role));
       router.refresh();
     } catch (err) {
       setError(describeFirebaseAuthError(err));
@@ -159,12 +163,20 @@ export default function RegisterPage() {
 
           <p className="font-body-sm text-body-sm text-on-surface-variant mt-6 text-center">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary font-medium">
+            <Link href={loginHref} className="text-primary font-medium">
               Log in
             </Link>
           </p>
         </div>
       </main>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-full bg-surface" />}>
+      <RegisterFormContent />
+    </Suspense>
   );
 }
