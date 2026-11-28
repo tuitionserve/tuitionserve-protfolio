@@ -7,6 +7,7 @@ import { submitSchoolVacancyAsAdmin } from "@/server/actions/school-vacancy";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } from "@/components/public/tuition-request/formStyles";
 import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
+import { CopyLinkButton } from "@/components/shared/CopyLinkButton";
 
 interface Slot {
   dayOfWeek: string;
@@ -32,7 +33,7 @@ export function SchoolVacancyForm({ provinces }: { provinces: LocationNodeLite[]
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
-  const [submittedUid, setSubmittedUid] = useState<string | null>(null);
+  const [submittedResult, setSubmittedResult] = useState<{ uid: string; slug: string } | null>(null);
 
   function updateSlot(index: number, patch: Partial<Slot>) {
     setSlots((prev) => prev.map((slot, i) => (i === index ? { ...slot, ...patch } : slot)));
@@ -64,7 +65,7 @@ export function SchoolVacancyForm({ provinces }: { provinces: LocationNodeLite[]
     startTransition(async () => {
       const result = await submitSchoolVacancyAsAdmin(formData);
       if (result.ok) {
-        setSubmittedUid(result.tuitionUid);
+        setSubmittedResult({ uid: result.tuitionUid, slug: result.slug });
       } else {
         setError(result.error);
         setFieldErrors(result.fieldErrors ?? {});
@@ -72,19 +73,30 @@ export function SchoolVacancyForm({ provinces }: { provinces: LocationNodeLite[]
     });
   }
 
-  if (submittedUid) {
+  if (submittedResult) {
+    const publicPath = `/vacancies/${submittedResult.slug}`;
     return (
       <div className={sectionClass}>
         <div className="flex items-center gap-3">
           <MaterialIcon name="check_circle" filled className="text-primary-container text-3xl" />
-          <h2 className="font-headline-md text-headline-md text-on-surface">Vacancy posted</h2>
+          <h2 className="font-headline-md text-headline-md text-on-surface">Vacancy published</h2>
         </div>
         <p className="font-body-md text-body-md text-on-surface-variant">
-          It&rsquo;s now a New Request ({submittedUid}) — confirm it from there to make it visible to tutors.
+          Vacancy <strong>{submittedResult.uid}</strong> is now live in Open Tuitions and visible on the public
+          Vacancies page for tutors to discover and apply.
         </p>
-        <Link href="/admin/tuition-requests/new" className="self-start font-label-md text-label-md text-primary-container">
-          View New Requests
-        </Link>
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <CopyLinkButton path={publicPath} label="Copy Shareable Vacancy Link" variant="filled" />
+          <Link
+            href={publicPath}
+            className="font-label-md text-label-md border border-outline-variant px-3.5 py-2 rounded-lg text-on-surface hover:border-primary-container"
+          >
+            View Public Vacancy
+          </Link>
+          <Link href="/admin/tuition-requests/open" className="font-label-md text-label-md text-primary-container px-2 py-2">
+            View Open Tuitions
+          </Link>
+        </div>
       </div>
     );
   }

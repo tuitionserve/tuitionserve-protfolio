@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { FieldValue } from "firebase-admin/firestore";
 import {
   geographicLocationsCollection,
@@ -8,16 +9,18 @@ import {
   tuitionRequestsCollection,
 } from "@/server/domain/collections";
 import { generateSequentialUid } from "@/server/domain/ids";
+import { buildTuitionSlug } from "@/server/domain/slug";
 import { resolveBranchIdForLocation } from "@/server/domain/branch-routing";
 import { notifyAdminsForBranch } from "@/server/domain/notifications";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { tuitionRequestSchema } from "@/server/domain/parent-request-schema";
 import { getLocationAncestry } from "@/server/queries/location-hierarchy";
 import { fieldErrorsFrom } from "@/server/actions/action-utils";
+import { checkPublicRateLimit, isHoneypotTriggered } from "@/server/domain/rate-limit";
 import type { AvailabilitySlot, TuitionPostingType, TutorGenderPreference } from "@/server/domain/types";
 
 export type ActionResult =
-  | { ok: true; tuitionUids: string[] }
+  | { ok: true; tuitionUids: string[]; primarySlug?: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
 type Actor = { userId: string | null; role: "SYSTEM" | "SUPER_ADMIN" | "BRANCH_ADMIN" };
@@ -72,10 +75,13 @@ interface PostingRecordInput {
   notifyTitle: string;
   notifyBody: string;
   actor: Actor;
+  /** Public parent submissions start as NEW (awaiting verification); admin postings go straight to OPEN. */
+  initialStatus?: "NEW" | "OPEN";
+  reviewedBy?: string | null;
 }
 
 export type PostingRecordResult =
-  | { ok: true; tuitionUid: string }
+  | { ok: true; tuitionUid: string; slug: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
 /** Writes one TuitionRequest doc + audit event + admin notification — shared by both posting types below. */
@@ -100,16 +106,28 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
   const districtId = ancestry.find((l) => l.level === "DISTRICT")?.id ?? null;
 
   const tuitionUid = await generateSequentialUid("tuition");
+  const slug = buildTuitionSlug({
+    postingType: input.postingType,
+    gradeId: input.gradeId,
+    gradeIds: input.gradeIds,
+    subjectIds: input.subjectIds,
+    institutionName: input.institutionName,
+    tutorVisibleLocality: input.tutorVisibleLocality,
+    tuitionUid,
+  });
+  const initialStatus = input.initialStatus ?? "NEW";
+  const isDirectOpen = initialStatus === "OPEN";
   const requestRef = tuitionRequestsCollection().doc();
   await requestRef.set({
     id: requestRef.id,
     tuitionUid,
+    slug,
     branchId,
     postingType: input.postingType,
     parentId: input.parentId,
     studentIds: input.studentIds,
     institutionName: input.institutionName,
-    status: "NEW",
+    status: initialStatus,
     subjectIds: input.subjectIds,
     gradeId: input.gradeId,
     gradeIds: input.gradeIds ?? [input.gradeId],
@@ -122,39 +140,46 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
     availability: input.slots,
     notes: input.notes,
     rejectionReason: null,
-    confirmedAt: null,
+    confirmedAt: isDirectOpen ? now : null,
     rejectedAt: null,
-    reviewedBy: null,
+    reviewedBy: isDirectOpen ? (input.reviewedBy ?? input.actor.userId ?? null) : null,
     assignedApplicationId: null,
     createdAt: now,
     updatedAt: now,
   } as never);
 
   await writeAuditEvent({
-    action: "TUITION_REQUEST_SUBMITTED",
+    action: isDirectOpen ? "TUITION_POSTED_OPEN" : "TUITION_REQUEST_SUBMITTED",
     actorUserId: input.actor.userId,
     actorRole: input.actor.role,
     targetType: "TuitionRequest",
     targetId: requestRef.id,
-    metadata: { tuitionUid, branchId, postingType: input.postingType },
+    metadata: { tuitionUid, slug, branchId, postingType: input.postingType, status: initialStatus },
   });
 
-  await notifyAdminsForBranch(branchId, {
-    type: "NEW_TUITION_REQUEST",
-    title: input.notifyTitle,
-    body: input.notifyBody,
-    relatedEntityType: "TuitionRequest",
-    relatedEntityId: requestRef.id,
-  });
+  if (isDirectOpen) {
+    revalidatePath("/vacancies");
+    revalidatePath(`/vacancies/${slug}`);
+    revalidatePath("/tutor/opportunities");
+    revalidatePath("/admin/tuition-requests/open");
+  } else {
+    await notifyAdminsForBranch(branchId, {
+      type: "NEW_TUITION_REQUEST",
+      title: input.notifyTitle,
+      body: input.notifyBody,
+      relatedEntityType: "TuitionRequest",
+      relatedEntityId: requestRef.id,
+    });
+    revalidatePath("/admin/tuition-requests/new");
+  }
 
-  return { ok: true, tuitionUid };
+  return { ok: true, tuitionUid, slug };
 }
 
 /**
  * Shared by the public submission below and the admin-initiated
- * "post a tuition manually" action (phone-intake requests) — same
- * record shape and downstream pipeline either way, only who's
- * recorded as the actor differs.
+ * "post a tuition manually" action — same record shape, with admins
+ * able to publish straight to OPEN while parent submissions enter NEW.
  *
  * One submission can cover one or more children (the form's "Add Student"
  * button). All students in the form belong to this single tuition request,
@@ -164,6 +189,7 @@ async function createPostingRecord(input: PostingRecordInput): Promise<PostingRe
 export async function createTuitionRequestFromParsedData(
   data: import("zod").infer<typeof tuitionRequestSchema>,
   actor: Actor,
+  options?: { initialStatus?: "NEW" | "OPEN"; reviewedBy?: string | null },
 ): Promise<ActionResult> {
   const now = FieldValue.serverTimestamp();
   const parentId = await findOrCreateContact(data.parentFullName, data.parentPhone, data.parentEmail || null, now);
@@ -218,10 +244,12 @@ export async function createTuitionRequestFromParsedData(
     notifyTitle: "New tuition request",
     notifyBody: `${studentsSummary}'s ${subjectsSummary} request in ${data.tutorVisibleLocality} is awaiting review.`,
     actor,
+    initialStatus: options?.initialStatus,
+    reviewedBy: options?.reviewedBy,
   });
 
   if (!result.ok) return result;
-  return { ok: true, tuitionUids: [result.tuitionUid] };
+  return { ok: true, tuitionUids: [result.tuitionUid], primarySlug: result.slug };
 }
 
 /**
@@ -229,6 +257,14 @@ export async function createTuitionRequestFromParsedData(
  * (PRD: public form only).
  */
 export async function submitTuitionRequest(formData: FormData): Promise<ActionResult> {
+  if (isHoneypotTriggered(formData)) {
+    return { ok: false, error: "Unable to submit right now. Please try again." };
+  }
+  const { allowed } = await checkPublicRateLimit("tuition-request", 6, 10 * 60 * 1000);
+  if (!allowed) {
+    return { ok: false, error: "Too many submissions from your network. Please wait a few minutes and try again." };
+  }
+
   let slots: unknown;
   let students: unknown;
   try {

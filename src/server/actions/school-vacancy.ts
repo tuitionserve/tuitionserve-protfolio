@@ -81,8 +81,10 @@ export async function submitSchoolVacancyAsAdmin(formData: FormData): Promise<Ac
     tutorGenderPreference: "ANY",
     slots: data.slots,
     notes: data.notes || null,
-    notifyTitle: "New school vacancy posted",
-    notifyBody: `${data.institutionName}'s ${data.subjectId} vacancy in ${data.tutorVisibleLocality} is ready for tutors to apply.`,
+    notifyTitle: "New school vacancy published",
+    notifyBody: `${data.institutionName}'s ${data.subjectId} vacancy in ${data.tutorVisibleLocality} is now open for applications.`,
     actor: { userId: session.uid, role: session.role as "SUPER_ADMIN" | "BRANCH_ADMIN" },
+    initialStatus: "OPEN",
+    reviewedBy: session.uid,
   });
 }

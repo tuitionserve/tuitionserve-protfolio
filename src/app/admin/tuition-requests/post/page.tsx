@@ -14,8 +14,8 @@ export default async function AdminPostTuitionPage() {
       <div>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">Post a Tuition Request</h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-          For a parent who called or messaged you directly instead of using the website. This creates a New
-          Request the same way the public form does — you&rsquo;ll still confirm or reject it from there.
+          For a parent who called or messaged you directly instead of using the website. Admin-posted tuitions
+          skip verification and publish straight to Open Tuitions &amp; the public Vacancies page.
         </p>
       </div>
       <TuitionRequestForm
@@ -23,8 +23,9 @@ export default async function AdminPostTuitionPage() {
         initialGradeId=""
         initialSubjectId=""
         action={submitTuitionRequestAsAdmin}
-        successHref="/admin/tuition-requests/new"
-        successHrefLabel="View New Requests"
+        directPublished
+        successHref="/admin/tuition-requests/open"
+        successHrefLabel="View Open Tuitions"
       />
     </div>
   );

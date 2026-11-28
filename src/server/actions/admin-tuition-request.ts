@@ -10,11 +10,9 @@ import { fieldErrorsFrom } from "@/server/actions/action-utils";
 export type { ActionResult };
 
 /**
- * Admin/Super Admin phone-intake equivalent of the public tuition
- * request form — for a parent who called or messaged directly instead
- * of using the website. Lands as a NEW request in the same review
- * queue as a public submission (see parent-request.ts), so the
- * existing confirm/reject flow applies unchanged.
+ * Admin/Super Admin direct tuition posting — skips the parent-verification
+ * NEW queue and publishes directly to OPEN so it appears immediately on
+ * Open Tuitions, Tutor Opportunities, and the Public Vacancies board.
  */
 export async function submitTuitionRequestAsAdmin(formData: FormData): Promise<ActionResult> {
   const session = await requireRole(["SUPER_ADMIN", "BRANCH_ADMIN"]);
@@ -59,8 +57,12 @@ export async function submitTuitionRequestAsAdmin(formData: FormData): Promise<A
     }
   }
 
-  return createTuitionRequestFromParsedData(parsed.data, {
-    userId: session.uid,
-    role: session.role as "SUPER_ADMIN" | "BRANCH_ADMIN",
-  });
+  return createTuitionRequestFromParsedData(
+    parsed.data,
+    {
+      userId: session.uid,
+      role: session.role as "SUPER_ADMIN" | "BRANCH_ADMIN",
+    },
+    { initialStatus: "OPEN", reviewedBy: session.uid },
+  );
 }

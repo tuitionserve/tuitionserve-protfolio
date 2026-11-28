@@ -279,6 +279,7 @@ export type TutorGenderPreference = "MALE" | "FEMALE" | "ANY";
 export interface TuitionRequest {
   id: string;
   tuitionUid: string; // TS-TU-#####
+  slug?: string | null; // SEO-friendly shareable slug for /vacancies/[slug]
   branchId: string | null; // resolved via resolveBranchIdForLocation; null = unrouted
   postingType: TuitionPostingType; // default HOME_TUITION; SCHOOL = a school vacancy an admin posted on a school's behalf
   parentId: string; // for SCHOOL postings, the school's contact person, stored the same way as a parent contact
@@ -480,4 +481,25 @@ export interface SchoolContactQuery {
   message: string;
   viewedByAdminAt: FirebaseFirestore.Timestamp | null;
   createdAt: FirebaseFirestore.Timestamp;
+}
+
+export type BlogPostStatus = "DRAFT" | "PUBLISHED";
+
+export interface BlogPost {
+  id: string;
+  blogUid: string; // TS-BLG-######
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  tags: string[];
+  coverImageUrl: string | null;
+  status: BlogPostStatus;
+  authorUserId: string;
+  authorName: string;
+  readTimeMinutes: number;
+  publishedAt: FirebaseFirestore.Timestamp | null;
+  createdAt: FirebaseFirestore.Timestamp;
+  updatedAt: FirebaseFirestore.Timestamp;
 }

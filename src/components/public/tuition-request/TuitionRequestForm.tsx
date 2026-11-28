@@ -9,8 +9,10 @@ import { errorTextClass, fieldWrapClass, inputClass, labelClass, sectionClass } 
 import { LocationCascadeSelect, type LocationNodeLite } from "@/components/shared/LocationCascadeSelect";
 import { DayRangeAvailabilityPicker, type AvailabilitySlotState } from "@/components/shared/DayRangeAvailabilityPicker";
 import { SubjectMultiSelect } from "@/components/shared/SubjectMultiSelect";
+import { CopyLinkButton } from "@/components/shared/CopyLinkButton";
 
 interface StudentBlock {
+  keyId: string;
   studentFullName: string;
   gradeId: string;
   schoolName: string;
@@ -19,8 +21,15 @@ interface StudentBlock {
   currentYearOrSemester: string;
 }
 
+let nextStudentKey = 0;
+function makeStudentKey(): string {
+  nextStudentKey += 1;
+  return `student-${nextStudentKey}`;
+}
+
 function emptyStudentBlock(gradeId: string, subjectId: string): StudentBlock {
   return {
+    keyId: makeStudentKey(),
     studentFullName: "",
     gradeId,
     schoolName: "",
@@ -29,6 +38,12 @@ function emptyStudentBlock(gradeId: string, subjectId: string): StudentBlock {
     currentYearOrSemester: "",
   };
 }
+
+const SCHEDULE_PRESETS: Record<string, { startTime: string; endTime: string }> = {
+  morning: { startTime: "07:00", endTime: "09:00" },
+  afternoon: { startTime: "14:00", endTime: "16:00" },
+  evening: { startTime: "17:00", endTime: "19:00" },
+};
 
 const GENDER_OPTIONS: { id: "ANY" | "MALE" | "FEMALE"; label: string }[] = [
   { id: "ANY", label: "No preference" },
@@ -40,33 +55,42 @@ export function TuitionRequestForm({
   provinces,
   initialGradeId,
   initialSubjectId,
+  initialLocality = "",
+  initialSchedule = "",
   action = submitTuitionRequest,
+  directPublished = false,
   successHref = "/",
   successHrefLabel = "Back to home",
 }: {
   provinces: LocationNodeLite[];
   initialGradeId: string;
   initialSubjectId: string;
+  initialLocality?: string;
+  initialSchedule?: string;
   /** Defaults to the public submission action — pass the admin-intake action for internal use. */
   action?: (formData: FormData) => Promise<ActionResult>;
+  /** True when an admin is submitting directly to OPEN status. */
+  directPublished?: boolean;
   successHref?: string;
   successHrefLabel?: string;
 }) {
+  const initialPreset = SCHEDULE_PRESETS[initialSchedule.toLowerCase()] ?? { startTime: "17:00", endTime: "19:00" };
   const [parentFullName, setParentFullName] = useState("");
   const [parentPhone, setParentPhone] = useState("");
   const [parentEmail, setParentEmail] = useState("");
   const [students, setStudents] = useState<StudentBlock[]>([emptyStudentBlock(initialGradeId, initialSubjectId)]);
   const [tutorGenderPreference, setTutorGenderPreference] = useState<"ANY" | "MALE" | "FEMALE">("ANY");
   const [locationId, setLocationId] = useState<string | null>(null);
-  const [tutorVisibleLocality, setTutorVisibleLocality] = useState("");
+  const [tutorVisibleLocality, setTutorVisibleLocality] = useState(initialLocality);
   const [exactAddress, setExactAddress] = useState("");
-  const [slots, setSlots] = useState<AvailabilitySlotState[]>([{ dayOfWeek: "SUN", startTime: "17:00", endTime: "19:00" }]);
+  const [slots, setSlots] = useState<AvailabilitySlotState[]>([{ dayOfWeek: "SUN", ...initialPreset }]);
   const [notes, setNotes] = useState("");
 
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
   const [submittedUids, setSubmittedUids] = useState<string[] | null>(null);
+  const [submittedSlug, setSubmittedSlug] = useState<string | null>(null);
 
   function updateStudent(index: number, patch: Partial<StudentBlock>) {
     setStudents((prev) => prev.map((s, i) => (i === index ? { ...s, ...patch } : s)));
@@ -80,7 +104,7 @@ export function TuitionRequestForm({
     setStudents((prev) => prev.filter((_, i) => i !== index));
   }
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setFieldErrors({});
@@ -95,6 +119,8 @@ export function TuitionRequestForm({
     }
 
     const formData = new FormData();
+    const hp = (e.currentTarget.elements.namedItem("_hp_check") as HTMLInputElement | null)?.value;
+    if (hp) formData.set("_hp_check", hp);
     formData.set("parentFullName", parentFullName);
     formData.set("parentPhone", parentPhone);
     formData.set("parentEmail", parentEmail);
@@ -122,6 +148,7 @@ export function TuitionRequestForm({
       const result = await action(formData);
       if (result.ok) {
         setSubmittedUids(result.tuitionUids);
+        setSubmittedSlug(result.primarySlug ?? null);
       } else {
         setError(result.error);
         setFieldErrors(result.fieldErrors ?? {});
@@ -130,6 +157,34 @@ export function TuitionRequestForm({
   }
 
   if (submittedUids) {
+    if (directPublished) {
+      const publicPath = submittedSlug ? `/vacancies/${submittedSlug}` : "/vacancies";
+      return (
+        <div className={sectionClass}>
+          <div className="flex items-center gap-3">
+            <MaterialIcon name="check_circle" filled className="text-primary-container text-3xl" />
+            <h2 className="font-headline-md text-headline-md text-on-surface">Tuition published</h2>
+          </div>
+          <p className="font-body-md text-body-md text-on-surface-variant">
+            Request <strong>{submittedUids.join(", ")}</strong> is now live in Open Tuitions and on the public
+            Vacancies board for tutors to apply.
+          </p>
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            {submittedSlug && <CopyLinkButton path={publicPath} label="Copy Shareable Vacancy Link" variant="filled" />}
+            <Link
+              href={publicPath}
+              className="font-label-md text-label-md border border-outline-variant px-3.5 py-2 rounded-lg text-on-surface hover:border-primary-container"
+            >
+              View Public Vacancy
+            </Link>
+            <Link href={successHref} className="font-label-md text-label-md text-primary-container px-2 py-2">
+              {successHrefLabel}
+            </Link>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <div className={sectionClass}>
         <div className="flex items-center gap-3">
@@ -151,6 +206,7 @@ export function TuitionRequestForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      <input type="text" name="_hp_check" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className={sectionClass}>
         <h2 className="font-headline-md text-headline-md text-on-surface">Parent</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -182,7 +238,7 @@ export function TuitionRequestForm({
         </p>
 
         {students.map((student, index) => (
-          <div key={index} className="border border-outline-variant rounded-xl p-lg flex flex-col gap-4">
+          <div key={student.keyId} className="border border-outline-variant rounded-xl p-lg flex flex-col gap-4">
             {students.length > 1 && (
               <div className="flex items-center justify-between">
                 <p className="font-label-md text-label-md text-on-surface-variant">Student {index + 1}</p>

@@ -1,6 +1,7 @@
 import { adminFirestore } from "@/lib/firebase/admin";
 import type {
   AuditEvent,
+  BlogPost,
   Branch,
   ContactQuery,
   SchoolContactQuery,
@@ -44,5 +45,33 @@ export const conversationsCollection = () => typedCollection<Conversation>("conv
 export const messagesCollection = () => typedCollection<Message>("messages");
 export const contactQueriesCollection = () => typedCollection<ContactQuery>("contactQueries");
 export const schoolContactQueriesCollection = () => typedCollection<SchoolContactQuery>("schoolContactQueries");
+export const blogPostsCollection = () => typedCollection<BlogPost>("blogPosts");
 export const countersCollection = () =>
   typedCollection<{ value: number }>("counters");
+
+/**
+ * Deduplicates `ids` and fetches existing documents in batches using
+ * Firestore `getAll()` rather than N individual `.get()` calls.
+ */
+export async function fetchDocsByIds<T>(
+  collection: FirebaseFirestore.CollectionReference<T>,
+  ids: Iterable<string | null | undefined>,
+): Promise<Map<string, T>> {
+  const uniqueIds = Array.from(new Set(Array.from(ids).filter((id): id is string => Boolean(id))));
+  const result = new Map<string, T>();
+  if (uniqueIds.length === 0) return result;
+
+  const CHUNK_SIZE = 500;
+  for (let i = 0; i < uniqueIds.length; i += CHUNK_SIZE) {
+    const refs = uniqueIds
+      .slice(i, i + CHUNK_SIZE)
+      .map((id) => collection.doc(id) as unknown as FirebaseFirestore.DocumentReference);
+    const snaps = await adminFirestore.getAll(...refs);
+    for (const snap of snaps) {
+      if (snap.exists) {
+        result.set(snap.id, snap.data() as T);
+      }
+    }
+  }
+  return result;
+}

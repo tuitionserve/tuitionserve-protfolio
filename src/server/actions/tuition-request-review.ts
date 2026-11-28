@@ -1,11 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { FieldValue } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
-import { tuitionRequestsCollection } from "@/server/domain/collections";
+import { tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
 import { writeAuditEvent } from "@/server/domain/audit";
+import { buildTuitionSlug } from "@/server/domain/slug";
+import { createNotification } from "@/server/domain/notifications";
 
 export type ActionResult =
   | { ok: true }
@@ -41,8 +44,20 @@ export async function confirmTuitionRequest(requestId: string): Promise<ActionRe
     const snap = await tx.get(ref);
     const request = snap.data();
     if (!request || request.status !== "NEW") return { ok: false as const };
+    const slug =
+      request.slug ||
+      buildTuitionSlug({
+        postingType: request.postingType,
+        gradeId: request.gradeId,
+        gradeIds: request.gradeIds,
+        subjectIds: request.subjectIds,
+        institutionName: request.institutionName,
+        tutorVisibleLocality: request.tutorVisibleLocality,
+        tuitionUid: request.tuitionUid,
+      });
     tx.update(ref, {
       status: "OPEN",
+      slug,
       confirmedAt: FieldValue.serverTimestamp(),
       reviewedBy: session.uid,
       rejectionReason: null,
@@ -63,6 +78,15 @@ export async function confirmTuitionRequest(requestId: string): Promise<ActionRe
     targetId: requestId,
     metadata: {},
   });
+
+  revalidatePath("/vacancies");
+  revalidatePath("/tutor/opportunities");
+  revalidatePath("/admin/tuition-requests/open");
+  revalidatePath("/admin/tuition-requests/new");
+
+  revalidatePath("/vacancies");
+  revalidatePath("/tutor/opportunities");
+  revalidatePath("/admin/tuition-requests/open");
 
   return { ok: true };
 }
@@ -101,6 +125,86 @@ export async function rejectTuitionRequest(requestId: string, reason: string): P
     targetId: requestId,
     metadata: { reason: parsed.data.reason },
   });
+
+  revalidatePath("/vacancies");
+  revalidatePath("/tutor/opportunities");
+  revalidatePath("/admin/tuition-requests/open");
+
+  return { ok: true };
+}
+
+/**
+ * Cancels an already-OPEN tuition before any tutor has been assigned.
+ * Atomically transitions OPEN -> CANCELLED, flips any pending APPLIED
+ * applications to REJECTED, and notifies affected applicants.
+ */
+export async function cancelOpenTuition(requestId: string, reason: string): Promise<ActionResult> {
+  const parsed = rejectSchema.safeParse({ reason });
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "A cancellation reason is required.",
+      fieldErrors: { reason: "A cancellation reason is required." },
+    };
+  }
+
+  const { session, ref } = await loadRequestForAdminReview(requestId);
+  const now = FieldValue.serverTimestamp();
+
+  const result = await adminFirestore.runTransaction(async (tx) => {
+    const [snap, appliedSnap] = await Promise.all([
+      tx.get(ref),
+      tx.get(tutorApplicationsCollection().where("tuitionId", "==", requestId).where("status", "==", "APPLIED")),
+    ]);
+    const request = snap.data();
+    if (!request || request.status !== "OPEN") {
+      return { ok: false as const };
+    }
+
+    tx.update(ref, {
+      status: "CANCELLED",
+      rejectionReason: parsed.data.reason,
+      updatedAt: now,
+    });
+
+    const affectedTutorIds: string[] = [];
+    for (const doc of appliedSnap.docs) {
+      tx.update(doc.ref, { status: "REJECTED", updatedAt: now });
+      affectedTutorIds.push(doc.data().tutorId);
+    }
+
+    return { ok: true as const, tuitionUid: request.tuitionUid, affectedTutorIds };
+  });
+
+  if (!result.ok) {
+    return { ok: false, error: "Only an open tuition can be cancelled here." };
+  }
+
+  await writeAuditEvent({
+    action: "TUITION_CANCELLED",
+    actorUserId: session.uid,
+    actorRole: session.role,
+    targetType: "TuitionRequest",
+    targetId: requestId,
+    metadata: { reason: parsed.data.reason, stage: "OPEN" },
+  });
+
+  await Promise.all(
+    result.affectedTutorIds.map((tutorId) =>
+      createNotification({
+        recipientUserId: tutorId,
+        type: "APPLICATION_NOT_SELECTED",
+        title: "Tuition cancelled",
+        body: `Tuition ${result.tuitionUid} was cancelled before a tutor was selected.`,
+        relatedEntityType: "TuitionRequest",
+        relatedEntityId: requestId,
+      }),
+    ),
+  );
+
+  revalidatePath("/vacancies");
+  revalidatePath("/tutor/opportunities");
+  revalidatePath("/admin/tuition-requests/open");
 
   return { ok: true };
 }

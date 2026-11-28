@@ -4,11 +4,14 @@ import { parentsCollection, studentsCollection, tuitionRequestsCollection } from
 import { catalogLabel, DAYS_OF_WEEK, GRADES, SUBJECTS } from "@/lib/catalog";
 import { currentCursor, parseCursorStack, type PageResult } from "@/server/domain/pagination";
 import { TuitionRequestReviewActions } from "@/components/admin/tuition-requests/TuitionRequestReviewActions";
+import { CancelOpenTuitionButton } from "@/components/admin/tuition-requests/CancelOpenTuitionButton";
 import { ApplicantsList } from "@/components/admin/tuition-requests/ApplicantsList";
 import { AssignmentReviewPanel } from "@/components/admin/tuition-requests/AssignmentReviewPanel";
 import { getApplicantsForTuition, type AdminApplicantView } from "@/server/queries/admin-applicants";
 import { getLatestAssignmentForTuition } from "@/server/queries/admin-assignment";
 import { BackButton } from "@/components/shared/BackButton";
+import { CopyLinkButton } from "@/components/shared/CopyLinkButton";
+import { buildTuitionSlug } from "@/server/domain/slug";
 
 const GENDER_PREFERENCE_LABEL: Record<string, string> = {
   MALE: "Male tutor",
@@ -73,23 +76,44 @@ export default async function AdminTuitionRequestDetailPage({
   const parent = parentSnap.data() ?? null;
   const students = studentSnaps.map((s) => s.data()).filter((s): s is NonNullable<typeof s> => Boolean(s));
   const isSchool = request.postingType === "SCHOOL";
+  const effectiveSlug =
+    request.slug ||
+    buildTuitionSlug({
+      postingType: request.postingType,
+      gradeId: request.gradeId,
+      gradeIds: request.gradeIds,
+      subjectIds: request.subjectIds,
+      institutionName: request.institutionName,
+      tutorVisibleLocality: request.tutorVisibleLocality,
+      tuitionUid: request.tuitionUid,
+    });
+  const publicVacancyPath = `/vacancies/${effectiveSlug}`;
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
       <BackButton />
-      <div>
-        <span
-          className={`inline-block font-label-md text-[11px] px-2 py-0.5 rounded-full mb-2 ${
-            isSchool ? "bg-tertiary-container/40 text-on-tertiary-container" : "bg-secondary-container/50 text-on-secondary-container"
-          }`}
-        >
-          {isSchool ? "School Vacancy" : "Home Tuition"}
-        </span>
-        <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {(isSchool ? request.institutionName : students.map((s) => s.fullName).join(", ")) || "Unnamed"} —{" "}
-          {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
-        </h1>
-        <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{request.tuitionUid}</p>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <span
+            className={`inline-block font-label-md text-[11px] px-2 py-0.5 rounded-full mb-2 ${
+              isSchool ? "bg-tertiary-container/40 text-on-tertiary-container" : "bg-secondary-container/50 text-on-secondary-container"
+            }`}
+          >
+            {isSchool ? "School Vacancy" : "Home Tuition"}
+          </span>
+          <h1 className="font-headline-lg text-headline-lg text-on-surface">
+            {(isSchool ? request.institutionName : students.map((s) => s.fullName).join(", ")) || "Unnamed"} —{" "}
+            {request.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
+          </h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
+            {request.tuitionUid} · <span className="font-mono text-xs">/vacancies/{effectiveSlug}</span>
+          </p>
+        </div>
+        {request.status === "OPEN" && (
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <CopyLinkButton path={publicVacancyPath} label="Copy Public Vacancy Link" variant="filled" />
+          </div>
+        )}
       </div>
 
       <div className="bg-surface-container-lowest border border-surface-variant rounded-xl p-lg">
@@ -164,17 +188,20 @@ export default async function AdminTuitionRequestDetailPage({
           )}
         </div>
       ) : (
-        <ApplicantsList
-          applicants={applicants.items}
-          tuitionId={id}
-          tuitionUid={request.tuitionUid}
-          canAssign={request.status === "OPEN"}
-          basePath={`/admin/tuition-requests/${id}`}
-          cursorStack={cursorStack}
-          nextCursor={applicants.nextCursor}
-          hasNextPage={applicants.hasNextPage}
-          totalCount={applicants.totalCount}
-        />
+        <>
+          {request.status === "OPEN" && <CancelOpenTuitionButton requestId={id} />}
+          <ApplicantsList
+            applicants={applicants.items}
+            tuitionId={id}
+            tuitionUid={request.tuitionUid}
+            canAssign={request.status === "OPEN"}
+            basePath={`/admin/tuition-requests/${id}`}
+            cursorStack={cursorStack}
+            nextCursor={applicants.nextCursor}
+            hasNextPage={applicants.hasNextPage}
+            totalCount={applicants.totalCount}
+          />
+        </>
       )}
     </div>
   );
