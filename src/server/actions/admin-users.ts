@@ -6,9 +6,11 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminAuth } from "@/lib/firebase/admin";
 import { requireRole, requireSession } from "@/server/auth/guards";
 import { branchesCollection, userAccountsCollection } from "@/server/domain/collections";
+import { findOverlappingBranchCoverage } from "@/server/domain/branch-routing";
 import { generateSequentialUid } from "@/server/domain/ids";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import { writeAuditEvent } from "@/server/domain/audit";
+import { fieldErrorsFrom } from "@/server/actions/action-utils";
 import type { Role, BranchCoverage } from "@/server/domain/types";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -150,12 +152,7 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
     newBranchCity: formData.get("newBranchCity") || undefined,
   });
   if (!parsed.success) {
-    const fieldErrors: Record<string, string> = {};
-    for (const issue of parsed.error.issues) {
-      const key = String(issue.path[0] ?? "form");
-      if (!fieldErrors[key]) fieldErrors[key] = issue.message;
-    }
-    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors };
+    return { ok: false, error: "Please fix the highlighted fields.", fieldErrors: fieldErrorsFrom(parsed.error) };
   }
   const { fullName, email, role } = parsed.data;
 
@@ -179,6 +176,13 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
         } catch {
           // ignore
         }
+      }
+      const overlap = await findOverlappingBranchCoverage(parsedCoverage);
+      if (overlap) {
+        return {
+          ok: false,
+          error: `Coverage for ${overlap.districtName} overlaps with active branch "${overlap.branchName}".`,
+        };
       }
       const coverageDistrictIds = Array.from(new Set(parsedCoverage.map((c) => c.districtId)));
       const coverageLocalGovernmentIds = Array.from(
@@ -274,7 +278,7 @@ export async function createAdminAccount(formData: FormData): Promise<CreateAdmi
  * clear anyone else's flag.
  */
 export async function clearMustChangePasswordFlag(): Promise<ActionResult> {
-  const session = await requireSession();
+  const session = await requireSession({ allowMustChangePassword: true });
   await userAccountsCollection().doc(session.uid).update({
     mustChangePassword: false,
     updatedAt: FieldValue.serverTimestamp(),

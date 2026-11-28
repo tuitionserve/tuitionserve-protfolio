@@ -1,7 +1,12 @@
+import * as React from "react";
 import { cookies } from "next/headers";
 import { adminAuth } from "@/lib/firebase/admin";
 import { tutorsCollection, userAccountsCollection } from "@/server/domain/collections";
 import type { Role, Tutor, UserAccount } from "@/server/domain/types";
+
+const requestCache: <T extends (...args: never[]) => unknown>(fn: T) => T =
+  (React as unknown as { cache?: <T extends (...args: never[]) => unknown>(fn: T) => T }).cache ??
+  ((fn) => fn);
 
 export const SESSION_COOKIE_NAME = process.env.SESSION_COOKIE_NAME || "ts_session";
 const SESSION_MAX_AGE_MS = 14 * 24 * 60 * 60 * 1000; // Firebase session cookie max: 14 days.
@@ -35,10 +40,11 @@ export interface AuthSession {
 /**
  * Reads and verifies the session cookie for the current request and loads
  * the corresponding UserAccount (and Tutor record, if applicable) from
- * Firestore. Returns null when there is no valid session — callers decide
- * whether that means "redirect to login" or "treat as public".
+ * Firestore. Memoized per-request via React `cache()` so layout + page
+ * guards share a single auth verification and Firestore lookup. Returns
+ * null when there is no valid session.
  */
-export async function getCurrentSession(): Promise<AuthSession | null> {
+export const getCurrentSession = requestCache(async (): Promise<AuthSession | null> => {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!sessionCookie) return null;
@@ -72,4 +78,4 @@ export async function getCurrentSession(): Promise<AuthSession | null> {
     mustChangePassword: account.mustChangePassword ?? false,
     tutor,
   };
-}
+});

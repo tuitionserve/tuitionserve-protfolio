@@ -70,13 +70,13 @@ export default async function AdminDashboardPage() {
           value={newRequestsPage.totalCount}
           icon="post_add"
           tone="tertiary"
-          href="/admin/tuition-requests"
+          href="/admin/tuition-requests/new"
         />
         <StatCard label="Tutor Reviews" value={tutorReviewCount} icon="fact_check" tone="secondary" href="/admin/tutors" />
-        <StatCard label="Open Tuitions" value={openTuitionsCount} icon="menu_book" tone="primary" href="/admin/tuition-requests" />
+        <StatCard label="Open Tuitions" value={openTuitionsCount} icon="menu_book" tone="primary" href="/admin/tuition-requests/open" />
         {/* "Ready for selection" = OPEN tuitions that already have >=1 applicant, i.e. an
             admin can act on them right now (see countSelectionsReady doc comment). */}
-        <StatCard label="Selections" value={selectionsReadyCount} icon="task_alt" tone="error" href="/admin/tuition-requests" />
+        <StatCard label="Selections" value={selectionsReadyCount} icon="task_alt" tone="error" href="/admin/tuition-requests/open" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-lg items-start">
@@ -100,7 +100,7 @@ export default async function AdminDashboardPage() {
                   <li className="flex items-center gap-3 font-body-sm text-body-sm text-on-surface-variant">
                     <MaterialIcon name="post_add" className="text-tertiary shrink-0" />
                     {newRequestsPage.totalCount} tuition request{newRequestsPage.totalCount === 1 ? "" : "s"} awaiting review —{" "}
-                    <Link href="/admin/tuition-requests" className="text-primary-container font-medium">
+                    <Link href="/admin/tuition-requests/new" className="text-primary-container font-medium">
                       review now
                     </Link>
                   </li>

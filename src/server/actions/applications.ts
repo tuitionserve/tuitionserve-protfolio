@@ -2,7 +2,7 @@
 
 import { FieldValue } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
-import { assertBranchScope, requireActiveTutor, requireRole } from "@/server/auth/guards";
+import { assertBranchScope, isTutorInBranchScope, requireActiveTutor, requireRole } from "@/server/auth/guards";
 import {
   tuitionRequestsCollection,
   tutorApplicationsCollection,
@@ -38,6 +38,16 @@ export async function applyToOpportunity(tuitionId: string): Promise<ActionResul
   if (!profile) return { ok: false, error: "Complete your profile before applying." };
 
   const tuitionRef = tuitionRequestsCollection().doc(tuitionId);
+  const preTuitionSnap = await tuitionRef.get();
+  const preTuition = preTuitionSnap.data();
+  if (!preTuition || preTuition.status !== "OPEN") {
+    return { ok: false, error: "This tuition is no longer accepting applications." };
+  }
+  if (!isTutorInBranchScope(session.tutor.branchId, preTuition.branchId)) {
+    return { ok: false, error: "This tuition is outside your assigned branch." };
+  }
+
+  const applicationUid = await generateSequentialUid("application");
   const applicationRef = tutorApplicationsCollection().doc();
   const now = FieldValue.serverTimestamp();
 
@@ -56,13 +66,16 @@ export async function applyToOpportunity(tuitionId: string): Promise<ActionResul
     if (!tuition || tuition.status !== "OPEN") {
       return { ok: false as const, error: "This tuition is no longer accepting applications." };
     }
+    if (!isTutorInBranchScope(session.tutor!.branchId, tuition.branchId)) {
+      return { ok: false as const, error: "This tuition is outside your assigned branch." };
+    }
     if (!existingSnap.empty) {
       return { ok: false as const, error: "You have already applied to this tuition." };
     }
 
     tx.set(applicationRef, {
       id: applicationRef.id,
-      applicationUid: "", // filled in after the transaction (UID generation is its own transaction)
+      applicationUid,
       tuitionId,
       tutorId: session.uid,
       branchId: tuition.branchId,
@@ -95,9 +108,6 @@ export async function applyToOpportunity(tuitionId: string): Promise<ActionResul
   });
 
   if (!result.ok) return result;
-
-  const applicationUid = await generateSequentialUid("application");
-  await applicationRef.update({ applicationUid });
 
   await writeAuditEvent({
     action: "APPLICATION_CREATED",

@@ -75,7 +75,7 @@ export function PersonalStep({
       </div>
 
       <div className={fieldWrapClass}>
-        <label className={labelClass} htmlFor="dateOfBirth">Date of birth</label>
+        <label className={labelClass} htmlFor="dateOfBirth">Date of birth (A.D.)</label>
         <input
           id="dateOfBirth"
           type="date"

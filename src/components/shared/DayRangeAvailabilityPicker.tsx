@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
 import { DAYS_OF_WEEK } from "@/lib/catalog";
 import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
@@ -33,6 +33,7 @@ export function DayRangeAvailabilityPicker({
   slots: AvailabilitySlotState[];
   onChange: (slots: AvailabilitySlotState[]) => void;
 }) {
+  const baseId = useId();
   const [fromDay, setFromDay] = useState("SUN");
   const [toDay, setToDay] = useState("SUN");
   const [startTime, setStartTime] = useState("17:00");
@@ -62,28 +63,28 @@ export function DayRangeAvailabilityPicker({
 
       <div className="flex flex-wrap items-end gap-2 bg-surface-container rounded-lg p-3">
         <div className="flex flex-col gap-1">
-          <label className="font-label-md text-label-md text-on-surface-variant">From day</label>
-          <select className={`${inputClass} w-auto`} value={fromDay} onChange={(e) => setFromDay(e.target.value)}>
+          <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-from`}>From day</label>
+          <select id={`${baseId}-from`} className={`${inputClass} w-auto`} value={fromDay} onChange={(e) => setFromDay(e.target.value)}>
             {DAYS_OF_WEEK.map((d) => (
               <option key={d.id} value={d.id}>{d.label}</option>
             ))}
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-label-md text-label-md text-on-surface-variant">To day</label>
-          <select className={`${inputClass} w-auto`} value={toDay} onChange={(e) => setToDay(e.target.value)}>
+          <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-to`}>To day</label>
+          <select id={`${baseId}-to`} className={`${inputClass} w-auto`} value={toDay} onChange={(e) => setToDay(e.target.value)}>
             {DAYS_OF_WEEK.map((d) => (
               <option key={d.id} value={d.id}>{d.label}</option>
             ))}
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-label-md text-label-md text-on-surface-variant">Start time</label>
-          <input type="time" className={`${inputClass} w-auto`} value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+          <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-start`}>Start time</label>
+          <input id={`${baseId}-start`} type="time" className={`${inputClass} w-auto`} value={startTime} onChange={(e) => setStartTime(e.target.value)} />
         </div>
         <div className="flex flex-col gap-1">
-          <label className="font-label-md text-label-md text-on-surface-variant">End time</label>
-          <input type="time" className={`${inputClass} w-auto`} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+          <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-end`}>End time</label>
+          <input id={`${baseId}-end`} type="time" className={`${inputClass} w-auto`} value={endTime} onChange={(e) => setEndTime(e.target.value)} />
         </div>
         <button
           type="button"

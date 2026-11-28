@@ -40,14 +40,24 @@ async function loadTutorForAdminReview(tutorId: string) {
   return { session, tutorRef, tutor };
 }
 
-export async function approveTutor(tutorId: string): Promise<ActionResult> {
+export async function approveTutor(
+  tutorId: string,
+  expectedProfileUpdatedAtMillis?: number | null,
+): Promise<ActionResult> {
   const { session, tutorRef } = await loadTutorForAdminReview(tutorId);
+  const profileRef = tutorProfilesCollection().doc(tutorId);
 
   const result = await adminFirestore.runTransaction(async (tx) => {
-    const snap = await tx.get(tutorRef);
+    const [snap, profileSnap] = await Promise.all([tx.get(tutorRef), tx.get(profileRef)]);
     const tutor = snap.data();
     if (!tutor || !REVIEWABLE_STATUSES.includes(tutor.verificationStatus)) {
-      return { ok: false as const };
+      return { ok: false as const, reason: "stale_status" as const };
+    }
+    if (expectedProfileUpdatedAtMillis !== undefined) {
+      const currentProfileUpdatedAt = profileSnap.data()?.updatedAt?.toMillis() ?? null;
+      if (currentProfileUpdatedAt !== expectedProfileUpdatedAtMillis) {
+        return { ok: false as const, reason: "profile_modified" as const };
+      }
     }
     tx.update(tutorRef, {
       verificationStatus: "APPROVED",
@@ -60,7 +70,13 @@ export async function approveTutor(tutorId: string): Promise<ActionResult> {
   });
 
   if (!result.ok) {
-    return { ok: false, error: "This tutor is not currently awaiting review (already decided, or reloaded stale data)." };
+    return {
+      ok: false,
+      error:
+        result.reason === "profile_modified"
+          ? "The tutor updated their profile while you were reviewing it. Refresh the page to review the latest details before approving."
+          : "This tutor is not currently awaiting review (already decided, or reloaded stale data).",
+    };
   }
 
   await writeAuditEvent({

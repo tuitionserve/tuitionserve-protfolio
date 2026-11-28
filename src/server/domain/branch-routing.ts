@@ -1,5 +1,40 @@
 import { branchesCollection, geographicLocationsCollection } from "./collections";
 import { getLocationAncestry } from "@/server/queries/location-hierarchy";
+import type { BranchCoverage } from "./types";
+
+/**
+ * Checks if `coverage` overlaps with any other active branch's configured
+ * district/municipality coverage. Returns the conflicting branch name if found.
+ */
+export async function findOverlappingBranchCoverage(
+  coverage: BranchCoverage[],
+  excludeBranchId?: string,
+): Promise<{ branchName: string; districtName: string } | null> {
+  if (coverage.length === 0) return null;
+  const branchSnap = await branchesCollection().where("status", "==", "ACTIVE").get();
+
+  for (const doc of branchSnap.docs) {
+    if (excludeBranchId && doc.id === excludeBranchId) continue;
+    const other = doc.data();
+    if (!other.coverage || other.coverage.length === 0) continue;
+
+    for (const incoming of coverage) {
+      const existing = other.coverage.find((c) => c.districtId === incoming.districtId);
+      if (!existing) continue;
+
+      const incomingEntire = !incoming.localGovernmentIds || incoming.localGovernmentIds.length === 0;
+      const existingEntire = !existing.localGovernmentIds || existing.localGovernmentIds.length === 0;
+      if (incomingEntire || existingEntire) {
+        return { branchName: other.name, districtName: incoming.districtName ?? incoming.districtId };
+      }
+      const existingSet = new Set(existing.localGovernmentIds);
+      if (incoming.localGovernmentIds!.some((id) => existingSet.has(id))) {
+        return { branchName: other.name, districtName: incoming.districtName ?? incoming.districtId };
+      }
+    }
+  }
+  return null;
+}
 
 /**
  * Resolves which Branch a location belongs to.

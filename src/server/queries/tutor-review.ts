@@ -1,4 +1,4 @@
-import { tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
+import { fetchDocsByIds, tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
 import type { AuthSession } from "@/server/auth/session";
 import type { Tutor, TutorVerificationStatus } from "@/server/domain/types";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
@@ -30,12 +30,11 @@ export async function getTutorReviewQueue(
     : tutorsCollection().where("verificationStatus", "in", IN_PROGRESS_STATUSES);
 
   const page = await fetchPage(base, "submittedAt", cursor);
-
-  const profiles = await Promise.all(page.items.map((t) => tutorProfilesCollection().doc(t.id).get()));
+  const profileMap = await fetchDocsByIds(tutorProfilesCollection(), page.items.map((t) => t.id));
 
   return {
     ...page,
-    items: page.items.map((tutor, i) => ({ tutor, fullName: profiles[i]?.data()?.fullName ?? null })),
+    items: page.items.map((tutor) => ({ tutor, fullName: profileMap.get(tutor.id)?.fullName ?? null })),
   };
 }
 
@@ -56,11 +55,11 @@ export async function getAllTutors(
   if (statusFilter) base = base.where("verificationStatus", "==", statusFilter);
 
   const page = await fetchPage(base, "createdAt", cursor);
-  const profiles = await Promise.all(page.items.map((t) => tutorProfilesCollection().doc(t.id).get()));
+  const profileMap = await fetchDocsByIds(tutorProfilesCollection(), page.items.map((t) => t.id));
 
   return {
     ...page,
-    items: page.items.map((tutor, i) => ({ tutor, fullName: profiles[i]?.data()?.fullName ?? null })),
+    items: page.items.map((tutor) => ({ tutor, fullName: profileMap.get(tutor.id)?.fullName ?? null })),
   };
 }
 

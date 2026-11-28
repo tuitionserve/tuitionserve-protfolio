@@ -29,7 +29,13 @@ const LIST_STREAM_LIMIT = 50;
  */
 export async function GET(request: NextRequest) {
   const session = await getCurrentSession();
-  if (!session) return new Response("Unauthorized", { status: 401 });
+  if (
+    !session ||
+    session.mustChangePassword ||
+    (session.role === "TUTOR" && session.tutor?.verificationStatus === "SUSPENDED")
+  ) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   let query: FirebaseFirestore.Query<Conversation>;
   let enrich: (conversations: ConversationView[]) => Promise<ConversationListItemView[]>;
@@ -54,9 +60,27 @@ export async function GET(request: NextRequest) {
   const stream = new ReadableStream({
     start(controller) {
       let closed = false;
+      // The SSR page already loaded initialItems — skip the initial
+      // snapshot's "added" burst so opening/reconnecting the stream
+      // doesn't re-enrich all 50 conversations on every load.
+      let isInitialSnapshot = true;
+
+      const heartbeat = setInterval(() => {
+        if (closed) return;
+        try {
+          controller.enqueue(encoder.encode(": ping\n\n"));
+        } catch {
+          // Stream already closed.
+        }
+      }, 25_000);
+
       const unsubscribe = query.onSnapshot(
         async (snapshot) => {
           if (closed) return;
+          if (isInitialSnapshot) {
+            isInitialSnapshot = false;
+            return;
+          }
           const changed = snapshot
             .docChanges()
             .filter((c) => c.type === "added" || c.type === "modified")
@@ -76,6 +100,7 @@ export async function GET(request: NextRequest) {
 
       request.signal.addEventListener("abort", () => {
         closed = true;
+        clearInterval(heartbeat);
         unsubscribe();
         try {
           controller.close();

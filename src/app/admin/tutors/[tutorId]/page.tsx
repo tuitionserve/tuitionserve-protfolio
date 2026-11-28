@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import { tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
+import { getTutorDocumentSignedUrl } from "@/server/domain/documents";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { TutorReviewActions } from "@/components/admin/tutors/TutorReviewActions";
 import { TutorSuspensionActions } from "@/components/admin/tutors/TutorSuspensionActions";
 import { ProfileChangeReviewPanel } from "@/components/admin/tutors/ProfileChangeReviewPanel";
+import { MessageTutorButton } from "@/components/admin/tutors/MessageTutorButton";
 import { getPendingChangeRequestForTutor } from "@/server/actions/profile-changes";
 import { BackButton } from "@/components/shared/BackButton";
 
@@ -40,15 +42,29 @@ export default async function AdminTutorDetailPage({
     tutor.verificationStatus === "APPROVED" ? getPendingChangeRequestForTutor(tutorId) : Promise.resolve(null),
   ]);
   const profile = profileSnap.data() ?? null;
+  const photoUrl = await getTutorDocumentSignedUrl(profile?.profilePhotoDocumentId, tutorId);
 
   return (
     <div className="max-w-2xl flex flex-col gap-lg">
       <BackButton />
-      <div>
-        <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {profile?.fullName ?? "Unnamed tutor"}
-        </h1>
-        <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{tutor.tutorUid}</p>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div className="flex items-center gap-4">
+          {photoUrl && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={photoUrl}
+              alt={profile?.fullName ?? "Tutor profile photo"}
+              className="w-16 h-16 rounded-full object-cover border border-surface-variant shrink-0"
+            />
+          )}
+          <div>
+            <h1 className="font-headline-lg text-headline-lg text-on-surface">
+              {profile?.fullName ?? "Unnamed tutor"}
+            </h1>
+            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{tutor.tutorUid}</p>
+          </div>
+        </div>
+        <MessageTutorButton tutorId={tutorId} />
       </div>
 
       {pendingChangeRequest && <ProfileChangeReviewPanel request={pendingChangeRequest} />}
@@ -81,7 +97,11 @@ export default async function AdminTutorDetailPage({
       </div>
 
       {["SUBMITTED", "UNDER_REVIEW", "RESUBMITTED"].includes(tutor.verificationStatus) ? (
-        <TutorReviewActions tutorId={tutorId} hasCv={Boolean(profile?.cvDocumentId)} />
+        <TutorReviewActions
+          tutorId={tutorId}
+          hasCv={Boolean(profile?.cvDocumentId)}
+          profileUpdatedAtMillis={profile?.updatedAt?.toMillis() ?? null}
+        />
       ) : (
         <TutorSuspensionActions
           tutorId={tutorId}

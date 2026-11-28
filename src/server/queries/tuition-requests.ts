@@ -1,4 +1,5 @@
 import {
+  fetchDocsByIds,
   parentsCollection,
   studentsCollection,
   tuitionRequestsCollection,
@@ -15,29 +16,30 @@ export interface TuitionRequestQueueRow {
   studentName: string | null;
 }
 
+function requestStudentIds(r: TuitionRequest): string[] {
+  if (Array.isArray(r.studentIds) && r.studentIds.length > 0) return r.studentIds;
+  const legacyId = (r as unknown as { studentId?: string | null }).studentId;
+  return legacyId ? [legacyId] : [];
+}
+
 async function withParentAndStudent(requests: TuitionRequest[]): Promise<TuitionRequestQueueRow[]> {
-  const [parents, studentNameLists] = await Promise.all([
-    Promise.all(requests.map((r) => parentsCollection().doc(r.parentId).get())),
-    Promise.all(
-      requests.map(async (r) => {
-        const ids: string[] =
-          Array.isArray(r.studentIds) && r.studentIds.length > 0
-            ? r.studentIds
-            : (r as unknown as { studentId?: string | null }).studentId
-              ? [(r as unknown as { studentId: string }).studentId]
-              : [];
-        if (ids.length === 0) return null;
-        const studentSnaps = await Promise.all(ids.map((id) => studentsCollection().doc(id).get()));
-        const names = studentSnaps.map((s) => s.data()?.fullName).filter(Boolean);
-        return names.length > 0 ? names.join(", ") : null;
-      }),
-    ),
+  if (requests.length === 0) return [];
+  const allStudentIds = requests.flatMap(requestStudentIds);
+  const [parentMap, studentMap] = await Promise.all([
+    fetchDocsByIds(parentsCollection(), requests.map((r) => r.parentId)),
+    fetchDocsByIds(studentsCollection(), allStudentIds),
   ]);
-  return requests.map((request, i) => ({
-    request,
-    parentName: parents[i]?.data()?.fullName ?? null,
-    studentName: studentNameLists[i],
-  }));
+
+  return requests.map((request) => {
+    const names = requestStudentIds(request)
+      .map((id) => studentMap.get(id)?.fullName)
+      .filter((n): n is string => Boolean(n));
+    return {
+      request,
+      parentName: parentMap.get(request.parentId)?.fullName ?? null,
+      studentName: names.length > 0 ? names.join(", ") : null,
+    };
+  });
 }
 
 function statusQuery(
@@ -111,21 +113,27 @@ export async function countOpenTuitionsQueue(session: AuthSession): Promise<numb
 
 /**
  * Count of OPEN tuitions that already have >=1 APPLIED applicant — an
- * admin decision is actually waiting ("ready to select a tutor"), not
- * just "opportunity is live and might still get zero applicants".
- * Backs the dashboard "Selections" tile. Capped at a bounded scan
- * (first 200 open tuitions) rather than pagination — this is a
- * dashboard summary number, not a browsable list, and TuitionRequests
- * doesn't denormalize an applicant count, so an exact total for
- * thousands of open tuitions would need one sub-query per tuition
- * regardless; 200 is a generous bound for a single branch's open queue.
+ * admin decision is actually waiting ("ready to select a tutor"). Uses
+ * two lightweight `.select()` queries (open tuition IDs + applied
+ * applications' tuitionId) instead of an N+1 per-tuition sub-query.
  */
 export async function countSelectionsReady(session: AuthSession): Promise<number> {
-  const snap = await statusQuery(session, "OPEN").limit(200).get();
-  const applicantSnaps = await Promise.all(
-    snap.docs.map((d) =>
-      tutorApplicationsCollection().where("tuitionId", "==", d.id).where("status", "==", "APPLIED").limit(1).get(),
-    ),
-  );
-  return applicantSnaps.filter((s) => !s.empty).length;
+  const openSnap = await statusQuery(session, "OPEN").select().limit(200).get();
+  if (openSnap.empty) return 0;
+
+  const openIds = new Set(openSnap.docs.map((d) => d.id));
+  const scope = resolveBranchScope(session, null);
+  const appliedBase = scope
+    ? tutorApplicationsCollection().where("branchId", "==", scope).where("status", "==", "APPLIED")
+    : tutorApplicationsCollection().where("status", "==", "APPLIED");
+  const appliedSnap = await appliedBase.select("tuitionId").limit(1000).get();
+
+  const readyTuitionIds = new Set<string>();
+  for (const doc of appliedSnap.docs) {
+    const tuitionId = doc.get("tuitionId") as string | undefined;
+    if (tuitionId && openIds.has(tuitionId)) {
+      readyTuitionIds.add(tuitionId);
+    }
+  }
+  return readyTuitionIds.size;
 }

@@ -1,8 +1,8 @@
 const STATS = [
   { value: "1000+", label: "Verified Teachers" },
   { value: "1000+", label: "Students Served" },
-  { value: "50+", label: "Subjects Covered" },
-  { value: "3", label: "Major Cities" },
+  { value: "All", label: "Core & Custom Subjects" },
+  { value: "77", label: "Districts Covered" },
 ] as const;
 
 export function StatsStrip() {

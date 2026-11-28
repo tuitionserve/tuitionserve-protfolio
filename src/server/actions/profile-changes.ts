@@ -5,11 +5,16 @@ import { FieldValue } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
 import { assertBranchScope, requireRole } from "@/server/auth/guards";
 import {
+  fetchDocsByIds,
   tutorProfileChangeRequestsCollection,
   tutorProfilesCollection,
   tutorsCollection,
 } from "@/server/domain/collections";
-import { uploadTutorDocument, InvalidDocumentError } from "@/server/domain/documents";
+import {
+  deleteReplacedTutorDocument,
+  uploadTutorDocument,
+  InvalidDocumentError,
+} from "@/server/domain/documents";
 import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { createNotification, notifyAdminsForBranch } from "@/server/domain/notifications";
@@ -83,13 +88,16 @@ export async function getAllPendingChangeRequests(
     : tutorProfileChangeRequestsCollection().where("status", "==", "PENDING");
   const page = await fetchPage(base, "requestedAt", cursor);
 
-  const tutorSnaps = await Promise.all(page.items.map((r) => tutorsCollection().doc(r.tutorId).get()));
-  const profileSnaps = await Promise.all(page.items.map((r) => tutorProfilesCollection().doc(r.tutorId).get()));
-  const items = page.items.map((r, i) => ({
+  const tutorIds = page.items.map((r) => r.tutorId);
+  const [tutorMap, profileMap] = await Promise.all([
+    fetchDocsByIds(tutorsCollection(), tutorIds),
+    fetchDocsByIds(tutorProfilesCollection(), tutorIds),
+  ]);
+  const items = page.items.map((r) => ({
     request: toChangeRequestView(r),
     tutorId: r.tutorId,
-    tutorUid: tutorSnaps[i]?.data()?.tutorUid ?? "—",
-    tutorName: profileSnaps[i]?.data()?.fullName ?? null,
+    tutorUid: tutorMap.get(r.tutorId)?.tutorUid ?? "—",
+    tutorName: profileMap.get(r.tutorId)?.fullName ?? null,
   }));
 
   return { ...page, items };
@@ -127,8 +135,11 @@ export async function updateFreeEditFields(formData: FormData): Promise<ActionRe
   }
 
   const photo = formData.get("photo");
+  let oldPhotoId: string | null | undefined;
   if (photo instanceof File && photo.size > 0) {
     try {
+      const prevSnap = await tutorProfilesCollection().doc(session.uid).get();
+      oldPhotoId = prevSnap.data()?.profilePhotoDocumentId;
       const doc = await uploadTutorDocument({
         tutorId: session.uid,
         documentType: "PROFILE_PHOTO",
@@ -148,6 +159,10 @@ export async function updateFreeEditFields(formData: FormData): Promise<ActionRe
   await tutorProfilesCollection()
     .doc(session.uid)
     .set({ ...patch, updatedAt: FieldValue.serverTimestamp() } as never, { merge: true });
+
+  if (patch.profilePhotoDocumentId && oldPhotoId) {
+    await deleteReplacedTutorDocument(oldPhotoId, session.uid);
+  }
 
   return { ok: true };
 }
@@ -214,11 +229,12 @@ export async function submitProfileChangeRequest(formData: FormData): Promise<Ac
     return { ok: false, error: "Please fix the highlighted fields.", fieldErrors };
   }
 
+  const changeUid = await generateSequentialUid("profileChange");
   const ref = tutorProfileChangeRequestsCollection().doc();
   const now = FieldValue.serverTimestamp();
   await ref.set({
     id: ref.id,
-    changeUid: "",
+    changeUid,
     tutorId: session.uid,
     branchId: session.tutor!.branchId,
     status: "PENDING",
@@ -228,9 +244,6 @@ export async function submitProfileChangeRequest(formData: FormData): Promise<Ac
     reviewedAt: null,
     reviewedBy: null,
   } as never);
-
-  const changeUid = await generateSequentialUid("profileChange");
-  await ref.update({ changeUid });
 
   await writeAuditEvent({
     action: "PROFILE_CHANGE_REQUESTED",

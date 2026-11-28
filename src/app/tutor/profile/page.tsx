@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { tutorProfilesCollection, branchesCollection } from "@/server/domain/collections";
+import { getTutorDocumentSignedUrl } from "@/server/domain/documents";
 import { catalogLabel, DAYS_OF_WEEK, GRADES, QUALIFICATIONS, SUBJECTS } from "@/lib/catalog";
 import { getMyPendingChangeRequest } from "@/server/actions/profile-changes";
 import { FreeEditForm } from "@/components/tutor/profile/FreeEditForm";
@@ -45,13 +46,24 @@ export default async function TutorProfilePage() {
   ]);
   const profile = profileSnap.exists ? profileSnap.data()! : null;
   const branchName = branchSnap?.exists ? branchSnap.data()!.name : "Unassigned";
+  const photoUrl = await getTutorDocumentSignedUrl(profile?.profilePhotoDocumentId, session.uid);
 
   return (
     <div className="max-w-2xl mx-auto flex flex-col gap-lg">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="font-headline-lg text-headline-lg text-on-surface">Your Profile</h1>
-          <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{tutor.tutorUid}</p>
+        <div className="flex items-center gap-4">
+          {photoUrl && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={photoUrl}
+              alt={profile?.fullName ?? "Profile photo"}
+              className="w-14 h-14 rounded-full object-cover border border-surface-variant shrink-0"
+            />
+          )}
+          <div>
+            <h1 className="font-headline-lg text-headline-lg text-on-surface">Your Profile</h1>
+            <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{tutor.tutorUid}</p>
+          </div>
         </div>
         {!isApproved && (
           <Link

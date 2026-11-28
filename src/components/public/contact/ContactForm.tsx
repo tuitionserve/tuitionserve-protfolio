@@ -24,12 +24,14 @@ export function ContactForm() {
   const [pending, startTransition] = useTransition();
   const [submittedUid, setSubmittedUid] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setFieldErrors({});
 
     const formData = new FormData();
+    const hp = (e.currentTarget.elements.namedItem("_hp_check") as HTMLInputElement | null)?.value;
+    if (hp) formData.set("_hp_check", hp);
     formData.set("fullName", fullName);
     formData.set("email", email);
     formData.set("phone", phone);
@@ -67,6 +69,7 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className={sectionClass}>
+      <input type="text" name="_hp_check" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className={fieldWrapClass}>
         <label className={labelClass} htmlFor="fullName">Full name</label>
         <input

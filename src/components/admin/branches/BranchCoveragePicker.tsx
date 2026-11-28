@@ -13,6 +13,15 @@ interface BranchCoveragePickerProps {
 
 export function BranchCoveragePicker({ districts, value, onChange }: BranchCoveragePickerProps) {
   const [selectedDistrictId, setSelectedDistrictId] = useState("");
+  // Explicit per-district mode so choosing "Specific Municipalities Only" keeps
+  // the checklist visible before any municipality checkbox is checked.
+  const [specificMode, setSpecificMode] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(
+      value
+        .filter((c) => c.localGovernmentIds && c.localGovernmentIds.length > 0)
+        .map((c) => [c.districtId, true]),
+    ),
+  );
   // Local government cache per district ID: districtId -> LocationNode[]
   const [lgCache, setLgCache] = useState<Record<string, LocationNode[]>>({});
   const [loadingLg, setLoadingLg] = useState<Record<string, boolean>>({});
@@ -60,10 +69,16 @@ export function BranchCoveragePicker({ districts, value, onChange }: BranchCover
   }
 
   function handleRemoveDistrict(districtId: string) {
+    setSpecificMode((prev) => {
+      const next = { ...prev };
+      delete next[districtId];
+      return next;
+    });
     onChange(value.filter((c) => c.districtId !== districtId));
   }
 
   function handleCoverageModeChange(districtId: string, mode: "ENTIRE" | "SPECIFIC") {
+    setSpecificMode((prev) => ({ ...prev, [districtId]: mode === "SPECIFIC" }));
     const updated = value.map((c) => {
       if (c.districtId !== districtId) return c;
       if (mode === "ENTIRE") {
@@ -150,7 +165,10 @@ export function BranchCoveragePicker({ districts, value, onChange }: BranchCover
           {value.map((cov) => {
             const dist = districts.find((d) => d.id === cov.districtId);
             const distLabel = dist ? (dist.nameEnglish ? `${dist.nameEnglish} (${dist.name})` : dist.name) : cov.districtName ?? cov.districtId;
-            const isSpecific = (cov.localGovernmentIds && cov.localGovernmentIds.length > 0) || (loadingLg[cov.districtId] ?? false);
+            const isSpecific =
+              Boolean(specificMode[cov.districtId]) ||
+              (cov.localGovernmentIds && cov.localGovernmentIds.length > 0) ||
+              (loadingLg[cov.districtId] ?? false);
             const lgs = lgCache[cov.districtId] ?? [];
             const selectedLgCount = cov.localGovernmentIds?.length ?? 0;
 

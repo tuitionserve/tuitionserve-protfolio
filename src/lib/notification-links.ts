@@ -28,10 +28,10 @@ export function notificationLink(
       return isAdmin ? `/admin/tuition-requests/${relatedEntityId}` : `/tutor/opportunities/${relatedEntityId}`;
     case "TutorApplication":
       // No standalone admin route for a single application — applicants
-      // are reviewed inline on the tuition detail page.
-      return isAdmin ? "/admin/tuition-requests" : "/tutor/applications";
+      // are reviewed on /admin/applications or inline on the tuition detail page.
+      return isAdmin ? "/admin/applications" : "/tutor/applications";
     case "TuitionAssignment":
-      return isAdmin ? "/admin/tuition-requests" : "/tutor/applications";
+      return isAdmin ? "/admin/tuition-requests/assigned" : "/tutor/applications";
     case "Conversation":
       return isAdmin ? `/admin/messages/${relatedEntityId}` : `/tutor/messages/${relatedEntityId}`;
     default:

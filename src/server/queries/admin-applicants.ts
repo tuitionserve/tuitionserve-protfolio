@@ -1,5 +1,5 @@
 import { FieldValue } from "firebase-admin/firestore";
-import { tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
+import { fetchDocsByIds, tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import type { AuthSession } from "@/server/auth/session";
 import type { TutorApplication, TutorApplicationSnapshot, TutorApplicationStatus } from "@/server/domain/types";
@@ -89,10 +89,13 @@ export async function getAllApplications(
     : tutorApplicationsCollection();
   const page = await fetchPage(base, "appliedAt", cursor);
 
-  const tuitionSnaps = await Promise.all(page.items.map((a) => tuitionRequestsCollection().doc(a.tuitionId).get()));
-  const items = page.items.map((a, i) => ({
+  const tuitionMap = await fetchDocsByIds(
+    tuitionRequestsCollection(),
+    page.items.map((a) => a.tuitionId),
+  );
+  const items = page.items.map((a) => ({
     application: toAdminView(a),
-    tuitionUid: tuitionSnaps[i]?.data()?.tuitionUid ?? "—",
+    tuitionUid: tuitionMap.get(a.tuitionId)?.tuitionUid ?? "—",
     tuitionId: a.tuitionId,
   }));
 

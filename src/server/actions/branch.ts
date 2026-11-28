@@ -5,6 +5,7 @@ import { FieldValue } from "firebase-admin/firestore";
 import { z } from "zod";
 import { requireRole } from "@/server/auth/guards";
 import { branchesCollection } from "@/server/domain/collections";
+import { findOverlappingBranchCoverage } from "@/server/domain/branch-routing";
 import { writeAuditEvent } from "@/server/domain/audit";
 import type { BranchCoverage } from "@/server/domain/types";
 
@@ -61,6 +62,13 @@ export async function updateBranchCoverage(formData: FormData): Promise<ActionRe
   }
 
   const typedCoverage = coverage as BranchCoverage[];
+  const overlap = await findOverlappingBranchCoverage(typedCoverage, branchId);
+  if (overlap) {
+    return {
+      ok: false,
+      error: `Coverage for ${overlap.districtName} overlaps with active branch "${overlap.branchName}".`,
+    };
+  }
   const coverageDistrictIds = Array.from(new Set(typedCoverage.map((c) => c.districtId)));
   const coverageLocalGovernmentIds = Array.from(
     new Set(typedCoverage.flatMap((c) => c.localGovernmentIds ?? [])),

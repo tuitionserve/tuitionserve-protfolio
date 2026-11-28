@@ -4,22 +4,22 @@ import { MaterialIcon } from "@/components/ui/MaterialIcon";
 
 export default function NotFound() {
   return (
-    <div className="relative isolate min-h-full flex-1 overflow-hidden bg-[#f7fbf8] px-margin-mobile py-16 md:px-margin-desktop md:py-20">
+    <div className="relative isolate min-h-full flex-1 overflow-hidden bg-surface-bright px-margin-mobile py-16 md:px-margin-desktop md:py-20">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-20 opacity-70 [background-image:radial-gradient(#10b981_1px,transparent_1px)] [background-size:26px_26px] [mask-image:linear-gradient(to_bottom,black,transparent_72%)]" />
       <div aria-hidden="true" className="pointer-events-none absolute -left-20 top-16 -z-10 h-64 w-64 rounded-full bg-primary-fixed/45 blur-3xl" />
       <div aria-hidden="true" className="pointer-events-none absolute -right-20 top-1/4 -z-10 h-72 w-72 rounded-full bg-tertiary-fixed/60 blur-3xl" />
 
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-        <span className="not-found-float absolute left-[8%] top-[18%] rotate-[-12deg] rounded-2xl border border-primary/15 bg-white/70 p-3 shadow-sm backdrop-blur-sm"><MaterialIcon name="menu_book" className="text-3xl text-primary-container" /></span>
-        <span className="not-found-float-delayed absolute right-[10%] top-[14%] rotate-[10deg] rounded-full border border-tertiary/15 bg-white/70 p-3 shadow-sm backdrop-blur-sm"><MaterialIcon name="school" className="text-3xl text-tertiary" /></span>
-        <span className="not-found-float absolute bottom-[30%] left-[16%] rotate-[8deg] rounded-xl border border-primary/15 bg-white/70 p-2.5 shadow-sm backdrop-blur-sm"><MaterialIcon name="functions" className="text-2xl text-primary" /></span>
-        <span className="not-found-float-delayed absolute bottom-[35%] right-[17%] rotate-[-10deg] rounded-xl border border-tertiary/15 bg-white/70 p-2.5 shadow-sm backdrop-blur-sm"><MaterialIcon name="lightbulb" className="text-2xl text-tertiary" /></span>
+        <span className="not-found-float absolute left-[8%] top-[18%] rotate-[-12deg] rounded-2xl border border-primary/15 bg-surface-container-lowest/80 p-3 shadow-sm backdrop-blur-sm"><MaterialIcon name="menu_book" className="text-3xl text-primary-container" /></span>
+        <span className="not-found-float-delayed absolute right-[10%] top-[14%] rotate-[10deg] rounded-full border border-tertiary/15 bg-surface-container-lowest/80 p-3 shadow-sm backdrop-blur-sm"><MaterialIcon name="school" className="text-3xl text-tertiary" /></span>
+        <span className="not-found-float absolute bottom-[30%] left-[16%] rotate-[8deg] rounded-xl border border-primary/15 bg-surface-container-lowest/80 p-2.5 shadow-sm backdrop-blur-sm"><MaterialIcon name="functions" className="text-2xl text-primary" /></span>
+        <span className="not-found-float-delayed absolute bottom-[35%] right-[17%] rotate-[-10deg] rounded-xl border border-tertiary/15 bg-surface-container-lowest/80 p-2.5 shadow-sm backdrop-blur-sm"><MaterialIcon name="lightbulb" className="text-2xl text-tertiary" /></span>
       </div>
 
       <main className="relative z-10 mx-auto flex min-h-[520px] max-w-2xl flex-col items-center justify-center text-center">
         <div className="relative mb-5">
           <div aria-hidden="true" className="absolute inset-0 scale-150 rounded-full bg-primary-fixed/50 blur-2xl" />
-          <Image src="/temp%20assets/logo.png" alt="Tuition Serve" width={500} height={500} className="relative h-28 w-28 object-contain md:h-32 md:w-32" priority />
+          <Image src="/images/logo.svg" alt="Tuition Serve" width={200} height={50} className="relative h-12 w-auto md:h-14" priority />
         </div>
         <p className="font-label-md text-label-md font-bold uppercase tracking-[0.18em] text-primary">Lesson not found</p>
         <p className="mt-2 font-display-lg text-6xl font-bold leading-none tracking-tight text-on-surface md:text-8xl">404</p>

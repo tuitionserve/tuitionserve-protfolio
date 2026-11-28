@@ -1,13 +1,19 @@
 "use server";
 
 import { FieldValue } from "firebase-admin/firestore";
+import { adminFirestore } from "@/lib/firebase/admin";
 import { requireRole } from "@/server/auth/guards";
 import {
   geographicLocationsCollection,
   tutorProfilesCollection,
   tutorsCollection,
 } from "@/server/domain/collections";
-import { uploadTutorDocument, InvalidDocumentError } from "@/server/domain/documents";
+import {
+  deleteReplacedTutorDocument,
+  uploadTutorDocument,
+  InvalidDocumentError,
+} from "@/server/domain/documents";
+import { fieldErrorsFrom } from "@/server/actions/action-utils";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { resolveBranchIdForLocation } from "@/server/domain/branch-routing";
 import { notifyAdminsForBranch } from "@/server/domain/notifications";
@@ -23,15 +29,6 @@ import type { TutorProfile } from "@/server/domain/types";
 export type ActionResult =
   | { ok: true }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
-
-function fieldErrorsFrom(error: { issues: { path: PropertyKey[]; message: string }[] }) {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = String(issue.path[0] ?? "form");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
-}
 
 /**
  * Only the tutor who owns the profile, and only while it's still editable:
@@ -77,8 +74,11 @@ export async function saveTutorPersonalStep(formData: FormData): Promise<ActionR
 
   const photo = formData.get("photo");
   let profilePhotoDocumentId: string | undefined;
+  let oldPhotoId: string | null | undefined;
   if (photo instanceof File && photo.size > 0) {
     try {
+      const prevSnap = await tutorProfilesCollection().doc(session.uid).get();
+      oldPhotoId = prevSnap.data()?.profilePhotoDocumentId;
       const doc = await uploadTutorDocument({
         tutorId: session.uid,
         documentType: "PROFILE_PHOTO",
@@ -97,6 +97,9 @@ export async function saveTutorPersonalStep(formData: FormData): Promise<ActionR
     ...parsed.data,
     ...(profilePhotoDocumentId ? { profilePhotoDocumentId } : {}),
   });
+  if (profilePhotoDocumentId && oldPhotoId) {
+    await deleteReplacedTutorDocument(oldPhotoId, session.uid);
+  }
   return { ok: true };
 }
 
@@ -189,6 +192,8 @@ export async function uploadTutorCv(formData: FormData): Promise<ActionResult> {
   }
 
   try {
+    const prevSnap = await tutorProfilesCollection().doc(session.uid).get();
+    const oldCvId = prevSnap.data()?.cvDocumentId;
     const doc = await uploadTutorDocument({
       tutorId: session.uid,
       documentType: "CV",
@@ -197,6 +202,9 @@ export async function uploadTutorCv(formData: FormData): Promise<ActionResult> {
       originalFileName: cv.name,
     });
     await mergeProfile(session.uid, { cvDocumentId: doc.id });
+    if (oldCvId) {
+      await deleteReplacedTutorDocument(oldCvId, session.uid);
+    }
     return { ok: true };
   } catch (error) {
     if (error instanceof InvalidDocumentError) return { ok: false, error: error.message };
@@ -258,16 +266,32 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
   // preferred location while editing.
   const branchId = await resolveBranchIdForLocation(profile.preferredLocationId!);
 
-  await tutorsCollection().doc(session.uid).update({
-    verificationStatus: nextStatus,
-    branchId,
-    rejectionReason: null,
-    submittedAt: FieldValue.serverTimestamp(),
-    updatedAt: FieldValue.serverTimestamp(),
+  const tutorRef = tutorsCollection().doc(session.uid);
+  const txResult = await adminFirestore.runTransaction(async (tx) => {
+    const freshSnap = await tx.get(tutorRef);
+    const fresh = freshSnap.data();
+    if (!fresh || fresh.verificationStatus === "APPROVED" || fresh.verificationStatus === "SUSPENDED") {
+      return { ok: false as const };
+    }
+    const currentlyRejected = fresh.verificationStatus === "REJECTED";
+    tx.update(tutorRef, {
+      verificationStatus: currentlyRejected ? "RESUBMITTED" : "SUBMITTED",
+      branchId,
+      rejectionReason: null,
+      submittedAt: FieldValue.serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
+    });
+    return { ok: true as const, effectiveStatus: currentlyRejected ? "RESUBMITTED" : "SUBMITTED" };
   });
 
+  if (!txResult.ok) {
+    return { ok: false, error: "This profile can no longer be submitted." };
+  }
+
+  const effectiveWasRejected = txResult.effectiveStatus === "RESUBMITTED" && nextStatus === "RESUBMITTED" ? wasRejected : txResult.effectiveStatus === "RESUBMITTED";
+
   await writeAuditEvent({
-    action: wasRejected ? "TUTOR_PROFILE_RESUBMITTED" : "TUTOR_PROFILE_SUBMITTED",
+    action: effectiveWasRejected ? "TUTOR_PROFILE_RESUBMITTED" : "TUTOR_PROFILE_SUBMITTED",
     actorUserId: session.uid,
     actorRole: "TUTOR",
     targetType: "Tutor",
@@ -276,9 +300,9 @@ export async function submitTutorProfileForReview(): Promise<ActionResult> {
   });
 
   await notifyAdminsForBranch(branchId, {
-    type: wasRejected ? "TUTOR_RESUBMITTED" : "TUTOR_SUBMITTED",
-    title: wasRejected ? "Tutor resubmitted their profile" : "New tutor profile submitted",
-    body: `${profile.fullName ?? "A tutor"} (${session.tutor!.tutorUid}) ${wasRejected ? "resubmitted" : "submitted"} their profile for review.`,
+    type: effectiveWasRejected ? "TUTOR_RESUBMITTED" : "TUTOR_SUBMITTED",
+    title: effectiveWasRejected ? "Tutor resubmitted their profile" : "New tutor profile submitted",
+    body: `${profile.fullName ?? "A tutor"} (${session.tutor!.tutorUid}) ${effectiveWasRejected ? "resubmitted" : "submitted"} their profile for review.`,
     relatedEntityType: "Tutor",
     relatedEntityId: session.uid,
   });

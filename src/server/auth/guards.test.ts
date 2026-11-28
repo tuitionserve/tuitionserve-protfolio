@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assertBranchScope } from "./guards";
+import { assertBranchScope, isTutorInBranchScope } from "./guards";
 import type { AuthSession } from "./session";
 
 function session(overrides: Partial<AuthSession>): AuthSession {
@@ -43,5 +43,21 @@ describe("assertBranchScope", () => {
     expect(() =>
       assertBranchScope(session({ role: "TUTOR", branchId: null }), "branch-1"),
     ).toThrow("BRANCH_SCOPE_VIOLATION");
+  });
+});
+
+describe("isTutorInBranchScope", () => {
+  it("allows unrouted tutors (branchId null) to access any branch", () => {
+    expect(isTutorInBranchScope(null, "branch-1")).toBe(true);
+    expect(isTutorInBranchScope(null, null)).toBe(true);
+  });
+
+  it("allows a routed tutor to access their own branch", () => {
+    expect(isTutorInBranchScope("branch-1", "branch-1")).toBe(true);
+  });
+
+  it("blocks a routed tutor from another branch or unrouted tuition", () => {
+    expect(isTutorInBranchScope("branch-1", "branch-2")).toBe(false);
+    expect(isTutorInBranchScope("branch-1", null)).toBe(false);
   });
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import {
   fetchDistrictsForProvince,
   fetchLocalGovernmentsForDistrict,
@@ -47,6 +47,7 @@ export function LocationCascadeSelect({
   requireWard?: boolean;
   onChange: (locationId: string | null, label: string | null) => void;
 }) {
+  const baseId = useId();
   const [provinceId, setProvinceId] = useState(initialProvinceId ?? "");
   const [districtId, setDistrictId] = useState(initialDistrictId ?? "");
   const [localGovernmentId, setLocalGovernmentId] = useState(initialLocalGovernmentId ?? "");
@@ -153,8 +154,8 @@ export function LocationCascadeSelect({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       <div className="flex flex-col gap-2">
-        <label className="font-label-md text-label-md text-on-surface-variant">Province</label>
-        <select className={selectClass} value={provinceId} onChange={(e) => handleProvinceChange(e.target.value)} required={requireWard}>
+        <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-province`}>Province</label>
+        <select id={`${baseId}-province`} className={selectClass} value={provinceId} onChange={(e) => handleProvinceChange(e.target.value)} required={requireWard}>
           <option value="">{requireWard ? "Select province" : "Any province"}</option>
           {provinces.map((p) => (
             <option key={p.id} value={p.id}>{locationLabel(p)}</option>
@@ -163,8 +164,9 @@ export function LocationCascadeSelect({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="font-label-md text-label-md text-on-surface-variant">District</label>
+        <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-district`}>District</label>
         <select
+          id={`${baseId}-district`}
           className={selectClass}
           value={districtId}
           onChange={(e) => handleDistrictChange(e.target.value)}
@@ -179,8 +181,9 @@ export function LocationCascadeSelect({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label className="font-label-md text-label-md text-on-surface-variant">Municipality / Rural Municipality</label>
+        <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-lg`}>Municipality / Rural Municipality</label>
         <select
+          id={`${baseId}-lg`}
           className={selectClass}
           value={localGovernmentId}
           onChange={(e) => handleLocalGovernmentChange(e.target.value)}
@@ -196,8 +199,9 @@ export function LocationCascadeSelect({
 
       {requireWard && (
         <div className="flex flex-col gap-2">
-          <label className="font-label-md text-label-md text-on-surface-variant">Ward</label>
+          <label className="font-label-md text-label-md text-on-surface-variant" htmlFor={`${baseId}-ward`}>Ward</label>
           <select
+            id={`${baseId}-ward`}
             className={selectClass}
             value={wardNumber}
             onChange={(e) => handleWardChange(e.target.value)}

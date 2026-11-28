@@ -123,6 +123,9 @@ export async function loadConversationForParticipant(conversationId: string): Pr
   const conversation = snap.data()!;
 
   if (session.role === "TUTOR") {
+    if (session.tutor?.verificationStatus === "SUSPENDED") {
+      throw new Error("Conversation not found.");
+    }
     if (conversation.tutorId !== session.uid) throw new Error("Conversation not found.");
   } else {
     assertBranchScope(session, conversation.branchId);
@@ -161,14 +164,14 @@ export async function startOrGetConversation(
     return { ok: false, error: "You cannot message a tutor outside your branch." };
   }
 
-  const existingSnap = await conversationsCollection()
+  const existingQuery = conversationsCollection()
     .where("tutorId", "==", parsed.data.tutorId)
     .where("branchId", "==", tutor.branchId)
-    .limit(1)
-    .get();
+    .limit(1);
 
-  if (!existingSnap.empty) {
-    const existingDoc = existingSnap.docs[0]!;
+  const preExistingSnap = await existingQuery.get();
+  if (!preExistingSnap.empty) {
+    const existingDoc = preExistingSnap.docs[0]!;
     const existing = existingDoc.data();
     if (parsed.data.tuitionId && !existing.tuitionId) {
       await existingDoc.ref.update({
@@ -179,36 +182,53 @@ export async function startOrGetConversation(
     return { ok: true, conversationId: existing.id };
   }
 
-  const ref = conversationsCollection().doc();
-  const now = FieldValue.serverTimestamp();
-  await ref.set({
-    id: ref.id,
-    conversationUid: "", // filled in below (UID generation is its own transaction)
-    tutorId: parsed.data.tutorId,
-    adminUserId: session.uid,
-    branchId: tutor.branchId,
-    tuitionId: parsed.data.tuitionId ?? null,
-    lastMessageAt: now,
-    lastMessagePreview: "",
-    tutorUnreadCount: 0,
-    adminUnreadCount: 0,
-    createdAt: now,
-    updatedAt: now,
-  } as never);
-
   const conversationUid = await generateSequentialUid("conversation");
-  await ref.update({ conversationUid });
+  const newRef = conversationsCollection().doc();
+  const now = FieldValue.serverTimestamp();
 
-  await writeAuditEvent({
-    action: "CONVERSATION_STARTED",
-    actorUserId: session.uid,
-    actorRole: session.role,
-    targetType: "Conversation",
-    targetId: ref.id,
-    metadata: { tutorId: parsed.data.tutorId, branchId: tutor.branchId },
+  const txResult = await adminFirestore.runTransaction(async (tx) => {
+    const existingSnap = await tx.get(existingQuery);
+    if (!existingSnap.empty) {
+      const existingDoc = existingSnap.docs[0]!;
+      const existing = existingDoc.data();
+      if (parsed.data.tuitionId && !existing.tuitionId) {
+        tx.update(existingDoc.ref, {
+          tuitionId: parsed.data.tuitionId,
+          updatedAt: now,
+        });
+      }
+      return { created: false as const, conversationId: existing.id };
+    }
+
+    tx.set(newRef, {
+      id: newRef.id,
+      conversationUid,
+      tutorId: parsed.data.tutorId,
+      adminUserId: session.uid,
+      branchId: tutor.branchId,
+      tuitionId: parsed.data.tuitionId ?? null,
+      lastMessageAt: now,
+      lastMessagePreview: "",
+      tutorUnreadCount: 0,
+      adminUnreadCount: 0,
+      createdAt: now,
+      updatedAt: now,
+    } as never);
+    return { created: true as const, conversationId: newRef.id };
   });
 
-  return { ok: true, conversationId: ref.id };
+  if (txResult.created) {
+    await writeAuditEvent({
+      action: "CONVERSATION_STARTED",
+      actorUserId: session.uid,
+      actorRole: session.role,
+      targetType: "Conversation",
+      targetId: txResult.conversationId,
+      metadata: { tutorId: parsed.data.tutorId, branchId: tutor.branchId },
+    });
+  }
+
+  return { ok: true, conversationId: txResult.conversationId };
 }
 
 /** UI convenience wrapper: resolves a tutor by their public Tutor UID (e.g. TS-T-000127) before starting/reusing a conversation, for the admin "start a new conversation" form. */
@@ -375,4 +395,24 @@ export async function getConversationDetail(conversationId: string): Promise<Con
     tutorUid: tutorSnap.data()?.tutorUid ?? "—",
     tutorName: profileSnap.data()?.fullName ?? null,
   };
+}
+
+/** Count of conversations with unread messages for the signed-in tutor. */
+export async function countUnreadConversationsForTutor(tutorId: string): Promise<number> {
+  const snap = await conversationsCollection()
+    .where("tutorId", "==", tutorId)
+    .select("tutorUnreadCount")
+    .limit(200)
+    .get();
+  return snap.docs.filter((d) => (d.get("tutorUnreadCount") as number) > 0).length;
+}
+
+/** Count of conversations with unread messages for the signed-in admin's branch scope. */
+export async function countUnreadConversationsForAdmin(session: AuthSession): Promise<number> {
+  const base =
+    session.role === "BRANCH_ADMIN"
+      ? conversationsCollection().where("branchId", "==", session.branchId)
+      : conversationsCollection();
+  const snap = await base.select("adminUnreadCount").limit(200).get();
+  return snap.docs.filter((d) => (d.get("adminUnreadCount") as number) > 0).length;
 }

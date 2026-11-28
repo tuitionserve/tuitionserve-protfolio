@@ -42,8 +42,12 @@ export function ConversationListPane({
   useEffect(() => {
     const es = new EventSource("/api/messages/list-stream");
     es.onmessage = (event) => {
-      const item: ConversationListItemView = JSON.parse(event.data);
-      setItems((prev) => mergeAndSort(prev, [item]));
+      try {
+        const item: ConversationListItemView = JSON.parse(event.data);
+        setItems((prev) => mergeAndSort(prev, [item]));
+      } catch {
+        // Ignore malformed SSE payload.
+      }
     };
     return () => es.close();
   }, []);

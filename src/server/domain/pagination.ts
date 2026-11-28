@@ -28,6 +28,8 @@ export interface PageResult<T> {
   hasNextPage: boolean;
   /** Cursor token for this page's last item — append it to the URL's cursor stack to request the next page. */
   nextCursor: string | null;
+  /** True when post-query attribute filters are active so totalCount is a lower/unfiltered bound. */
+  totalIsApproximate?: boolean;
 }
 
 function encodeCursor(sortValue: FirebaseFirestore.Timestamp, docId: string): string {

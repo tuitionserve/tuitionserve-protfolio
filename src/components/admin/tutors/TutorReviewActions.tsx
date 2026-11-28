@@ -4,7 +4,15 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { approveTutor, getTutorCvUrl, rejectTutor } from "@/server/actions/tutor-review";
 
-export function TutorReviewActions({ tutorId, hasCv }: { tutorId: string; hasCv: boolean }) {
+export function TutorReviewActions({
+  tutorId,
+  hasCv,
+  profileUpdatedAtMillis,
+}: {
+  tutorId: string;
+  hasCv: boolean;
+  profileUpdatedAtMillis: number | null;
+}) {
   const router = useRouter();
   const [showReject, setShowReject] = useState(false);
   const [reason, setReason] = useState("");
@@ -15,7 +23,7 @@ export function TutorReviewActions({ tutorId, hasCv }: { tutorId: string; hasCv:
   function handleApprove() {
     setError(null);
     startTransition(async () => {
-      const result = await approveTutor(tutorId);
+      const result = await approveTutor(tutorId, profileUpdatedAtMillis);
       if (result.ok) {
         router.push("/admin/tutors");
         router.refresh();

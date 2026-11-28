@@ -1,5 +1,11 @@
 import { requireRole } from "@/server/auth/guards";
-import { branchesCollection, tutorProfilesCollection, tutorsCollection, userAccountsCollection } from "@/server/domain/collections";
+import {
+  branchesCollection,
+  fetchDocsByIds,
+  tutorProfilesCollection,
+  tutorsCollection,
+  userAccountsCollection,
+} from "@/server/domain/collections";
 import { fetchPage, type PageResult } from "@/server/domain/pagination";
 import type { Branch } from "@/server/domain/types";
 
@@ -40,13 +46,16 @@ export async function getBranchDetail(
 
   const tutorsBase = tutorsCollection().where("branchId", "==", branchId);
   const tutorsPage = await fetchPage(tutorsBase, "createdAt", cursor);
-  const profiles = await Promise.all(tutorsPage.items.map((t) => tutorProfilesCollection().doc(t.id).get()));
+  const profileMap = await fetchDocsByIds(
+    tutorProfilesCollection(),
+    tutorsPage.items.map((t) => t.id),
+  );
   const tutors: PageResult<BranchTutorRow> = {
     ...tutorsPage,
-    items: tutorsPage.items.map((t, i) => ({
+    items: tutorsPage.items.map((t) => ({
       id: t.id,
       tutorUid: t.tutorUid,
-      fullName: profiles[i]?.data()?.fullName ?? null,
+      fullName: profileMap.get(t.id)?.fullName ?? null,
       verificationStatus: t.verificationStatus,
     })),
   };

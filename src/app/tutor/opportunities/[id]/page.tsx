@@ -29,7 +29,7 @@ export default async function TutorOpportunityDetailPage({
   const { id } = await params;
   const session = await requireActiveTutor();
 
-  const opportunity = await getOpportunityForTutor(id, session.uid);
+  const opportunity = await getOpportunityForTutor(id, session.uid, session.tutor?.branchId ?? null);
   if (!opportunity) notFound();
   const isOpen = opportunity.status === "OPEN";
 
@@ -56,7 +56,9 @@ export default async function TutorOpportunityDetailPage({
           {isSchool ? "School" : "Home Tuition"}
         </span>
         <h1 className="font-headline-lg text-headline-lg text-on-surface">
-          {catalogLabel(GRADES, opportunity.gradeId)}{" "}
+          {(opportunity.gradeIds && opportunity.gradeIds.length > 0 ? opportunity.gradeIds : [opportunity.gradeId])
+            .map((g) => catalogLabel(GRADES, g))
+            .join(", ")}{" "}
           {opportunity.subjectIds.map((s) => catalogLabel(SUBJECTS, s)).join(", ")}
         </h1>
         <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">{opportunity.tuitionUid}</p>

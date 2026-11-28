@@ -3,12 +3,16 @@ import Link from "next/link";
 import { requireActiveTutor } from "@/server/auth/guards";
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { countUnreadNotifications } from "@/server/queries/my-notifications";
+import { countUnreadConversationsForTutor } from "@/server/actions/messaging";
 import { BottomTabBar } from "@/components/shared/BottomTabBar";
 import { Sidebar } from "@/components/shared/Sidebar";
 
 export default async function TutorLayout({ children }: { children: React.ReactNode }) {
   const session = await requireActiveTutor();
-  const unreadCount = await countUnreadNotifications(session.uid);
+  const [unreadCount, unreadMessagesCount] = await Promise.all([
+    countUnreadNotifications(session.uid),
+    countUnreadConversationsForTutor(session.uid),
+  ]);
   const sections = [
     { links: [{ label: "Dashboard", href: "/tutor/dashboard", icon: "home" }] },
     {
@@ -21,7 +25,7 @@ export default async function TutorLayout({ children }: { children: React.ReactN
     {
       label: "Communication",
       links: [
-        { label: "Messages", href: "/tutor/messages", icon: "chat" },
+        { label: "Messages", href: "/tutor/messages", icon: "chat", badge: unreadMessagesCount },
         { label: "Notifications", href: "/tutor/notifications", icon: "notifications", badge: unreadCount },
       ],
     },
@@ -31,7 +35,7 @@ export default async function TutorLayout({ children }: { children: React.ReactN
     { label: "Home", href: "/tutor/dashboard", icon: "home" },
     { label: "Tuitions", href: "/tutor/opportunities", icon: "search" },
     { label: "Applied", href: "/tutor/applications", icon: "assignment" },
-    { label: "Messages", href: "/tutor/messages", icon: "chat" },
+    { label: "Messages", href: "/tutor/messages", icon: "chat", badge: unreadMessagesCount },
     { label: "Alerts", href: "/tutor/notifications", icon: "notifications", badge: unreadCount },
   ];
 

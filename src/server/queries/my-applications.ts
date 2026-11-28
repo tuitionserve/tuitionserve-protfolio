@@ -1,4 +1,9 @@
-import { tuitionAssignmentsCollection, tuitionRequestsCollection, tutorApplicationsCollection } from "@/server/domain/collections";
+import {
+  fetchDocsByIds,
+  tuitionAssignmentsCollection,
+  tuitionRequestsCollection,
+  tutorApplicationsCollection,
+} from "@/server/domain/collections";
 import type {
   TutorApplication,
   TuitionAssignmentStatus,
@@ -52,8 +57,8 @@ export interface MyApplicationRow {
 }
 
 async function withTuitionsAndAssignments(applications: TutorApplication[]): Promise<MyApplicationRow[]> {
-  const [tuitionSnaps, assignmentSnaps] = await Promise.all([
-    Promise.all(applications.map((a) => tuitionRequestsCollection().doc(a.tuitionId).get())),
+  const [tuitionMap, assignmentSnaps] = await Promise.all([
+    fetchDocsByIds(tuitionRequestsCollection(), applications.map((a) => a.tuitionId)),
     Promise.all(
       applications.map((a) =>
         a.status === "SELECTED"
@@ -66,9 +71,10 @@ async function withTuitionsAndAssignments(applications: TutorApplication[]): Pro
   return applications.map((application, i) => {
     const assignmentSnap = assignmentSnaps[i];
     const assignmentDoc = assignmentSnap && !assignmentSnap.empty ? assignmentSnap.docs[0]!.data() : null;
+    const tuition = tuitionMap.get(application.tuitionId);
     return {
       application,
-      tuition: tuitionSnaps[i]?.exists ? toTutorTuitionView(tuitionSnaps[i]!.data()!) : null,
+      tuition: tuition ? toTutorTuitionView(tuition) : null,
       assignment: assignmentDoc
         ? {
             id: assignmentDoc.id,
@@ -81,22 +87,21 @@ async function withTuitionsAndAssignments(applications: TutorApplication[]): Pro
 }
 
 /**
- * `statusFilter` is applied in-memory on the fetched page rather than
- * added as a Firestore where() clause — same trade-off already made
- * for opportunity filters (see opportunities.ts's doc comment):
- * avoids a composite index per status, and a status filter here is a
- * "narrow what I already have" convenience, not something that needs
- * an exact server-side count.
+ * Filters `statusFilter` at the Firestore query level (backed by the
+ * tutorId + status + appliedAt composite index) so each tab returns a
+ * full page and accurate `totalCount`.
  */
 export async function getMyApplications(
   tutorId: string,
   cursor: string | null,
   statusFilter: TutorApplicationStatus | null = null,
 ): Promise<PageResult<MyApplicationRow>> {
-  const base = tutorApplicationsCollection().where("tutorId", "==", tutorId);
+  let base = tutorApplicationsCollection().where("tutorId", "==", tutorId);
+  if (statusFilter) {
+    base = base.where("status", "==", statusFilter);
+  }
   const page = await fetchPage(base, "appliedAt", cursor);
-  const items = statusFilter ? page.items.filter((a) => a.status === statusFilter) : page.items;
-  return { ...page, items: await withTuitionsAndAssignments(items) };
+  return { ...page, items: await withTuitionsAndAssignments(page.items) };
 }
 
 /**

@@ -2,7 +2,12 @@
 // only export async functions, so these plain view-mapping helpers and
 // their types live here instead, shared by messaging.ts and the SSE
 // route handlers under src/app/api/messages/.
-import { branchesCollection, tutorProfilesCollection, tutorsCollection } from "@/server/domain/collections";
+import {
+  branchesCollection,
+  fetchDocsByIds,
+  tutorProfilesCollection,
+  tutorsCollection,
+} from "@/server/domain/collections";
 import type { Conversation, Message } from "@/server/domain/types";
 
 /** Client-safe (Timestamp-stripped) view types — see the messaging.ts module doc for why. */
@@ -68,25 +73,32 @@ export function toMessageView(m: Message): MessageView {
 
 /** Admin-side display name for a conversation row: the tutor's name and UID. */
 export async function enrichConversationsForAdmin(conversations: ConversationView[]): Promise<ConversationListItemView[]> {
-  const [tutors, profiles] = await Promise.all([
-    Promise.all(conversations.map((c) => tutorsCollection().doc(c.tutorId).get())),
-    Promise.all(conversations.map((c) => tutorProfilesCollection().doc(c.tutorId).get())),
+  const tutorIds = conversations.map((c) => c.tutorId);
+  const [tutorMap, profileMap] = await Promise.all([
+    fetchDocsByIds(tutorsCollection(), tutorIds),
+    fetchDocsByIds(tutorProfilesCollection(), tutorIds),
   ]);
-  return conversations.map((c, i) => ({
-    ...c,
-    displayName: tutors[i]?.exists
-      ? `${profiles[i]?.data()?.fullName ?? "Unnamed tutor"} · ${tutors[i]!.data()!.tutorUid}`
-      : "Unknown tutor",
-  }));
+  return conversations.map((c) => {
+    const tutor = tutorMap.get(c.tutorId);
+    const profile = profileMap.get(c.tutorId);
+    return {
+      ...c,
+      displayName: tutor ? `${profile?.fullName ?? "Unnamed tutor"} · ${tutor.tutorUid}` : "Unknown tutor",
+    };
+  });
 }
 
 /** Tutor-side display name for a conversation row: "Administrator — <Branch Name>", matching #25's admin-message-view labeling. */
 export async function enrichConversationsForTutor(conversations: ConversationView[]): Promise<ConversationListItemView[]> {
-  const branches = await Promise.all(
-    conversations.map((c) => (c.branchId ? branchesCollection().doc(c.branchId).get() : null)),
+  const branchMap = await fetchDocsByIds(
+    branchesCollection(),
+    conversations.map((c) => c.branchId),
   );
-  return conversations.map((c, i) => ({
-    ...c,
-    displayName: branches[i]?.exists ? `Administrator — ${branches[i]!.data()!.name}` : "Administrator",
-  }));
+  return conversations.map((c) => {
+    const branch = c.branchId ? branchMap.get(c.branchId) : undefined;
+    return {
+      ...c,
+      displayName: branch ? `Administrator — ${branch.name}` : "Administrator",
+    };
+  });
 }

@@ -42,6 +42,19 @@ export async function assignTutor(tuitionId: string, applicationId: string): Pro
 
   const tuitionRef = tuitionRequestsCollection().doc(tuitionId);
   const applicationRef = tutorApplicationsCollection().doc(applicationId);
+  const preTuitionSnap = await tuitionRef.get();
+  const preTuition = preTuitionSnap.data();
+  if (!preTuition) return { ok: false, error: "Tuition not found." };
+  try {
+    assertBranchScope(session, preTuition.branchId);
+  } catch {
+    return { ok: false, error: "You are not authorized to act on this tuition." };
+  }
+  if (preTuition.status !== "OPEN") {
+    return { ok: false, error: "This tuition is no longer open for assignment." };
+  }
+
+  const assignmentUid = await generateSequentialUid("assignment");
   const assignmentRef = tuitionAssignmentsCollection().doc();
   const now = FieldValue.serverTimestamp();
 
@@ -77,7 +90,7 @@ export async function assignTutor(tuitionId: string, applicationId: string): Pro
 
     tx.set(assignmentRef, {
       id: assignmentRef.id,
-      assignmentUid: "", // filled in after the transaction (UID generation is its own transaction)
+      assignmentUid,
       tuitionId,
       tutorId: application.tutorId,
       applicationId,
@@ -122,9 +135,6 @@ export async function assignTutor(tuitionId: string, applicationId: string): Pro
   });
 
   if (!result.ok) return result;
-
-  const assignmentUid = await generateSequentialUid("assignment");
-  await assignmentRef.update({ assignmentUid });
 
   await writeAuditEvent({
     action: "ASSIGNMENT_CREATED",

@@ -1,5 +1,7 @@
+import { isTutorInBranchScope } from "@/server/auth/guards";
 import {
   branchesCollection,
+  fetchDocsByIds,
   parentsCollection,
   studentsCollection,
   tuitionRequestsCollection,
@@ -12,7 +14,7 @@ import type {
   TuitionRequestStatus,
   TutorGenderPreference,
 } from "@/server/domain/types";
-import { fetchPage, type PageResult } from "@/server/domain/pagination";
+import { DEFAULT_PAGE_SIZE, fetchPage, type PageResult } from "@/server/domain/pagination";
 
 export interface TutorOpportunityStudentView {
   id: string;
@@ -38,6 +40,7 @@ export interface TutorOpportunityView {
   institutionName: string | null; // SCHOOL postings only — the school's name, always tutor-visible (unlike parent/student below)
   subjectIds: string[];
   gradeId: string;
+  gradeIds?: string[];
   tutorVisibleLocality: string;
   tutorGenderPreference: TutorGenderPreference;
   branchCity: string | null;
@@ -72,6 +75,7 @@ function toTutorView(r: TuitionRequest): TutorOpportunityView {
     institutionName: r.institutionName,
     subjectIds: r.subjectIds,
     gradeId: r.gradeId,
+    gradeIds: r.gradeIds,
     tutorVisibleLocality: r.tutorVisibleLocality,
     tutorGenderPreference: r.tutorGenderPreference,
     branchCity: null,
@@ -93,10 +97,14 @@ async function attachBranchCities(
   requests: TuitionRequest[],
   views: TutorOpportunityView[],
 ): Promise<TutorOpportunityView[]> {
-  const branchIds = [...new Set(requests.map((r) => r.branchId).filter((id): id is string => Boolean(id)))];
-  const branchSnaps = await Promise.all(branchIds.map((id) => branchesCollection().doc(id).get()));
-  const cityByBranchId = new Map(branchSnaps.map((s) => [s.id, s.exists ? s.data()!.city : null]));
-  return views.map((v, i) => ({ ...v, branchCity: requests[i]!.branchId ? cityByBranchId.get(requests[i]!.branchId!) ?? null : null }));
+  const branchMap = await fetchDocsByIds(
+    branchesCollection(),
+    requests.map((r) => r.branchId),
+  );
+  return views.map((v, i) => ({
+    ...v,
+    branchCity: requests[i]!.branchId ? (branchMap.get(requests[i]!.branchId!)?.city ?? null) : null,
+  }));
 }
 
 export interface OpportunityFilters {
@@ -124,6 +132,27 @@ export interface OpportunityFilters {
  * index per combination — see the historical version of this doc
  * comment in git blame for the original reasoning, unchanged here.
  */
+function matchesOpportunityFilters(r: TuitionRequest, filters: OpportunityFilters): boolean {
+  if (filters.subjectId) {
+    if (!r.subjectIds.includes(filters.subjectId) && !r.subjectIds.includes("all-subjects")) {
+      return false;
+    }
+  }
+  if (filters.gradeId) {
+    if (r.gradeId !== filters.gradeId && !(r.gradeIds && r.gradeIds.includes(filters.gradeId))) {
+      return false;
+    }
+  }
+  if (filters.dayOfWeek) {
+    if (!r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+const MAX_FILTER_SCAN_PAGES = 5;
+
 export async function getOpenOpportunities(
   tutorBranchId: string | null,
   filters: OpportunityFilters,
@@ -137,25 +166,66 @@ export async function getOpenOpportunities(
     base = base.where("localGovernmentId", "==", filters.localGovernmentId);
   }
 
-  const page = await fetchPage(base, "createdAt", cursor);
-  let requests = page.items;
-
-  if (filters.subjectId) {
-    requests = requests.filter(
-      (r) => r.subjectIds.includes(filters.subjectId!) || r.subjectIds.includes("all-subjects"),
-    );
-  }
-  if (filters.gradeId) {
-    requests = requests.filter(
-      (r) => r.gradeId === filters.gradeId || (r.gradeIds && r.gradeIds.includes(filters.gradeId!)),
-    );
-  }
-  if (filters.dayOfWeek) {
-    requests = requests.filter((r) => r.availability.some((s) => s.dayOfWeek === filters.dayOfWeek));
+  const hasAttributeFilters = Boolean(filters.subjectId || filters.gradeId || filters.dayOfWeek);
+  if (!hasAttributeFilters) {
+    const page = await fetchPage(base, "createdAt", cursor);
+    const items = await attachBranchCities(page.items, page.items.map(toTutorView));
+    return { ...page, items };
   }
 
-  const items = await attachBranchCities(requests, requests.map(toTutorView));
-  return { ...page, items };
+  // Scan bounded batches until we collect a page of matching items or exhaust the collection,
+  // avoiding empty page 1s when matching tuitions sit further down the unfiltered list.
+  const matched: TuitionRequest[] = [];
+  let currentCursorToken = cursor;
+  let lastMatchedCursor: string | null = null;
+  let hasMore = false;
+  let lastPageTotal = 0;
+
+  for (let scan = 0; scan < MAX_FILTER_SCAN_PAGES; scan++) {
+    const page = await fetchPage(base, "createdAt", currentCursorToken, DEFAULT_PAGE_SIZE);
+    lastPageTotal = page.totalCount;
+
+    for (let i = 0; i < page.items.length; i++) {
+      const req = page.items[i]!;
+      if (!matchesOpportunityFilters(req, filters)) continue;
+
+      matched.push(req);
+      if (req.createdAt) {
+        lastMatchedCursor = `${req.createdAt.toMillis()}_${req.id}`;
+      }
+      if (matched.length === DEFAULT_PAGE_SIZE) {
+        // Exact cursor of the 20th matched item so the next page never skips
+        // matching items that sat later in this same raw batch.
+        hasMore = i < page.items.length - 1 || page.hasNextPage;
+        break;
+      }
+    }
+
+    if (matched.length >= DEFAULT_PAGE_SIZE) {
+      break;
+    }
+
+    currentCursorToken = page.nextCursor;
+    if (!page.hasNextPage || !page.nextCursor) {
+      hasMore = false;
+      break;
+    }
+
+    if (scan === MAX_FILTER_SCAN_PAGES - 1) {
+      // Hit scan cap before filling a full page — resume from the end of the last scanned batch.
+      lastMatchedCursor = page.nextCursor;
+      hasMore = true;
+    }
+  }
+
+  const items = await attachBranchCities(matched, matched.map(toTutorView));
+  return {
+    items,
+    totalCount: !hasMore && cursor === null ? items.length : lastPageTotal,
+    hasNextPage: hasMore,
+    nextCursor: hasMore ? lastMatchedCursor : null,
+    totalIsApproximate: hasMore || cursor !== null,
+  };
 }
 
 /**
@@ -169,7 +239,11 @@ export async function getOpenOpportunities(
  * self-cleaning: if the tuition is later reopened for reassignment, its
  * status is no longer ASSIGNED, so this detail stops being attached.
  */
-export async function getOpportunityForTutor(id: string, tutorId: string): Promise<TutorOpportunityView | null> {
+export async function getOpportunityForTutor(
+  id: string,
+  tutorId: string,
+  tutorBranchId: string | null = null,
+): Promise<TutorOpportunityView | null> {
   const snap = await tuitionRequestsCollection().doc(id).get();
   if (!snap.exists) return null;
   const data = snap.data()!;
@@ -199,6 +273,9 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
   };
 
   if (data.status === "OPEN") {
+    if (!isTutorInBranchScope(tutorBranchId, data.branchId)) {
+      return null;
+    }
     const [view] = await attachBranchCities([data], [toTutorView(data)]);
     return { ...view!, ...currentStudyingPatch };
   }
@@ -206,12 +283,17 @@ export async function getOpportunityForTutor(id: string, tutorId: string): Promi
   const applicationSnap = await tutorApplicationsCollection()
     .where("tuitionId", "==", id)
     .where("tutorId", "==", tutorId)
-    .limit(1)
     .get();
   if (applicationSnap.empty) return null;
 
   const [view] = await attachBranchCities([data], [toTutorView(data)]);
-  const application = applicationSnap.docs[0]!.data();
+  // A tuition reopened after withdrawal can yield multiple applications from
+  // the same tutor across rounds — prefer an active SELECTED application.
+  const applications = applicationSnap.docs.map((d) => d.data());
+  const application =
+    applications.find((a) => a.status === "SELECTED") ??
+    applications.find((a) => a.status === "APPLIED") ??
+    applications[0]!;
 
   if (data.status === "ASSIGNED" && application.status === "SELECTED") {
     const parentSnap = await parentsCollection().doc(data.parentId).get();

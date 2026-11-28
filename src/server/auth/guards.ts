@@ -5,10 +5,13 @@ import type { Role } from "@/server/domain/types";
 
 const ADMIN_ROLES: Role[] = ["SUPER_ADMIN", "BRANCH_ADMIN"];
 
-/** Redirects to /login when there is no valid session. */
-export async function requireSession(): Promise<AuthSession> {
+/** Redirects to /login when there is no valid session (or to /change-password-required unless opted out). */
+export async function requireSession(options?: { allowMustChangePassword?: boolean }): Promise<AuthSession> {
   const session = await getCurrentSession();
   if (!session) redirect("/login");
+  if (!options?.allowMustChangePassword && session.mustChangePassword) {
+    redirect("/change-password-required");
+  }
   return session;
 }
 
@@ -96,4 +99,14 @@ export function assertBranchScope(session: AuthSession, resourceBranchId: string
     return;
   }
   throw new Error("BRANCH_SCOPE_VIOLATION");
+}
+
+/**
+ * Checks whether a tutor is allowed to view/apply to an OPEN tuition in `resourceBranchId`.
+ * Unrouted tutors (`tutorBranchId === null`) can see all branches; routed tutors are
+ * strictly scoped to their own branch.
+ */
+export function isTutorInBranchScope(tutorBranchId: string | null, resourceBranchId: string | null): boolean {
+  if (!tutorBranchId) return true;
+  return tutorBranchId === resourceBranchId;
 }

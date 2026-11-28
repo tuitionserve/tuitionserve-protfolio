@@ -7,6 +7,7 @@ import { generateSequentialUid } from "@/server/domain/ids";
 import { writeAuditEvent } from "@/server/domain/audit";
 import { notifyAllAdmins } from "@/server/domain/notifications";
 import { fieldErrorsFrom } from "@/server/actions/action-utils";
+import { checkPublicRateLimit, isHoneypotTriggered } from "@/server/domain/rate-limit";
 
 export type ActionResult =
   | { ok: true; queryUid: string }
@@ -18,10 +19,11 @@ export async function createSchoolContactQueryFromParsedData(
   actor: { userId: string | null; role: "SYSTEM" | "SUPER_ADMIN" | "BRANCH_ADMIN" },
 ): Promise<ActionResult> {
   const now = FieldValue.serverTimestamp();
+  const queryUid = await generateSequentialUid("schoolContactQuery");
   const ref = schoolContactQueriesCollection().doc();
   await ref.set({
     id: ref.id,
-    queryUid: "", // filled in after the transaction-free write below (UID generation is its own transaction)
+    queryUid,
     institutionName: data.institutionName,
     contactPersonName: data.contactPersonName,
     email: data.email || null,
@@ -31,9 +33,6 @@ export async function createSchoolContactQueryFromParsedData(
     viewedByAdminAt: null,
     createdAt: now,
   } as never);
-
-  const queryUid = await generateSequentialUid("schoolContactQuery");
-  await ref.update({ queryUid });
 
   await writeAuditEvent({
     action: "SCHOOL_CONTACT_QUERY_SUBMITTED",
@@ -57,6 +56,14 @@ export async function createSchoolContactQueryFromParsedData(
 
 /** Public submission — no authentication, anyone can reach the For Schools contact form. */
 export async function submitSchoolContactQuery(formData: FormData): Promise<ActionResult> {
+  if (isHoneypotTriggered(formData)) {
+    return { ok: false, error: "Unable to submit right now. Please try again." };
+  }
+  const { allowed } = await checkPublicRateLimit("school-contact", 6, 10 * 60 * 1000);
+  if (!allowed) {
+    return { ok: false, error: "Too many enquiries sent recently. Please wait a few minutes and try again." };
+  }
+
   const parsed = schoolContactQuerySchema.safeParse({
     institutionName: formData.get("institutionName"),
     contactPersonName: formData.get("contactPersonName"),

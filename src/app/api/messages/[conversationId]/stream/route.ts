@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { Timestamp } from "firebase-admin/firestore";
+import { getCurrentSession } from "@/server/auth/session";
 import { loadConversationForParticipant } from "@/server/actions/messaging";
 import { messagesCollection } from "@/server/domain/collections";
 import { toMessageView } from "@/server/domain/messaging-views";
@@ -15,6 +16,15 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request: NextRequest, { params }: { params: Promise<{ conversationId: string }> }) {
   const { conversationId } = await params;
+
+  const session = await getCurrentSession();
+  if (
+    !session ||
+    session.mustChangePassword ||
+    (session.role === "TUTOR" && session.tutor?.verificationStatus === "SUSPENDED")
+  ) {
+    return new Response("Unauthorized", { status: 401 });
+  }
 
   try {
     await loadConversationForParticipant(conversationId);
@@ -33,6 +43,15 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const stream = new ReadableStream({
     start(controller) {
       let closed = false;
+      const heartbeat = setInterval(() => {
+        if (closed) return;
+        try {
+          controller.enqueue(encoder.encode(": ping\n\n"));
+        } catch {
+          // Stream already closed.
+        }
+      }, 25_000);
+
       const unsubscribe = query.onSnapshot(
         (snapshot) => {
           if (closed) return;
@@ -50,6 +69,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
       request.signal.addEventListener("abort", () => {
         closed = true;
+        clearInterval(heartbeat);
         unsubscribe();
         try {
           controller.close();

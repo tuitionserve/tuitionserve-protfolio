@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
-import { resolveBranchIdForLocation } from "./branch-routing";
+import { findOverlappingBranchCoverage, resolveBranchIdForLocation } from "./branch-routing";
 import type { GeographicLocation, Branch } from "./types";
 
 vi.mock("./collections", () => ({
@@ -153,5 +153,45 @@ describe("resolveBranchIdForLocation", () => {
 
     const branchId = await resolveBranchIdForLocation("ward-pokhara-1");
     expect(branchId).toBe("branch-pokhara");
+  });
+});
+
+describe("findOverlappingBranchCoverage", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("detects overlap when an active branch already covers the entire district", async () => {
+    mockBranches([
+      {
+        id: "branch-1",
+        name: "Kathmandu Main",
+        status: "ACTIVE",
+        coverage: [{ districtId: "district-ktm", localGovernmentIds: [] }],
+      },
+    ]);
+
+    const overlap = await findOverlappingBranchCoverage(
+      [{ districtId: "district-ktm", districtName: "Kathmandu", localGovernmentIds: ["lg-ktm"] }],
+      "branch-2",
+    );
+    expect(overlap).toEqual({ branchName: "Kathmandu Main", districtName: "Kathmandu" });
+  });
+
+  it("allows different municipalities in the same district across two branches", async () => {
+    mockBranches([
+      {
+        id: "branch-1",
+        name: "Kathmandu North",
+        status: "ACTIVE",
+        coverage: [{ districtId: "district-ktm", localGovernmentIds: ["lg-budhanilkantha"] }],
+      },
+    ]);
+
+    const overlap = await findOverlappingBranchCoverage(
+      [{ districtId: "district-ktm", districtName: "Kathmandu", localGovernmentIds: ["lg-ktm"] }],
+      "branch-2",
+    );
+    expect(overlap).toBeNull();
   });
 });

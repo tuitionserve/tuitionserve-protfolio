@@ -41,7 +41,6 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     try {
@@ -50,7 +49,6 @@ export function Sidebar({
     } catch {
       // Private browsing / storage blocked — default to expanded.
     }
-    setHydrated(true);
   }, []);
 
   function toggleCollapsed() {
@@ -80,7 +78,7 @@ export function Sidebar({
     <aside
       className={`hidden md:flex flex-col shrink-0 bg-surface-container-lowest border-r border-surface-variant md:h-screen transition-all ${
         collapsed ? "w-[68px]" : "w-60"
-      } ${hydrated ? "" : "invisible"}`}
+      }`}
     >
       {/* Logo gets its own full-height row so it's never clipped. When
           collapsed, tapping the logo itself expands the sidebar (the

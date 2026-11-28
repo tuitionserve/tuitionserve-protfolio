@@ -193,10 +193,14 @@ export function OpportunityBrowser({
         </div>
       )}
 
-      {page.totalCount > 0 && (
+      {(page.items.length > 0 || cursorStack.length > 0) && (
         <div className="flex items-center justify-between gap-4 pt-2">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Showing {rangeStart}-{rangeEnd} of {page.totalCount}
+            {page.items.length === 0
+              ? "No matches on this page"
+              : page.totalIsApproximate
+                ? `Showing ${rangeStart}-${rangeEnd}${page.hasNextPage ? " (more matches available)" : ""}`
+                : `Showing ${rangeStart}-${rangeEnd} of ${page.totalCount}`}
           </p>
           <div className="flex gap-2">
             <button

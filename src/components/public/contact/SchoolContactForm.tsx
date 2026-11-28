@@ -34,12 +34,14 @@ export function SchoolContactForm({
   const [pending, startTransition] = useTransition();
   const [submittedUid, setSubmittedUid] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError(null);
     setFieldErrors({});
 
     const formData = new FormData();
+    const hp = (e.currentTarget.elements.namedItem("_hp_check") as HTMLInputElement | null)?.value;
+    if (hp) formData.set("_hp_check", hp);
     formData.set("institutionName", institutionName);
     formData.set("contactPersonName", contactPersonName);
     formData.set("email", email);
@@ -78,6 +80,7 @@ export function SchoolContactForm({
 
   return (
     <form onSubmit={handleSubmit} className={sectionClass}>
+      <input type="text" name="_hp_check" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className={fieldWrapClass}>
         <label className={labelClass} htmlFor="institutionName">School / institution name</label>
         <input

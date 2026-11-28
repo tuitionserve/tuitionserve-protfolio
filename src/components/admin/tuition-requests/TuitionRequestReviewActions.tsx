@@ -16,7 +16,7 @@ export function TuitionRequestReviewActions({ requestId }: { requestId: string }
     startTransition(async () => {
       const result = await confirmTuitionRequest(requestId);
       if (result.ok) {
-        router.push("/admin/tuition-requests");
+        router.push("/admin/tuition-requests/open");
         router.refresh();
       } else {
         setError(result.error);
@@ -33,7 +33,7 @@ export function TuitionRequestReviewActions({ requestId }: { requestId: string }
     startTransition(async () => {
       const result = await rejectTuitionRequest(requestId, reason);
       if (result.ok) {
-        router.push("/admin/tuition-requests");
+        router.push("/admin/tuition-requests/new");
         router.refresh();
       } else {
         setError(result.error);

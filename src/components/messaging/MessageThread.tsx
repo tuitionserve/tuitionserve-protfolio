@@ -45,11 +45,15 @@ export function MessageThread({
     const since = initialMessages.length > 0 ? (initialMessages[initialMessages.length - 1]!.sentAt ?? 0) : 0;
     const es = new EventSource(`/api/messages/${conversationId}/stream?since=${since}`);
     es.onmessage = (event) => {
-      const message: MessageView = JSON.parse(event.data);
-      if (seenIdsRef.current.has(message.id)) return;
-      seenIdsRef.current.add(message.id);
-      setMessages((prev) => [...prev, message]);
-      markConversationRead(conversationId);
+      try {
+        const message: MessageView = JSON.parse(event.data);
+        if (seenIdsRef.current.has(message.id)) return;
+        seenIdsRef.current.add(message.id);
+        setMessages((prev) => [...prev, message]);
+        markConversationRead(conversationId);
+      } catch {
+        // Ignore malformed SSE payload.
+      }
     };
 
     return () => es.close();

@@ -30,8 +30,8 @@ export const personalStepSchema = z.object({
     .regex(/^\d{4}-\d{2}-\d{2}$/, "Enter a valid date.")
     .refine((value) => {
       const age = (Date.now() - new Date(value).getTime()) / (365.25 * 24 * 60 * 60 * 1000);
-      return age >= 16 && age <= 100;
-    }, "Tutor must be between 16 and 100 years old."),
+      return age >= 18 && age <= 100;
+    }, "Tutor must be at least 18 years old."),
   address: z.string().trim().min(5, "Enter your address.").max(300),
 });
 

@@ -1,3 +1,4 @@
+import { createHash, timingSafeEqual } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { Timestamp } from "firebase-admin/firestore";
 import { adminFirestore } from "@/lib/firebase/admin";
@@ -5,6 +6,14 @@ import { tuitionRequestsCollection } from "@/server/domain/collections";
 import { writeAuditEvent } from "@/server/domain/audit";
 
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+
+function isAuthorizedCronRequest(authHeader: string | null, secret: string | undefined): boolean {
+  if (!secret || !authHeader) return false;
+  const expected = `Bearer ${secret}`;
+  const a = createHash("sha256").update(authHeader).digest();
+  const b = createHash("sha256").update(expected).digest();
+  return timingSafeEqual(a, b);
+}
 
 /**
  * Scheduled via vercel.json's `crons` — deletes REJECTED tuition
@@ -16,8 +25,7 @@ const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
  * ever exceeds one batch.
  */
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!isAuthorizedCronRequest(request.headers.get("authorization"), process.env.CRON_SECRET)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
