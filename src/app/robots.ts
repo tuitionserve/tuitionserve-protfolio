@@ -1,16 +1,27 @@
 import type { MetadataRoute } from "next";
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.com";
+import { getSiteUrl } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = getSiteUrl();
+
   return {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
-        disallow: ["/tutor/", "/admin/", "/api/", "/login", "/register", "/suspended"],
+        allow: ["/", "/vacancies/", "/blog/", "/api/media/", "/ads.txt"],
+        disallow: [
+          "/tutor/",
+          "/admin/",
+          "/api/",
+          "/login",
+          "/register",
+          "/suspended",
+          "/access-denied",
+          "/change-password-required",
+        ],
       },
     ],
-    sitemap: `${SITE_URL}/sitemap.xml`,
+    sitemap: `${siteUrl}/sitemap.xml`,
+    host: siteUrl,
   };
 }

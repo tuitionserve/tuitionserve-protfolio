@@ -5,8 +5,9 @@ import { ContactForm } from "@/components/public/contact/ContactForm";
 import { WhatsAppButton } from "@/components/public/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "Contact Us - Tuition Serve",
+  title: "Contact Us",
   description: "Get in touch with Tuition Serve — questions about finding a tutor, becoming a tutor, or anything else.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

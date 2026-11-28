@@ -3,11 +3,15 @@ import Link from "next/link";
 import { whatsappHref } from "@/lib/whatsapp";
 import { FacebookIcon, InstagramIcon, WhatsappIcon } from "./SocialIcons";
 
-// Facebook/Instagram profile URLs are placeholders ("#") until the client
-// provides the real links — swap the hrefs below when they're available.
+// Only render Facebook/Instagram links when real URLs are provided in env,
+// avoiding dead "#" tabs in production.
 const SOCIAL_LINKS = [
-  { label: "Facebook", href: "#", Icon: FacebookIcon },
-  { label: "Instagram", href: "#", Icon: InstagramIcon },
+  ...(process.env.NEXT_PUBLIC_FACEBOOK_URL
+    ? [{ label: "Facebook", href: process.env.NEXT_PUBLIC_FACEBOOK_URL, Icon: FacebookIcon }]
+    : []),
+  ...(process.env.NEXT_PUBLIC_INSTAGRAM_URL
+    ? [{ label: "Instagram", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL, Icon: InstagramIcon }]
+    : []),
   {
     label: "WhatsApp",
     href: whatsappHref("Hi Tuition Serve, I have a question."),
@@ -40,12 +44,14 @@ export function PublicFooter() {
         <div className="flex flex-col gap-2">
           <Link href="/" className={linkClass}>Home</Link>
           <Link href="/request-tutor" className={linkClass}>Find a Tutor</Link>
+          <Link href="/vacancies" className={linkClass}>Vacancies</Link>
           <Link href="/register" className={linkClass}>Become a Tutor</Link>
         </div>
 
         <div className="flex flex-col gap-2">
           <Link href="/for-schools" className={linkClass}>For Schools</Link>
           <Link href="/courses" className={linkClass}>Courses</Link>
+          <Link href="/blog" className={linkClass}>Blog</Link>
           <Link href="/about" className={linkClass}>About Us</Link>
           <Link href="/contact" className={linkClass}>Contact Us</Link>
         </div>
@@ -54,6 +60,7 @@ export function PublicFooter() {
           <Link href="/privacy-policy" className={linkClass}>Privacy Policy</Link>
           <Link href="/terms-of-service" className={linkClass}>Terms of Service</Link>
           <Link href="/price" className={linkClass}>Price</Link>
+          <Link href="/sitemap" className={linkClass}>Sitemap</Link>
         </div>
       </div>
     </footer>

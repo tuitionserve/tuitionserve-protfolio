@@ -5,8 +5,9 @@ import { SchoolContactForm } from "@/components/public/contact/SchoolContactForm
 import { WhatsAppButton } from "@/components/public/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "For Schools - Tuition Serve",
+  title: "For Schools & Institutions",
   description: "Partner with Tuition Serve to source qualified teachers and educational professionals for your school.",
+  alternates: { canonical: "/for-schools" },
 };
 
 export default function ForSchoolsPage() {

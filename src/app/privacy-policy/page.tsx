@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/public/StaticPageLayout";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - Tuition Serve",
+  title: "Privacy Policy",
   description: "How Tuition Serve collects, uses, and protects your information.",
+  alternates: { canonical: "/privacy-policy" },
 };
 
-const EFFECTIVE_DATE = new Date().toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const EFFECTIVE_DATE = "November 28, 2026";
 
 // Drafted to reflect this app's actual data flows (see docs/05 Domain
 // Model and docs/06 TRD): what's collected, who can see the exact
@@ -60,9 +57,34 @@ export default function PrivacyPolicyPage() {
         <li>A curriculum vitae (CV) and, optionally, a profile photograph;</li>
         <li>Authentication data associated with your account (e.g., email address used to sign in).</li>
       </ul>
-      <p>2.3 &mdash; <strong>Information collected automatically.</strong> We use a single, strictly
-        necessary session cookie to keep you signed in. We do not currently use advertising,
-        analytics, or cross-site tracking cookies. If this changes, we will update this Policy.</p>
+      <p>2.3 &mdash; <strong>Cookies, analytics, and third-party advertising.</strong> We use a
+        single, strictly necessary HTTP-only session cookie to keep signed-in Tutors and
+        Administrators authenticated. On public content pages (such as our Blog and Public
+        Vacancies directory), we may display advertisements served by{" "}
+        <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to
+        serve ads based on a visitor&rsquo;s prior visits to this website or other websites on the
+        internet. Google&rsquo;s use of advertising cookies enables it and its partners to serve
+        relevant ads to visitors. You may opt out of personalized advertising at any time by
+        visiting{" "}
+        <a
+          href="https://www.google.com/settings/ads"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-container font-medium underline"
+        >
+          Google Ads Settings
+        </a>{" "}
+        or{" "}
+        <a
+          href="https://www.aboutads.info/choices/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-container font-medium underline"
+        >
+          aboutads.info
+        </a>
+        . Authenticated Tutor and Admin portals do not display third-party ads.
+      </p>
 
       <h2>3. How We Use Information</h2>
       <p>We use the information described above to:</p>
@@ -100,8 +122,19 @@ export default function PrivacyPolicyPage() {
         do so by law, regulation, legal process, or governmental request, or where we believe
         disclosure is necessary to protect the rights, property, or safety of Tuition Serve, our
         users, or the public.</p>
-      <p>4.5 &mdash; <strong>No sale of data.</strong> We do not sell, rent, or trade personal
-        information to third parties, and we do not share it for third-party marketing purposes.</p>
+      <p>4.5 &mdash; <strong>No sale of personal data.</strong> We do not sell, rent, or trade
+        your personal registration or tuition inquiry information (such as phone numbers, home
+        addresses, or CVs) to third parties. Where Google AdSense is active on public pages,
+        Google processes standard browser/advertising cookie signals in accordance with{" "}
+        <a
+          href="https://policies.google.com/technologies/ads"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary-container font-medium underline"
+        >
+          Google&rsquo;s Advertising &amp; Privacy terms
+        </a>
+        .</p>
 
       <h2>5. Payments</h2>
       <p>

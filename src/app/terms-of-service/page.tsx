@@ -2,15 +2,12 @@ import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/public/StaticPageLayout";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - Tuition Serve",
+  title: "Terms of Service",
   description: "The terms governing use of Tuition Serve.",
+  alternates: { canonical: "/terms-of-service" },
 };
 
-const EFFECTIVE_DATE = new Date().toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const EFFECTIVE_DATE = "November 26, 2026";
 
 // Drafted to reflect this app's actual behavior (admin-mediated
 // matching; no payments processed; verification, suspension, and

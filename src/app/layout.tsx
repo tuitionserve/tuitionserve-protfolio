@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { MotionProvider } from "@/components/ui/MotionProvider";
+import { getAdSenseClientId } from "@/lib/ads";
+import { getSiteUrl } from "@/lib/seo";
 import "./globals.css";
 
 const inter = Inter({
@@ -10,12 +12,30 @@ const inter = Inter({
 });
 
 const description =
-  "Tuition Serve connects parents with verified home tutors. Submit your requirements and get matched by our admin team.";
+  "Tuition Serve connects parents and schools across Nepal with verified home tutors and subject teachers. Browse open teaching vacancies, request a tutor, or read study guides.";
+
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim() || undefined;
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://example.com"),
-  title: "Tuition Serve - Find the Right Tutor",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: "Tuition Serve — Home Tuition & Teaching Vacancies in Nepal",
+    template: "%s | Tuition Serve",
+  },
   description,
+  keywords: [
+    "home tuition Nepal",
+    "home tutor Kathmandu",
+    "home tutor Lalitpur",
+    "home tutor Pokhara",
+    "private tutor Nepal",
+    "teaching vacancies Nepal",
+    "Tuition Serve",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  verification: googleSiteVerification ? { google: googleSiteVerification } : undefined,
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
@@ -29,23 +49,26 @@ export const metadata: Metadata = {
   // src/app/opengraph-image.tsx (Next.js file convention) — declaring
   // them here too would emit duplicate tags.
   openGraph: {
-    title: "Tuition Serve - Find the Right Tutor",
+    title: "Tuition Serve — Home Tuition & Teaching Vacancies in Nepal",
     description,
     type: "website",
+    siteName: "Tuition Serve",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tuition Serve - Find the Right Tutor",
+    title: "Tuition Serve — Home Tuition & Teaching Vacancies in Nepal",
     description,
   },
 };
 
 export const viewport = {
-  themeColor: "#0A4D8C",
+  themeColor: "#006c49",
   viewportFit: "cover" as const,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const adsenseClientId = getAdSenseClientId();
+
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <head>
@@ -57,6 +80,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
           rel="stylesheet"
         />
+        {adsenseClientId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+            crossOrigin="anonymous"
+          />
+        )}
       </head>
       <body className="min-h-full flex flex-col bg-surface text-on-surface font-body-md">
         <MotionProvider>{children}</MotionProvider>

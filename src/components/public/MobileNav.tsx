@@ -3,21 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-
-const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Find a Tutor", href: "/request-tutor" },
-  { label: "Become a Tutor", href: "/register" },
-  { label: "For Schools", href: "/for-schools" },
-  { label: "Courses", href: "/courses" },
-  { label: "About Us", href: "/about" },
-];
+import { PUBLIC_NAV_LINKS, isNavLinkActive } from "./nav-links";
 
 export function MobileNav({ active }: { active: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label={open ? "Close menu" : "Open menu"}
@@ -49,13 +41,13 @@ export function MobileNav({ active }: { active: string }) {
             className="absolute top-full left-0 w-full bg-surface-container-lowest shadow-md overflow-hidden"
           >
             <div className="flex flex-col px-margin-mobile py-2">
-              {NAV_LINKS.map((link) => (
+              {PUBLIC_NAV_LINKS.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
                   onClick={() => setOpen(false)}
                   className={
-                    link.label === active
+                    isNavLinkActive(link, active)
                       ? "py-3 font-bold font-label-md text-label-md text-primary border-b border-surface-variant"
                       : "py-3 font-medium font-label-md text-label-md text-secondary border-b border-surface-variant last:border-b-0"
                   }

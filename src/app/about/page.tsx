@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { StaticPageLayout } from "@/components/public/StaticPageLayout";
 
 export const metadata: Metadata = {
-  title: "About Us - Tuition Serve",
-  description: "How Tuition Serve matches parents with verified home tutors.",
+  title: "About Us",
+  description: "How Tuition Serve matches parents with verified home tutors across Nepal.",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
